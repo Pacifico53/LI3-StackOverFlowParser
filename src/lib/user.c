@@ -4,14 +4,27 @@
 #include "common.h"
 
 struct user {
+  char* id;
+  int upVotes;
+  int downVotes;
+  char* displayName;
+  int nPosts;
   char* bio;
+  int reputation;
   long posts[10];
 };
 
-USER create_user(char* bio, long* post_history) {
+USER create_user(char* id, int upVotes, int downVotes, char* displayName, int nPosts, char* bio, int reputation, long* post_history) {
   USER u = malloc(sizeof(struct user)); 
+  u->id = mystrdup(id);
+  u->upVotes = upVotes;
+  u->downVotes = downVotes;
+  u->displayName = mystrdup(displayName);
+  u->nPosts = nPosts;
   u->bio = mystrdup(bio);
+  u->reputation = reputation;
   memcpy(u->posts, post_history, sizeof(long) * 10);
+
   return u;
 }
 
@@ -29,6 +42,8 @@ long* get_10_latest_posts(USER u) {
 
 void free_user(USER u) {
   if(u) {
+    free(u->id);
+    free(u->displayName);
     free(u->bio);
     free(u);
   }
