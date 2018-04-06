@@ -35,7 +35,7 @@ static void store_users(xmlNode * a_node){
           printf("%s:\n", cur_node->name);
              xmlAttr* attribute = cur_node->properties;
              char *id, *displayName, *bio;
-             int upVotes, downVotes, nPosts = 0, reputation;
+             int upVotes = 0, downVotes = 0, nPosts = 0, reputation = 0;
              long *posts;
              while (attribute && attribute->name && attribute->children) {
                 xmlChar* xml_value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
@@ -72,6 +72,7 @@ static void store_users(xmlNode * a_node){
              }
              printf("----------------------------------------1\n");
              USER user = create_user(id, upVotes, downVotes, displayName, nPosts, bio, reputation, posts);
+             print_user(user);
              users[index] = user;
              printf("----------------------------------------2\n");
         }
