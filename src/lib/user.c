@@ -1,7 +1,4 @@
-#include <string.h>
-#include <stdlib.h>
 #include "user.h"
-#include "common.h"
 
 struct user {
   char* id;

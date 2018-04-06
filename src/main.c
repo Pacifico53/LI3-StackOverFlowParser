@@ -28,10 +28,11 @@ static void print_element_names(xmlNode * a_node){
 
 static void store_users(xmlNode * a_node){
     xmlNode *cur_node = NULL;
-    USER users[1000000] = (USER*) malloc(sizeof(struct user) * 1000000);
+    USER* users = (USER*) malloc(sizeof(USER) * 1000000);
     int index;
     for (cur_node = a_node, index = 0; cur_node; cur_node = cur_node->next, index++) {
          if (cur_node->type == XML_ELEMENT_NODE) {
+          printf("%s:\n", cur_node->name);
              xmlAttr* attribute = cur_node->properties;
              char *id, *displayName, *bio;
              int upVotes, downVotes, nPosts = 0, reputation;
@@ -39,6 +40,7 @@ static void store_users(xmlNode * a_node){
              while (attribute && attribute->name && attribute->children) {
                 xmlChar* xml_value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
                 char *value = (char*) xml_value;
+                printf("\t%s: %s\n", attribute->name, value);
                 //sprintf(value,"%s",xml_value);
                 if (1 == strcmp(attribute->name,"Id")){
                   id = mystrdup(value);
@@ -55,9 +57,9 @@ static void store_users(xmlNode * a_node){
                 //else if (!strcmp(attribute->name,"nPosts")){
                 //  nPosts = atoi(value);
                 //}
-                else if (1 == strcmp(attribute->name,"AboutMe")){
-                  bio = mystrdup(value);
-                }
+                //else if (1 == strcmp(attribute->name,"AboutMe")){
+                //  bio = mystrdup(value);
+                //}
                 else if (1 == strcmp(attribute->name, "Reputation")){
                   reputation = atoi(value);
                 }
@@ -68,11 +70,13 @@ static void store_users(xmlNode * a_node){
                 xmlFree(value);
                 attribute = attribute->next;
              }
+             printf("----------------------------------------1\n");
              USER user = create_user(id, upVotes, downVotes, displayName, nPosts, bio, reputation, posts);
              users[index] = user;
+             printf("----------------------------------------2\n");
         }
         printf("Index: %d\n",index);
-        print_element_names(cur_node->children);    
+        store_users(cur_node->children);    
     }
 }
 

@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <common.h>
 #include "pair.h"
 
 // STR_pair definitions
