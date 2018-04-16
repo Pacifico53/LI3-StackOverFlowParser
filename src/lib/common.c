@@ -1,4 +1,7 @@
 #include "common.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 // definido par nao dar warnings ao usar a funcao da GNU
 char * mystrdup (const char *s) {

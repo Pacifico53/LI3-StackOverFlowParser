@@ -1,5 +1,6 @@
 #include "date.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 struct date {
   int day;
   int month;

@@ -1,4 +1,7 @@
 #include "user.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 struct user {
   char* id;
@@ -29,7 +32,7 @@ USER create_user(char* id, int upVotes, int downVotes, char* displayName, int nP
 void print_user(USER user){
 	printf("ID: %s\n", user->id);
 	printf("UpVotes: %d\n", user->upVotes);
-	printf("DownVotes: %s\n", user->downVotes);
+	printf("DownVotes: %d\n", user->downVotes);
 }
 
 char* get_bio(USER u) {
