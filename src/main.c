@@ -1,5 +1,6 @@
 #include <date.h>
 #include <stdio.h>
+<<<<<<< HEAD
 #include <string.h>
 #include <common.h>
 #include <user.h>
@@ -101,3 +102,11 @@ int main(int argc, char **argv){
     xmlCleanupParser();    // Free globals
     return 0;
 }
+=======
+
+int main(){
+  Date d = createDate(1,2,2017);
+  printf("Dia: %i\n", get_day(d));
+  return 0;
+} 
+>>>>>>> parent of 30aa511... pacificio, isto já compila e corre. experimenta!

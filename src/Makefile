@@ -22,7 +22,7 @@ program: $(SOURCES_OBJ) $(MY_LIBS_OBJ)
 	$(CC) $(CFLAGS) $(wildcard $(ODIR)/*.o)  $(wildcard $(OLDIR)/*.o) -o program $(LIBS)
 
 clean:
-	rm -f obj/*.o
-	rm -f obj/lib/*.o
-	rm -f program
-	rm -f main.o
+	rm obj/*.o
+	rm obj/lib/*.o
+	rm program
+	rm main.o
