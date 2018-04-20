@@ -10,9 +10,9 @@
  *
  */
 struct TREE_posts {
-    long id;
-    Date data;
-    int score;           //Upvotes - Downvotes
+    long id_p;
+    Date data_p;
+    int score_p;           //Upvotes - Downvotes
     long user_id;
     char* titulo;
     int comment_count;
@@ -21,35 +21,35 @@ struct TREE_posts {
     GTree* post_answers;
 };
 
-POSTS create_tree_posts(long id, Date data, int score, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas, GTree* post_answers){
+POSTS create_tree_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas, GTree* post_answers){
 	POSTS p = malloc(sizeof(struct TREE_posts));
-	p->id = id;
-	p->data = data;
-	p->score = score;
+	p->id_p = id_p;
+	p->data_p = data_p;
+	p->score_p = score_p;
 	p->user_id = user_id;
-	p->titulo = mystrdump(titulo);
+	p->titulo = mystrdup(titulo);
 	p->comment_count = comment_count;
-	p->tags = mystrdump(tags);
+	p->tags = mystrdup(tags);
 	p->numeroRespostas = numeroRespostas;
 	p->post_answers = NULL; 
 	return p;
 }
 	
-long get_id(POSTS p){
+long get_id_p(POSTS p){
 	if(p)
-			return(p->id);
+			return(p->id_p);
 	return NULL;
 }
 
-Date get_data(POSTS p){
+Date get_data_p(POSTS p){
 	if(p)
-			return(p->data);
+			return(p->data_p);
 	return NULL;
 }
 
-int get_score(POSTS p){
+int get_score_p(POSTS p){
 	if(p)
-			return(p->score);
+			return(p->score_p);
 	return NULL;
 }
 
@@ -69,6 +69,7 @@ int get_comment_count(POSTS p){
 	if(p)
 			return(p->comment_count);
 	return NULL;
+}
 
 char* get_tags(POSTS p){
 	if(p)
@@ -91,8 +92,8 @@ GTree* get_post_answers(POSTS p){
 
 void free_posttree(POSTS p){
 	if(p){
-		free(p->get_titulo);
-		free(p->get_tags);
+		free(p->titulo);
+		free(p->tags);
 		free(p);
 	}
 }

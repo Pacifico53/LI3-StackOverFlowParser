@@ -2,16 +2,18 @@
 #define __ANSWERS__
 typedef struct TREE_answers* ANSWERS;
 
-ANSWERS create_tree_answers (long id, Date data, int score, long user_id, int comment_count);
+ANSWERS create_tree_answers (long id_a, Date data_a, int score_a, long user_id_a, int comment_count_a);
 
-long get_id(ANSWERS a);
+long get_id_a(ANSWERS a);
 
-Date get_data(ANSWERS a);
+Date get_data_a(ANSWERS a);
 
-int get_score(ANSWERS a);
+int get_score_a(ANSWERS a);
 
-long get_user_id(ANSWERS a);
+long get_user_id_a(ANSWERS a);
 
-int get_comment_count(ANSWERS a);
+int get_comment_count_a(ANSWERS a);
 
 void free_answerstree (ANSWERS a);
+
+#endif

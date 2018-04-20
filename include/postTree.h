@@ -1,14 +1,15 @@
+#include <glib.h>
 #ifndef __POSTS__
 #define __POSTS__
 typedef struct TREE_posts* POSTS;
 
-POSTS create_tree_posts(long id, Date data, int score, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas, GTree* post_answers);
+POSTS create_tree_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas, GTree* post_answers);
 
-long get_id(POSTS p);
+long get_id_p(POSTS p);
 
-Date get_data(POSTS p);
+Date get_data_p(POSTS p);
 
-int get_score(POSTS p);
+int get_score_p(POSTS p);
 
 long get_user_id(POSTS p);
 
@@ -20,7 +21,7 @@ char* get_tags(POSTS p);
 
 int get_numeroRespostas(POSTS p);
 
-GTree* get_post_answers(TREE_posts) 
+GTree* get_post_answers(POSTS p);
 
 void free_posttree(POSTS p);
 
