@@ -15,15 +15,17 @@ struct TREE_answers {
     int score_a;
     long user_id_a;
     int comment_count_a;
+    long parent_id;
 };
 
-ANSWERS create_tree_answers (long id_a, Date data_a, int score_a, long user_id_a, int comment_count_a){
+ANSWERS create_tree_answers (long id_a, Date data_a, int score_a, long user_id_a, int comment_count_a, long parent_id){
 	ANSWERS a = malloc(sizeof(struct TREE_answers));
 	a->id_a = id_a;
 	a->data_a = data_a;
 	a->score_a = score_a;
 	a->user_id_a = user_id_a;
 	a->comment_count_a = comment_count_a;
+    a->parent_id = parent_id;
 	return a;
 }
 
@@ -54,6 +56,12 @@ long get_user_id_a(ANSWERS a){
 int get_comment_count_a(ANSWERS a){
 	if(a)
 		return(a->comment_count_a);
+	return NULL;
+}
+
+long get_parent_id_a(ANSWERS a){
+	if(a)
+		return(a->parent_id);
 	return NULL;
 }
 

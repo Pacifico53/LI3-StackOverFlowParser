@@ -18,10 +18,9 @@ struct TREE_posts {
     int comment_count;
     char* tags;
     int numeroRespostas; //Calculado por nos
-    GTree* post_answers;
 };
 
-POSTS create_tree_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas, GTree* post_answers){
+POSTS create_tree_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas){
 	POSTS p = malloc(sizeof(struct TREE_posts));
 	p->id_p = id_p;
 	p->data_p = data_p;
@@ -31,7 +30,6 @@ POSTS create_tree_posts(long id_p, Date data_p, int score_p, long user_id, char*
 	p->comment_count = comment_count;
 	p->tags = mystrdup(tags);
 	p->numeroRespostas = numeroRespostas;
-	p->post_answers = NULL; 
 	return p;
 }
 	
@@ -82,13 +80,6 @@ int get_numeroRespostas(POSTS p){
 			return(p->numeroRespostas);
 	return NULL;
 }
-
-GTree* get_post_answers(POSTS p){
-	if(p)
-			return(p->post_answers);
-	return NULL;
-}
-
 
 void free_posttree(POSTS p){
 	if(p){

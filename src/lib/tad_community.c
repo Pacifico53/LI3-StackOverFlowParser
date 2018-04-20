@@ -4,7 +4,11 @@
 #include "tad_community.h"
 
 struct TCD_community{
-	GTree* posts;
+    GArray* anos;
+    GArray* meses;
+    GTree* dias;
+	GHashTable* questions;
+    GHashTable* answers;
 	GHashTable* userss;
 };
 
