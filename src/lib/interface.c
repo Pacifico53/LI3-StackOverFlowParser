@@ -5,8 +5,9 @@
 #include "answersTree.h"
 #include "postTree.h"
 #include "usersTree.h"
+#include "tad_community.h"
 
-typedef struct TCD_community * TAD_community;
+
 
 TAD_community init();
 
