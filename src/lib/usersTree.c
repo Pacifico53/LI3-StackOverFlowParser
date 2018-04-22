@@ -12,16 +12,14 @@ struct TREE_users {
     long id;
     char* name;
     char* aboutme;
-    int score;
     int reputation;
 };
 
-USERS create_tree_users(long id, char* name, char* aboutme, int score, int reputation) {
+USERS create_tree_users(long id, char* name, char* aboutme, int reputation) {
   USERS u = malloc(sizeof(struct TREE_users));
   u->id = id;
   u->name = mystrdup(name);
   u->aboutme = mystrdup(aboutme);
-  u->score = score;
   u->reputation = reputation;
   return u;
 }
@@ -44,11 +42,6 @@ char* get_aboutme(USERS u) {
   return NULL;
 }
 
-int get_score(USERS u) {
-  if(u)
-    return u->score;
-  return NULL;
-}
 
 int get_reputation(USERS u) {
   if(u)
