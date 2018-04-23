@@ -1,5 +1,9 @@
-#include "usersTree.h"
-
+#include "interface.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <string.h>
 
 insereUsers(GHashTable* u){
 	char* idc;
@@ -11,7 +15,7 @@ insereUsers(GHashTable* u){
 	USERS users;
 
 
-xmlDocPtr doc = xmlParseFile("????"); 
+xmlDocPtr doc = xmlParseFile("Users.xml"); 
 if (doc == NULL) { 
 	printf("Document not parsed. \n"); 
 	return -1; 
@@ -28,7 +32,7 @@ if (doc == NULL) {
 		nomec = xmlGetProp(cur, "DisplayName");
 		id = atol(idc);
 		reputation = atoi(reputationc);
-		users = create_tree_users(id, nomec, aboutmec, reputationc);
+		users = create_hashtable_users(id, nomec, aboutmec, reputationc);
 		g_hash_table_insert(u, GSIZE_TO_POINTER(id), users);
 		xmlFree(idc);
 		xmlFree(reputationc);

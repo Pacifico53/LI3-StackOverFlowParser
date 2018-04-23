@@ -2,9 +2,9 @@
 #include "pair.h"
 #include "list.h"
 #include "user.h"
-#include "answersTree.h"
-#include "postTree.h"
-#include "usersTree.h"
+#include "answersHashTable.h"
+#include "postHashTable.h"
+#include "usersHashTable.h"
 
 typedef struct TCD_community * TAD_community;
 

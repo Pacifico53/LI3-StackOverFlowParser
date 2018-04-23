@@ -7,7 +7,7 @@ int main(int argc, char** argv){
   tpf = clock();
 
   TAD_community new = init();
-  new = load(new, agrv[1]);
+  new = load(new, argv[1]);
 
   tpf = clock()- tpf;
   printf("Demorou %f segundos a ler\n", ((float)tpf)/CLOCKS_PER_SEC);
