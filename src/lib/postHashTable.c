@@ -2,14 +2,14 @@
 #include "date.h"
 #include <string.h>
 #include <stdlib.h>
-#include "postTree.h"
+#include "postHashTable.h"
 #include "common.h"
 
-/*struct TREE_posts
- * Estrutura de cada nodo da tree de posts.
+/*struct HASTABLE_posts
+ * Estrutura da hastable de posts PERGUNTAS.
  *
  */
-struct TREE_posts {
+struct HASHTABLE_posts {
     long id_p;
     Date data_p;
     int score_p;           //Upvotes - Downvotes
@@ -20,8 +20,8 @@ struct TREE_posts {
     int numeroRespostas; //Calculado por nos
 };
 
-POSTS create_tree_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas){
-	POSTS p = malloc(sizeof(struct TREE_posts));
+POSTS create_hashtable_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas){
+	POSTS p = malloc(sizeof(struct HASHTABLE_posts));
 	p->id_p = id_p;
 	p->data_p = data_p;
 	p->score_p = score_p;
@@ -34,57 +34,39 @@ POSTS create_tree_posts(long id_p, Date data_p, int score_p, long user_id, char*
 }
 	
 long get_id_p(POSTS p){
-	if(p)
-			return(p->id_p);
-	return NULL;
+		return p->id_p;
 }
 
 Date get_data_p(POSTS p){
-	if(p)
-			return(p->data_p);
-	return NULL;
+		return p->data_p;
 }
 
 int get_score_p(POSTS p){
-	if(p)
-			return(p->score_p);
-	return NULL;
+		return p->score_p;
 }
 
 long get_user_id(POSTS p){
-	if(p)
-			return(p->user_id);
-	return NULL;
+	return p->user_id;
 }
 
 char* get_titulo(POSTS p){
-	if(p)
-		return(p->titulo);
-	return NULL;
+	return p->titulo;
 }
 
 int get_comment_count(POSTS p){
-	if(p)
-			return(p->comment_count);
-	return NULL;
+		return p->comment_count;
 }
 
 char* get_tags(POSTS p){
-	if(p)
-			return(p->tags);
-	return NULL;
+		return p->tags;
 }		
 
 int get_numeroRespostas(POSTS p){
-	if(p)
-			return(p->numeroRespostas);
-	return NULL;
+		return p->numeroRespostas;
 }
 
-void free_posttree(POSTS p){
-	if(p){
-		free(p->titulo);
-		free(p->tags);
-		free(p);
-	}
+void free_postHashTable(POSTS p){
+	free(p->titulo);
+    free(p->tags);
+	free(p);
 }

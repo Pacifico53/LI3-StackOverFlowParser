@@ -1,22 +1,22 @@
 #include <glib.h>
 #include <string.h>
 #include <stdlib.h>
-#include "usersTree.h"
+#include "usersHashTable.h"
 #include "common.h"
 
-/* struct TREE_users
- * Estrutura de cada nodo da arvore de users.
+/* struct HASHTABLE_users
+ * Estrutura da hashtable de users.
  *
  */
-struct TREE_users {
+struct HASHTABLE_users {
     long id;
     char* name;
     char* aboutme;
     int reputation;
 };
 
-USERS create_tree_users(long id, char* name, char* aboutme, int reputation) {
-  USERS u = malloc(sizeof(struct TREE_users));
+USERS create_hashtable_users(long id, char* name, char* aboutme, int reputation) {
+  USERS u = malloc(sizeof(struct HASHTABLE_users));
   u->id = id;
   u->name = mystrdup(name);
   u->aboutme = mystrdup(aboutme);
@@ -25,34 +25,24 @@ USERS create_tree_users(long id, char* name, char* aboutme, int reputation) {
 }
 
 long get_id(USERS u) {
-  if(u)
     return u->id;
-  return NULL;
 }
 
 char* get_name(USERS u) {
-  if(u)
     return u->name;
-  return NULL;
 }
 
 char* get_aboutme(USERS u) {
-  if(u)
     return u->aboutme;
-  return NULL;
 }
 
 
 int get_reputation(USERS u) {
-  if(u)
     return u->reputation;
-  return NULL;
 }
 
-void free_userstree(USERS u) {
-  if(u) {
+void free_usersHashTable(USERS u) {
     free(u->name);
     free(u->aboutme);
     free(u);
-  }
 }
