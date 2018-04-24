@@ -30,43 +30,29 @@ ANSWERS create_hashtable_answers (long id_a, Date data_a, int score_a, long user
 }
 
 long get_id_a(ANSWERS a){
-	if(a)
-		return a->id_a;
-	return -1;
+	return a->id_a;
 }
 
 Date get_data_a(ANSWERS a){
-	if(a)
-		return a->data_a;
-	return NULL;
+	return a->data_a;
 }
 
 int get_score_a(ANSWERS a){
-	if(a)
-		return a->score_a;
-	return -11111;
+	return a->score_a;
 }
 
 long get_user_id_a(ANSWERS a){
-	if(a)
-		return a->user_id_a;
-	return -1;
+	return a->user_id_a;
 }
 
 int get_comment_count_a(ANSWERS a){
-	if(a)
-		return a->comment_count_a;
-	return -1;
+	return a->comment_count_a;
 }
 
 long get_parent_id_a(ANSWERS a){
-	if(a)
-		return a->parent_id;
-	return -1;
+	return a->parent_id;
 }
 
 void free_answersHashTable (ANSWERS a){
-	if(a){
-		free(a);
-	}
+	free(a);
 }

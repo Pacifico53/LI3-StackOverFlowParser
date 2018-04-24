@@ -8,6 +8,7 @@
  *  Array dos meses, que esta dentro de cada ano, e dentro deste vao estar dias
  */
 struct mesesArray {
+    int id_mes;
     GArray* dias;
 };
 
@@ -17,14 +18,14 @@ MESES create_array_meses (GArray* dias_a){
     return a;
 }
 
+int get_id_mes(MESES a){
+    return a->id_mes;
+}
+
 GArray* get_dias(MESES a){
-	if(a)
-		return(a->dias);
-	return NULL;
+	return a->dias;
 }
 
 void free_mesesArray (MESES a){
-	if(a){
 		free(a);
-	}
 }

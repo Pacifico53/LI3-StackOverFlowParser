@@ -8,6 +8,7 @@
  *  Isto é o que esta dentro de cada dia
  */
 struct diaNodo{
+    int id_dia;
     GHashTable* questions;
     GHashTable* answers;
 };
@@ -19,21 +20,19 @@ DIA create_nodo_dia (GHashTable* questions_a, GHashTable* answers_a){
     return a;
 }
 
+int get_id_dia(DIA a){
+    return a->id_dia;
+}
+
 GHashTable* get_questions(DIA a){
-	if(a)
-		return(a->questions);
-	return NULL;
+	return (a->questions);
 }
 
 GHashTable* get_answers(DIA a){
-	if(a)
-		return(a->answers);
-	return NULL;
+	return (a->answers);
 }
 
 
 void free_diaNodo (DIA a){
-	if(a){
-		free(a);
-	}
+	free(a);
 }

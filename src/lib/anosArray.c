@@ -8,6 +8,7 @@
  *  Array dos anos, dentro deste vai estar array de meses
  */
 struct anosArray {
+    int id_ano;
     GArray* meses;
 };
 
@@ -18,13 +19,13 @@ ANOS create_array_anos (GArray* meses_a){
 }
 
 GArray* get_meses(ANOS a){
-	if(a)
-		return(a->meses);
-	return NULL;
+	return (a->meses);
+}
+
+int get_id_ano(ANOS a){
+    return a->id_ano;
 }
 
 void free_anosArray (ANOS a){
-	if(a){
-		free(a);
-	}
+	free(a);
 }
