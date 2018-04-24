@@ -34,15 +34,15 @@ POSTS create_hashtable_posts(long id_p, Date data_p, int score_p, long user_id, 
 }
 	
 long get_id_p(POSTS p){
-		return p->id_p;
+	return p->id_p;
 }
 
 Date get_data_p(POSTS p){
-		return p->data_p;
+	return p->data_p;
 }
 
 int get_score_p(POSTS p){
-		return p->score_p;
+	return p->score_p;
 }
 
 long get_user_id(POSTS p){
@@ -54,15 +54,15 @@ char* get_titulo(POSTS p){
 }
 
 int get_comment_count(POSTS p){
-		return p->comment_count;
+	return p->comment_count;
 }
 
 char* get_tags(POSTS p){
-		return p->tags;
+	return p->tags;
 }		
 
 int get_numeroRespostas(POSTS p){
-		return p->numeroRespostas;
+	return p->numeroRespostas;
 }
 
 void free_postHashTable(POSTS p){

@@ -14,7 +14,7 @@ struct mesesArray {
 
 MESES create_array_meses (GArray* dias_a){
     MESES a = malloc(sizeof(struct mesesArray));
-	a->dias = dias_a;
+    a->dias = dias_a;
     return a;
 }
 
@@ -23,9 +23,9 @@ int get_id_mes(MESES a){
 }
 
 GArray* get_dias(MESES a){
-	return a->dias;
+    return a->dias;
 }
 
 void free_mesesArray (MESES a){
-		free(a);
+    free(a);
 }

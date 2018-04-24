@@ -13,13 +13,13 @@ struct anosArray {
 };
 
 ANOS create_array_anos (GArray* meses_a){
-	ANOS a = malloc(sizeof(struct anosArray));
-	a->meses = meses_a;
+    ANOS a = malloc(sizeof(struct anosArray));
+    a->meses = meses_a;
     return a;
 }
 
 GArray* get_meses(ANOS a){
-	return (a->meses);
+    return (a->meses);
 }
 
 int get_id_ano(ANOS a){
@@ -27,5 +27,5 @@ int get_id_ano(ANOS a){
 }
 
 void free_anosArray (ANOS a){
-	free(a);
+    free(a);
 }

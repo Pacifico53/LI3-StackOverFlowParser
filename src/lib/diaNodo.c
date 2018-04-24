@@ -14,9 +14,9 @@ struct diaNodo{
 };
 
 DIA create_nodo_dia (GHashTable* questions_a, GHashTable* answers_a){
-	DIA a = malloc(sizeof(struct diaNodo));
-	a->questions = questions_a;
-	a->answers = answers_a;
+    DIA a = malloc(sizeof(struct diaNodo));
+    a->questions = questions_a;
+    a->answers = answers_a;
     return a;
 }
 
@@ -25,14 +25,14 @@ int get_id_dia(DIA a){
 }
 
 GHashTable* get_questions(DIA a){
-	return (a->questions);
+    return (a->questions);
 }
 
 GHashTable* get_answers(DIA a){
-	return (a->answers);
+    return (a->answers);
 }
 
 
 void free_diaNodo (DIA a){
-	free(a);
+    free(a);
 }
