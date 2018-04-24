@@ -6,7 +6,7 @@ typedef struct TCD_community * TAD_community;
 
 TAD_community init_TCD_community();
 
-GTree* get_tree_posts(TAD_community s);
+GArray* get_array_anos(TAD_community s);
 
 GHashTable* get_hash_userss(TAD_community s);
 
