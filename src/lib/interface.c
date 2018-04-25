@@ -8,14 +8,13 @@
 #include "tad_community.h"
 
 
-
 TAD_community init();
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path);  //diretoria onde estarão os ficheiros do dump
 
 // query 1
-STR_pair info_from_post(TAD_community com, long id);  
+STR_pair info_from_post(TAD_community com, long id); 
 
 // query 2
 LONG_list top_most_active(TAD_community com, int N);
