@@ -10,8 +10,6 @@ MESES create_array_meses (GArray* dias_a);
 
 GArray* get_dias(MESES a);
 
-int get_id_mes(MESES a);
-
 void free_mesesArray (MESES a);
 
 #endif

@@ -20,9 +20,6 @@ DIA create_nodo_dia (GHashTable* questions_a, GHashTable* answers_a){
     return a;
 }
 
-int get_id_dia(DIA a){
-    return a->id_dia;
-}
 
 GHashTable* get_questions(DIA a){
     return (a->questions);

@@ -18,10 +18,6 @@ MESES create_array_meses (GArray* dias_a){
     return a;
 }
 
-int get_id_mes(MESES a){
-    return a->id_mes;
-}
-
 GArray* get_dias(MESES a){
     return a->dias;
 }

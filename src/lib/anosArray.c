@@ -22,10 +22,6 @@ GArray* get_meses(ANOS a){
     return (a->meses);
 }
 
-int get_id_ano(ANOS a){
-    return a->id_ano;
-}
-
 void free_anosArray (ANOS a){
     free(a);
 }

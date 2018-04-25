@@ -10,8 +10,6 @@ ANOS create_array_anos (GArray* meses_a);
 
 GArray* get_meses(ANOS a);
 
-int get_id_ano(ANOS a);
-
 void free_anosArray (ANOS a);
 
 #endif
