@@ -6,12 +6,21 @@
 #include "postHashTable.h"
 #include "usersHashTable.h"
 #include "tad_community.h"
+#include "anosArray.h"
+#include "diaNodo.h"
+#include "parser.h"
+#include <glib.h>
 
-
-TAD_community init();
+TAD_community init(){
+    TCD_community com = init_TCD_community();
+    return com;
+}
 
 // query 0
-TAD_community load(TAD_community com, char* dump_path);  //diretoria onde estarão os ficheiros do dump
+TAD_community load(TAD_community com, char* dump_path){
+    parse(com, dump_path);
+    return com;
+}  //diretoria onde estarão os ficheiros do dump
 
 // query 1
 STR_pair info_from_post(TAD_community com, long id); 

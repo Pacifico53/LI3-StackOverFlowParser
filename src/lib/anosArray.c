@@ -8,7 +8,6 @@
  *  Array dos anos, dentro deste vai estar array de meses
  */
 struct anosArray {
-    int id_ano;
     GArray* meses;
 };
 
