@@ -5,6 +5,7 @@
 #include "answersHashTable.h"
 #include "postHashTable.h"
 #include "usersHashTable.h"
+#include "tad_community.h"
 
 typedef struct TCD_community * TAD_community;
 

@@ -10,16 +10,16 @@
  */
 struct HASHTABLE_users {
     long id;
-    char* name;
-    char* aboutme;
+    GString* name;
+    GString* aboutme;
     int reputation;
 };
 
-USERS create_hashtable_users(long id, char* name, char* aboutme, int reputation) {
+USERS create_hashtable_users(long id, GString* name, GString* aboutme, int reputation) {
   USERS u = malloc(sizeof(struct HASHTABLE_users));
   u->id = id;
-  u->name = mystrdup(name);
-  u->aboutme = mystrdup(aboutme);
+  u->name = name;
+  u->aboutme = aboutme;
   u->reputation = reputation;
   return u;
 }
@@ -28,11 +28,11 @@ long get_id(USERS u) {
     return u->id;
 }
 
-char* get_name(USERS u) {
+GString* get_name(USERS u) {
     return u->name;
 }
 
-char* get_aboutme(USERS u) {
+GString* get_aboutme(USERS u) {
     return u->aboutme;
 }
 

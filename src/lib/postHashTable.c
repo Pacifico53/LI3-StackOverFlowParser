@@ -13,20 +13,20 @@ struct HASHTABLE_posts {
     long id_p;
     int score_p;           //Upvotes - Downvotes
     long user_id;
-    char* titulo;
+    GString* titulo;
     int comment_count;
-    char* tags;
+    GString* tags;
     int numeroRespostas; //Calculado por nos
 };
 
-POSTS create_hashtable_posts(long id_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas){
+POSTS create_hashtable_posts(long id_p, int score_p, long user_id, GString* titulo, int comment_count, GString* tags, int numeroRespostas){
 	POSTS p = malloc(sizeof(struct HASHTABLE_posts));
 	p->id_p = id_p;
 	p->score_p = score_p;
 	p->user_id = user_id;
-	p->titulo = mystrdup(titulo);
+	p->titulo = titulo;
 	p->comment_count = comment_count;
-	p->tags = mystrdup(tags);
+	p->tags = tags;
 	p->numeroRespostas = numeroRespostas;
 	return p;
 }
@@ -43,7 +43,7 @@ long get_user_id(POSTS p){
 	return p->user_id;
 }
 
-char* get_titulo(POSTS p){
+GString* get_titulo(POSTS p){
 	return p->titulo;
 }
 
@@ -51,7 +51,7 @@ int get_comment_count(POSTS p){
 	return p->comment_count;
 }
 
-char* get_tags(POSTS p){
+GString* get_tags(POSTS p){
 	return p->tags;
 }		
 

@@ -3,30 +3,30 @@
 #include "interface.h"
 
 Date xmlToDate(char* val){
-	Date d;
-	int ano1 = 0;
-	int mes1 = 0;
-	int dia1 = 0;
-	int i;
-	char ano[5];
+    Date d;
+    int ano1 = 0;
+    int mes1 = 0;
+    int dia1 = 0;
+    int i;
+    char ano[5];
     strcpy(ano, "1234");
-	char mes[3];
+    char mes[3];
     strcpy(mes, "12");
-	char dia[3];
+    char dia[3];
     strcpy(dia, "12");
-	for(i=0;i<4;i++)
-		ano[i]=val[i];
-	val = val+5;
-	for(i=0;i<2;i++)
-		mes[i]=val[i];
-	val = val+3;
-	for(i=0;i<2;i++)
-		dia[i]=val[i];
-	ano1 = atoi(ano);
-	mes1 = atoi(mes);
-	dia1 = atoi(dia);
-	d = createDate(dia1, mes1, ano1);
-	return d;	
+    for(i=0;i<4;i++)
+        ano[i]=val[i];
+    val = val+5;
+    for(i=0;i<2;i++)
+        mes[i]=val[i];
+    val = val+3;
+    for(i=0;i<2;i++)
+        dia[i]=val[i];
+    ano1 = atoi(ano);
+    mes1 = atoi(mes);
+    dia1 = atoi(dia);
+    d = createDate(dia1, mes1, ano1);
+    return d;   
 }
 
 GArray * init_calendario(){
@@ -87,17 +87,19 @@ GArray * insert_hastable_questions_calendario(GArray * calendario, POSTS qq, int
 void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* value = NULL;
-    char* nomec;
-    char* aboutmec;
+    //char* nomec;
+    //char* aboutmec;
     long id;
     int reputation;
     USERS users;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
             xmlAttr* attribute = cur_node->properties;
+            GString *nomec = g_string_new(NULL);
+            GString *aboutmec = g_string_new(NULL);
             while (attribute && attribute->name && attribute->children) {
                 if(!strcmp((char *)attribute->name,"Reputation")){
-             	    value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
+                    value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
                     reputation = atoi((char *)value);
                     xmlFree(value);
                 }
@@ -108,16 +110,16 @@ void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
                 }
                 if(!strcmp((char *)attribute->name,"AboutMe")){
                     value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
-                    aboutmec = (char *)value;
+                    aboutmec = g_string_assign(aboutmec, (char *)value);
                     xmlFree(value);
                 }
                 if(!strcmp((char *)attribute->name,"DisplayName")){
                     value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
-                    nomec = (char *)value;
+                    nomec = g_string_assign(nomec, (char *)value);
                     xmlFree(value);
                 }
                 attribute = attribute->next;
-         	}
+            }
             users = create_hashtable_users(id,nomec,aboutmec,reputation);
             g_hash_table_insert(usersht, GSIZE_TO_POINTER(id), users);
         }
@@ -133,9 +135,7 @@ void print_element_namesq(GArray *calendario, xmlNode * a_node){
     long id_p;
     int score_p;
     long user_id;
-    char* titulo;
     int comment_count;
-    char* tags;
     int numeroRespostas;
     char* data;
     Date d;
@@ -154,15 +154,17 @@ void print_element_namesq(GArray *calendario, xmlNode * a_node){
                 aux = aux->next;
             }
             if(tipo && !strcmp((char *)tipo, "1")){
+                GString* tags = g_string_new(NULL);
+                GString* titulo = g_string_new(NULL);
                 while (aux && aux->name && aux->children && parar){
-                	if(!strcmp((char *)aux->name, "CreationDate")){
-                    	parar = 0;
-                    	xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
-                    	data = (char *)value;
-                    	d = xmlToDate(data);
-                	}
-                	aux = aux->next;
-            	}
+                    if(!strcmp((char *)aux->name, "CreationDate")){
+                        parar = 0;
+                        xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
+                        data = (char *)value;
+                        d = xmlToDate(data);
+                    }
+                    aux = aux->next;
+                }
                 while (attribute && attribute->name && attribute->children) {
                     if(!strcmp((char *)attribute->name,"Id")){ 
                         xmlChar* value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
@@ -181,12 +183,12 @@ void print_element_namesq(GArray *calendario, xmlNode * a_node){
                     }
                     if(!strcmp((char *)attribute->name,"Title")){ 
                         xmlChar* value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
-                        titulo = (char *) value;
+                        titulo = g_string_assign(titulo, (char *)value);
                         xmlFree(value);
                     } 
                     if(!strcmp((char *)attribute->name,"Tags")){ 
                         xmlChar* value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
-                        tags = (char *) value;
+                        tags = g_string_assign(tags, (char *)value);
                         xmlFree(value);
                     }
                     if(!strcmp((char *)attribute->name,"CommentCount")){ 
@@ -236,15 +238,15 @@ void print_element_namesa(GArray * calendario, xmlNode * a_node){
                 aux = aux->next;
             }
             if(tipo && !strcmp((char *)tipo, "2")){
-            	while (aux && aux->name && aux->children && parar){
-                	if(!strcmp((char *)aux->name, "CreationDate")){
-                    	parar = 0;
-                    	xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
-                    	data = (char *)value;
-                    	d = xmlToDate(data);
-                	}
-                	aux = aux->next;
-            	}
+                while (aux && aux->name && aux->children && parar){
+                    if(!strcmp((char *)aux->name, "CreationDate")){
+                        parar = 0;
+                        xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
+                        data = (char *)value;
+                        d = xmlToDate(data);
+                    }
+                    aux = aux->next;
+                }
                 while (attribute && attribute->name && attribute->children) {
                     if(!strcmp((char *)attribute->name, "Id")){
                         xmlChar* value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
@@ -323,7 +325,7 @@ void parse_users(GHashTable *users, char* path){
     doc = xmlReadFile(pathfile, NULL, 0);
     //Get the root element node 
     root_element = xmlDocGetRootElement(doc);
-    print_element_namesu(users, root_element);
+    print_element_namesu(users, root_element); 
     xmlFreeDoc(doc);
     xmlCleanupParser();
     printf("DONE!!!\n");

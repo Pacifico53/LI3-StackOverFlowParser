@@ -3,7 +3,7 @@
 #define __POSTS__
 typedef struct HASHTABLE_posts* POSTS;
 
-POSTS create_hashtable_posts(long id_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas);
+POSTS create_hashtable_posts(long id_p, int score_p, long user_id, GString* titulo, int comment_count, GString* tags, int numeroRespostas);
 
 long get_id_p(POSTS p);
 
@@ -11,11 +11,11 @@ int get_score_p(POSTS p);
 
 long get_user_id(POSTS p);
 
-char* get_titulo(POSTS p);
+GString* get_titulo(POSTS p);
 
 int get_comment_count(POSTS p);
 
-char* get_tags(POSTS p);
+GString* get_tags(POSTS p);
 
 int get_numeroRespostas(POSTS p);
 
