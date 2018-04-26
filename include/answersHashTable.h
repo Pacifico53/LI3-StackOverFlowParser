@@ -4,11 +4,9 @@
 
 typedef struct HASHTABLE_answers* ANSWERS;
 
-ANSWERS create_hashtable_answers (long id_a, Date data_a, int score_a, long user_id_a, int comment_count_a, long get_parent_id);
+ANSWERS create_hashtable_answers (long id_a, int score_a, long user_id_a, int comment_count_a, long get_parent_id);
 
 long get_id_a(ANSWERS a);
-
-Date get_data_a(ANSWERS a);
 
 int get_score_a(ANSWERS a);
 

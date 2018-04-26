@@ -19,8 +19,16 @@ GHashTable* get_hash_userss(TAD_community s){
 	return s->userss;
 }
 
+void set_ht_users(TAD_community s, GHashTable *usersht){
+	s->userss = usersht;
+}
+
 GArray* get_array_anos(TAD_community s){
 	return s->anos;
+}
+
+void set_array_anos(TAD_community s, GArray *anos){
+	s->anos = anos;
 }
 
 void free_TCD_community(TAD_community s){

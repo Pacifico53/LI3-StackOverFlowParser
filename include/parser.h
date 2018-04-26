@@ -13,7 +13,8 @@
 #include "anosArray.h"
 #include "mesesArray.h"
 #include "diaNodo.h"
-
+#include "tad_community.h"
+#include "interface.h"
 
 Date xmlToDate(char* val);
 
@@ -23,18 +24,18 @@ GArray * insert_hastable_answers_calendario(GArray * calendario, ANSWERS ans, in
 
 GArray * insert_hastable_questions_calendario(GArray * calendario, POSTS qq, int ano, int mes, int dia);
 
-static void print_element_namesu(xmlNode * a_node);
+void print_element_namesu(GHashTable *usersht, xmlNode * a_node);
 
-static void print_element_namesq(GArray *calendario, xmlNode * a_node);
+void print_element_namesq(GArray *calendario, xmlNode * a_node);
 
-static void print_element_namesa(GArray * calendario, xmlNode * a_node);
+void print_element_namesa(GArray * calendario, xmlNode * a_node);
 
 void parse_answers(GArray * calendario, char* path);
 
 void parse_questions(GArray * calendario, char* path);
 
-void parse_users(GArray * calendario, char* path);
+void parse_users(GHashTable * usersht, char* path);
 
-void parse(char* path);
+void parse(TAD_community com, char* path);
 
 #endif

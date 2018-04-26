@@ -1,4 +1,6 @@
 #include "parser.h"
+#include "tad_community.h"
+#include "interface.h"
 
 Date xmlToDate(char* val){
 	Date d;
@@ -24,7 +26,6 @@ Date xmlToDate(char* val){
 	mes1 = atoi(mes);
 	dia1 = atoi(dia);
 	d = createDate(dia1, mes1, ano1);
-	printf("Ano = %d, Mes =  %d, Dia = %d\n", get_year(d),get_month(d),get_day(d));
 	return d;	
 }
 
@@ -49,66 +50,41 @@ GArray * init_calendario(){
         }
         g_array_prepend_val(calendario, um_ano);
     }
-
     return calendario;
 }
 
 GArray * insert_hastable_answers_calendario(GArray * calendario, ANSWERS ans, int ano, int mes, int dia){
     int id = get_id_a(ans);
-    printf("id = %d\n", id);
-    printf("Ano - 2009 = %d\n",ano);
     //GHashTable* answers;
     GArray* ano_post;
     ano_post = g_array_index(calendario, GArray *, ano);
-    printf("Mes = %d\n", mes);
     
     GArray* mes_post;
     mes_post = g_array_index(ano_post, GArray *, mes-1);
-    printf("Dia = %d\n", dia);
     DIA dia_post = g_array_index(mes_post, DIA, dia-1);
     GHashTable* answers = get_answers(dia_post);
     
-    if (answers) {
-        printf("Hash nao nula!\n");
-    }else printf("HASH NULA!!!!!!!\n"); 
-
-    gboolean teste = g_hash_table_insert(answers, GINT_TO_POINTER(id), ans);
+    g_hash_table_insert(answers, GINT_TO_POINTER(id), ans);
     
-    if (teste) {
-        printf("Resultou!\n-----------------------------\n");
-    }else printf("Nao deu!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"); 
-
     return calendario;
 }
 
 GArray * insert_hastable_questions_calendario(GArray * calendario, POSTS qq, int ano, int mes, int dia){
     int id = get_id_p(qq);
-    printf("id = %d\n", id);
-    printf("Ano - 2009 = %d\n",ano);
     GArray* ano_post;
     ano_post = g_array_index(calendario, GArray *, ano);
-    printf("Mes = %d\n", mes);
     
     GArray* mes_post;
     mes_post = g_array_index(ano_post, GArray *, mes-1);
-    printf("Dia = %d\n", dia);
     DIA dia_post = g_array_index(mes_post, DIA, dia-1);
     GHashTable* questions = get_questions(dia_post);
     
-    if (questions) {
-        printf("Hash nao nula!\n");
-    }else printf("HASH NULA!!!!!!!\n"); 
-
-    gboolean teste = g_hash_table_insert(questions, GINT_TO_POINTER(id), qq);
+    g_hash_table_insert(questions, GINT_TO_POINTER(id), qq);
     
-    if (teste) {
-        printf("Resultou!\n-----------------------------\n");
-    }else printf("Nao deu!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"); 
-
     return calendario;
 }
 
-static void print_element_namesu(xmlNode * a_node){
+void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* value = NULL;
     char* nomec;
@@ -116,46 +92,40 @@ static void print_element_namesu(xmlNode * a_node){
     long id;
     int reputation;
     USERS users;
-    GHashTable* u = g_hash_table_new(g_direct_hash, g_direct_equal);  
     for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
-            printf("%s:\n", cur_node->name);
             xmlAttr* attribute = cur_node->properties;
             while (attribute && attribute->name && attribute->children) {
                 if(!strcmp((char *)attribute->name,"Reputation")){
              	    value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
                     reputation = atoi((char *)value);
-                    printf("\t%s: %s -> %d\n", attribute->name, value, reputation);
                     xmlFree(value);
                 }
                 if(!strcmp((char *)attribute->name,"Id")){
                     value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
                     id = atol((char *)value);
-                    printf("\t%s: %s -> %lu\n", attribute->name, value, id);
                     xmlFree(value);
                 }
                 if(!strcmp((char *)attribute->name,"AboutMe")){
                     value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
                     aboutmec = (char *)value;
-                    printf("\t%s: %s -> %s\n", attribute->name, value, aboutmec);
                     xmlFree(value);
                 }
                 if(!strcmp((char *)attribute->name,"DisplayName")){
                     value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
                     nomec = (char *)value;
-                    printf("\t%s: %s -> %s\n", attribute->name, value, nomec);
                     xmlFree(value);
                 }
                 attribute = attribute->next;
          	}
-            users= create_hashtable_users(id,nomec,aboutmec,reputation);
-            g_hash_table_insert(u, GSIZE_TO_POINTER(id), users);
+            users = create_hashtable_users(id,nomec,aboutmec,reputation);
+            g_hash_table_insert(usersht, GSIZE_TO_POINTER(id), users);
         }
-    print_element_namesu(cur_node->children);
+    print_element_namesu(usersht, cur_node->children);
     }
 }
 
-static void print_element_namesq(GArray *calendario, xmlNode * a_node){
+void print_element_namesq(GArray *calendario, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* tipo = NULL;
     int para = 1;
@@ -190,7 +160,6 @@ static void print_element_namesq(GArray *calendario, xmlNode * a_node){
                     	xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
                     	data = (char *)value;
                     	d = xmlToDate(data);
-                    	printf("\t%s: %s\n", aux->name, value);
                 	}
                 	aux = aux->next;
             	}
@@ -240,7 +209,7 @@ static void print_element_namesq(GArray *calendario, xmlNode * a_node){
     }
 }
 
-static void print_element_namesa(GArray * calendario, xmlNode * a_node){
+void print_element_namesa(GArray * calendario, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* tipo = NULL;
     int para = 1;
@@ -273,7 +242,6 @@ static void print_element_namesa(GArray * calendario, xmlNode * a_node){
                     	xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
                     	data = (char *)value;
                     	d = xmlToDate(data);
-                    	printf("\t%s: %s\n", aux->name, value);
                 	}
                 	aux = aux->next;
             	}
@@ -345,7 +313,7 @@ void parse_questions(GArray * calendario, char* path){
     printf("DONE!!!\n");
 }
 
-void parse_users(GArray * calendario, char* path){
+void parse_users(GHashTable *users, char* path){
     printf("--------------------------\nA iniciar parse users...\n--------------------------\n");
     char* pathfile = malloc(128 * sizeof(char));
     strcpy(pathfile, path);
@@ -355,15 +323,15 @@ void parse_users(GArray * calendario, char* path){
     doc = xmlReadFile(pathfile, NULL, 0);
     //Get the root element node 
     root_element = xmlDocGetRootElement(doc);
-    print_element_namesu(root_element);
+    print_element_namesu(users, root_element);
     xmlFreeDoc(doc);
     xmlCleanupParser();
     printf("DONE!!!\n");
 }
 
-void parse(TCD_community com, char* path){
-    printf("!!!O DUMP TEM DE ESTAR NO MESMO SITIO QUE A PASTA GRUPO2 !!!\n");
+void parse(TAD_community com, char* path){
     GArray * calendario = init_calendario();
+    GHashTable * usersht = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
     //xmlDoc *doc = NULL;
     //xmlNode *root_element = NULL;
   
@@ -379,7 +347,11 @@ void parse(TCD_community com, char* path){
     */
     parse_answers(calendario, path);
     parse_questions(calendario, path);
-    parse_users(calendario, path);
+    parse_users(usersht, path);
+    
+    set_array_anos(com, calendario);
+    set_ht_users(com, usersht);
+    
     //xmlFreeDoc(doc);       // free document
     //xmlCleanupParser();    // Free globals
 }

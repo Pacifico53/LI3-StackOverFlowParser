@@ -12,7 +12,7 @@
 #include <glib.h>
 
 TAD_community init(){
-    TCD_community com = init_TCD_community();
+    TAD_community com = init_TCD_community();
     return com;
 }
 

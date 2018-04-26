@@ -3,11 +3,9 @@
 #define __POSTS__
 typedef struct HASHTABLE_posts* POSTS;
 
-POSTS create_hashtable_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas);
+POSTS create_hashtable_posts(long id_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas);
 
 long get_id_p(POSTS p);
-
-Date get_data_p(POSTS p);
 
 int get_score_p(POSTS p);
 

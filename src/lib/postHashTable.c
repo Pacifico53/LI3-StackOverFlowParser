@@ -11,7 +11,6 @@
  */
 struct HASHTABLE_posts {
     long id_p;
-    Date data_p;
     int score_p;           //Upvotes - Downvotes
     long user_id;
     char* titulo;
@@ -20,10 +19,9 @@ struct HASHTABLE_posts {
     int numeroRespostas; //Calculado por nos
 };
 
-POSTS create_hashtable_posts(long id_p, Date data_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas){
+POSTS create_hashtable_posts(long id_p, int score_p, long user_id, char* titulo, int comment_count, char* tags, int numeroRespostas){
 	POSTS p = malloc(sizeof(struct HASHTABLE_posts));
 	p->id_p = id_p;
-	p->data_p = data_p;
 	p->score_p = score_p;
 	p->user_id = user_id;
 	p->titulo = mystrdup(titulo);
@@ -35,10 +33,6 @@ POSTS create_hashtable_posts(long id_p, Date data_p, int score_p, long user_id, 
 	
 long get_id_p(POSTS p){
 	return p->id_p;
-}
-
-Date get_data_p(POSTS p){
-	return p->data_p;
 }
 
 int get_score_p(POSTS p){
