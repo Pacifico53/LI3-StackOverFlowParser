@@ -43,7 +43,7 @@ int get_comment_count_a(ANSWERS a){
     return a->comment_count_a;
 }
 
-long get_parent_id_a(ANSWERS a){
+long get_parent_id(ANSWERS a){
     return a->parent_id;
 }
 

@@ -10,6 +10,7 @@ int main(int argc, char** argv){
     new = load(new, argv[1]);
 
     tpf = clock()- tpf;
-    printf("Demorou %f segundos a ler\n", ((float)tpf)/CLOCKS_PER_SEC); 
+    printf("Demorou %f segundos a ler\n", ((float)tpf)/CLOCKS_PER_SEC);
+    info_from_post(new, 187273); // 15137  15136
     return 0;
 }
