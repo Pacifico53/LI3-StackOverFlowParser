@@ -73,9 +73,16 @@ STR_pair info_from_post(TAD_community com, long id){
     return par;
 }
 
-void incrementaNumbers(gpointer key, gpointer value, gpointer userdata){
+void incrementaNumbersA(gpointer key, gpointer value, gpointer userdata){
     long userID = 0;
     userID = get_user_id_a(value);
+
+    increment_numberOfPosts(g_hash_table_lookup(userdata, GINT_TO_POINTER(userID)));
+} 
+
+void incrementaNumbersQ(gpointer key, gpointer value, gpointer userdata){
+    long userID = 0;
+    userID = get_user_id(value);
 
     increment_numberOfPosts(g_hash_table_lookup(userdata, GINT_TO_POINTER(userID)));
 }
@@ -113,8 +120,8 @@ LONG_list top_most_active(TAD_community com, int N){
                 dia = g_array_index(dias,DIA,d);
                 GHashTable* respostashash = get_answers(dia);
                 GHashTable* questionshash = get_questions(dia);
-                g_hash_table_foreach(respostashash, incrementaNumbers, usersht);
-                g_hash_table_foreach(questionshash, incrementaNumbers, usersht);
+                g_hash_table_foreach(respostashash, incrementaNumbersA, usersht);
+                g_hash_table_foreach(questionshash, incrementaNumbersQ, usersht);
             }
         }
     }
@@ -124,7 +131,7 @@ LONG_list top_most_active(TAD_community com, int N){
         user = listaUsers->data;
         userID = get_id(user);
         set_list(result, ii, userID);
-        printf("%d = %lu\n", ii, get_list(result, ii));
+        printf("%d = %lu\n", ii+1, get_list(result, ii));
         listaUsers = listaUsers->next;
     }
     return result;
@@ -133,7 +140,43 @@ LONG_list top_most_active(TAD_community com, int N){
 
 
 // query 3
-LONG_pair total_posts(TAD_community com, Date begin, Date end);
+LONG_pair total_posts(TAD_community com, Date begin, Date end){
+    long nQuestions = 0;
+    long nAnswers = 0;
+
+    int anoBegin = get_year(begin);
+    int mesBegin = get_month(begin);
+    int diaBegin = get_day(begin);
+
+    int anoEnd = get_year(end);
+    int mesEnd = get_month(end);
+    int diaEnd = get_day(end);
+    
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        meses = g_array_index(anos, GArray *, i);
+        for (j = mesBegin - 1; j <= mesEnd - 1; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = diaBegin - 1; d <= diaEnd - 1 ; d++) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* respostashash = get_answers(dia);
+                GHashTable* questionshash = get_questions(dia);
+                nAnswers += g_hash_table_size(respostashash);
+                nQuestions += g_hash_table_size(questionshash);
+            }
+        }
+    }
+    LONG_pair result = create_long_pair(nQuestions, nAnswers);
+    printf("Answers = %lu.\nQuestions = %lu.\n", nQuestions, nAnswers);
+    return result;
+}
 
 // query 4
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end);

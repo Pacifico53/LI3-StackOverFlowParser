@@ -20,7 +20,12 @@ int main(int argc, char** argv){
     printf("\n-->ID = 187273:\n");
     info_from_post(new, 187273); // 15137  15136
     printf("\n----------------------------------------------------------------\n");
-    printf("\tTESTAR QUERY 2 COM N = 5\n");
-    top_most_active(new, 5);
+    printf("\tTESTAR QUERY 2 COM N = 10\n");
+    top_most_active(new, 10);
+    printf("\n----------------------------------------------------------------\n");
+    printf("\tTESTAR QUERY 3 COM DATA INICIAL = 2014-01-01 E DATA FINAL = 2014-12-31\n");
+    Date begin = createDate(1, 1, 2014);
+    Date end = createDate(31, 12, 2014);
+    total_posts(new, begin, end);
     return 0;
 }
