@@ -24,65 +24,53 @@ TAD_community load(TAD_community com, char* dump_path){
 
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
-	STR_pair par;
-	GHashTable* usershash = get_hash_userss(com);
-	USERS user;
-	GArray* anos = get_array_anos(com);
-	GArray* meses;
-	GArray* dias;
-	DIA dia;
-	//GHashTable* questionshash;
-	//GHashTable* respostashash;
-	POSTS questions;
-	ANSWERS respostas;
-	GString* titulo;
-	GString* nome;
-	long id_p = 0;
-	long id_a = 0;
-	long id_p_u = 0;
-	long id_parente = 0;
-	int parar = 1;
-	int i = 0;
-	int j = 0;
-	int d = 0;
-
+    STR_pair par;
+    GHashTable* usershash = get_hash_userss(com);
+    USERS user;
+    GArray* anos = get_array_anos(com);
+    GArray* meses;
+    GArray* dias;
+    DIA dia;
+    POSTS questions;
+    ANSWERS respostas;
+    GString* titulo;
+    GString* nome;
+    long id_p_u = 0;
+    long id_parente = 0;
+    int parar = 1;
+    int i = 0;
+    int j = 0;
+    int d = 0;
     for (i = 0; i < 10 && parar; i++) {
         meses = g_array_index(anos,GArray *,i);
         for (j = 0; j < 12 && parar; j++) {
-        	dias = g_array_index(meses, GArray *,j);
+            dias = g_array_index(meses, GArray *,j);
             for (d = 0; d < 31 && parar; d++) {
-            	dia = g_array_index(dias,DIA,d);
-            	GHashTable* respostashash = get_answers(dia); //tá trocado -> resposta = answer.......................................................
-            	GHashTable* questionshash = get_questions(dia);   //igual
-                   	if(g_hash_table_contains(respostashash,GINT_TO_POINTER(id))){
-            		printf("ENCONTREI %d , %d , %d\n", i, j, d);
-            		parar = 0;
-            		respostas = g_hash_table_lookup(respostashash,GINT_TO_POINTER(id));
-            		id_a = get_id_a(respostas);
-            		id_parente = get_parent_id(respostas);
-            		return info_from_post(com, id_parente);
-            	}
-            	if(g_hash_table_contains(questionshash,GINT_TO_POINTER(id))){
-            		parar = 0;
-             		printf("ENCONTREI %d , %d , %d\n", i, j, d);
-	         		questions = g_hash_table_lookup(questionshash,GINT_TO_POINTER(id));
-            		id_p = get_id_p(questions);
-            		titulo = get_titulo(questions);
-            		id_p_u = get_user_id(questions);
-            		user = g_hash_table_lookup(usershash, GINT_TO_POINTER(id_p_u));
-            		nome = get_name(user);
-            		par = create_str_pair(titulo->str, nome->str);
-                    printf("1 = %s. 2 = %s.\n", get_fst_str(par), get_snd_str(par));
-            		return par;
-            	} else printf("NAO ENCONTREI %d %d %d\n", i, j, d 	);
-
-            	//else{printf("Tá mal, dá outro id...");}
-            	}
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* respostashash = get_answers(dia);
+                GHashTable* questionshash = get_questions(dia);
+                if(g_hash_table_contains(respostashash,GINT_TO_POINTER(id))){
+                    printf("ENCONTREI A RESPOSTA EM ANO=%d , MES=%d , DIA=%d!\nVOU PROCURAR A PERGUNTA!\n\n", i, j, d);
+                    parar = 0;
+                    respostas = g_hash_table_lookup(respostashash,GINT_TO_POINTER(id));
+                    id_parente = get_parent_id(respostas);
+                    return info_from_post(com, id_parente);
+                }
+                if(g_hash_table_contains(questionshash,GINT_TO_POINTER(id))){
+                    parar = 0;
+                    printf("ENCONTREI EM ANO = %d , MES = %d , DIA = %d\n", i, j, d);
+                    questions = g_hash_table_lookup(questionshash,GINT_TO_POINTER(id));
+                    titulo = get_titulo(questions);
+                    id_p_u = get_user_id(questions);
+                    user = g_hash_table_lookup(usershash, GINT_TO_POINTER(id_p_u));
+                    nome = get_name(user);
+                    par = create_str_pair(titulo->str, nome->str);
+                    printf("TITULO = \"%s\". USER NAME =\" %s\".\n", get_fst_str(par), get_snd_str(par));
+                }
             }
         }
-        printf("1 = %s. 2 = %s.\n", get_fst_str(par), get_snd_str(par));
-                    		return par;
-
+    }
+    return par;
 }
 
 // query 2
