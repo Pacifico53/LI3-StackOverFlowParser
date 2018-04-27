@@ -50,7 +50,7 @@ STR_pair info_from_post(TAD_community com, long id){
                 GHashTable* respostashash = get_answers(dia);
                 GHashTable* questionshash = get_questions(dia);
                 if(g_hash_table_contains(respostashash,GINT_TO_POINTER(id))){
-                    printf("ENCONTREI A RESPOSTA EM ANO=%d , MES=%d , DIA=%d!\nVOU PROCURAR A PERGUNTA!\n\n", i, j, d);
+                    printf("ENCONTREI A RESPOSTA EM ANO = %d , MES = %d , DIA = %d!\nVOU PROCURAR A PERGUNTA!\n", i, j, d);
                     parar = 0;
                     respostas = g_hash_table_lookup(respostashash,GINT_TO_POINTER(id));
                     id_parente = get_parent_id(respostas);
@@ -65,7 +65,7 @@ STR_pair info_from_post(TAD_community com, long id){
                     user = g_hash_table_lookup(usershash, GINT_TO_POINTER(id_p_u));
                     nome = get_name(user);
                     par = create_str_pair(titulo->str, nome->str);
-                    printf("TITULO = \"%s\". USER NAME =\" %s\".\n", get_fst_str(par), get_snd_str(par));
+                    printf("TITULO = \"%s\". USER NAME =\"%s\".\n", get_fst_str(par), get_snd_str(par));
                 }
             }
         }
