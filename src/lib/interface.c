@@ -73,9 +73,65 @@ STR_pair info_from_post(TAD_community com, long id){
     return par;
 }
 
+void incrementaNumbers(gpointer key, gpointer value, gpointer userdata){
+    long userID = 0;
+    userID = get_user_id_a(value);
+
+    increment_numberOfPosts(g_hash_table_lookup(userdata, GINT_TO_POINTER(userID)));
+}
+
+int comparaNumeroPosts(USERS a, USERS b){
+    int result = 0;
+    int numeroPostsa = get_numberOfPosts(a);
+    int numeroPostsb = get_numberOfPosts(b);
+
+    if (numeroPostsa > numeroPostsb) {result = -1;}
+    else if (numeroPostsa < numeroPostsb) {result = 1;}
+    
+    return result;
+}
+
 // query 2
-LONG_list top_most_active(TAD_community com, int N);
- 
+LONG_list top_most_active(TAD_community com, int N){
+    LONG_list result = create_list(N);
+    GHashTable *usersht = get_hash_userss(com);
+    USERS user;
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    long userID;
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    for (i = 0; i < 10; i++) {
+        meses = g_array_index(anos,GArray *,i);
+        for (j = 0; j < 12; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = 0; d < 31; d++) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* respostashash = get_answers(dia);
+                GHashTable* questionshash = get_questions(dia);
+                g_hash_table_foreach(respostashash, incrementaNumbers, usersht);
+                g_hash_table_foreach(questionshash, incrementaNumbers, usersht);
+            }
+        }
+    }
+    GList * listaUsers = g_hash_table_get_values(usersht);
+    listaUsers = g_list_sort(listaUsers, comparaNumeroPosts);
+    for (ii = 0; ii < N; ii++) {
+        user = listaUsers->data;
+        userID = get_id(user);
+        set_list(result, ii, userID);
+        printf("%d = %lu\n", ii, get_list(result, ii));
+        listaUsers = listaUsers->next;
+    }
+    return result;
+}
+
+
+
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end);
 

@@ -120,7 +120,7 @@ void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
                 }
                 attribute = attribute->next;
             }
-            users = create_hashtable_users(id,nomec,aboutmec,reputation);
+            users = create_hashtable_users(id,nomec,aboutmec,reputation, 0);
             g_hash_table_insert(usersht, GSIZE_TO_POINTER(id), users);
         }
     print_element_namesu(usersht, cur_node->children);

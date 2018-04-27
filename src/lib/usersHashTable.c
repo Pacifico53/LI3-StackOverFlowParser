@@ -13,14 +13,16 @@ struct HASHTABLE_users {
     GString* name;
     GString* aboutme;
     int reputation;
+    int numberOfPosts;
 };
 
-USERS create_hashtable_users(long id, GString* name, GString* aboutme, int reputation) {
+USERS create_hashtable_users(long id, GString* name, GString* aboutme, int reputation, int numberPosts) {
   USERS u = malloc(sizeof(struct HASHTABLE_users));
   u->id = id;
   u->name = name;
   u->aboutme = aboutme;
   u->reputation = reputation;
+  u->numberOfPosts = numberPosts;  
   return u;
 }
 
@@ -36,9 +38,16 @@ GString* get_aboutme(USERS u) {
     return u->aboutme;
 }
 
-
 int get_reputation(USERS u) {
     return u->reputation;
+}
+
+int get_numberOfPosts(USERS u){
+    return u->numberOfPosts;
+}
+
+void increment_numberOfPosts(USERS u){
+    u->numberOfPosts++;
 }
 
 void free_usersHashTable(USERS u) {
