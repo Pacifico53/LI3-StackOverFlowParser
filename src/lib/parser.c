@@ -294,11 +294,13 @@ void parse_answers(GArray * calendario, char* path){
     //Get the root element node 
     root_element = xmlDocGetRootElement(doc);
     print_element_namesa(calendario, root_element);
+    printf("Parse questions...\n"); //SE POR ACASO ALGO ESTIVER A CORRER MAL NO PARSE PODE SER POR ISTO, POR ISSO BASTA ELIMAR A FUNCAO print_element_namesq QUE ESTA NA LINHA EM BAIXO E TIRAR A FUNCAO DE COMENTARIO, TAMBEM NA MAIN!!!
+    print_element_namesq(calendario, root_element);
     xmlFreeDoc(doc);
     xmlCleanupParser();
     printf("DONE!!!!!!\n");
 }
-
+/*
 void parse_questions(GArray * calendario, char* path){
     printf("--------------------------\nA iniciar parse questions...\n--------------------------\n");
     char* pathfile = malloc(128 * sizeof(char));
@@ -314,7 +316,7 @@ void parse_questions(GArray * calendario, char* path){
     xmlCleanupParser();
     printf("DONE!!!\n");
 }
-
+*/
 void parse_users(GHashTable *users, char* path){
     printf("--------------------------\nA iniciar parse users...\n--------------------------\n");
     char* pathfile = malloc(128 * sizeof(char));
@@ -348,7 +350,7 @@ void parse(TAD_community com, char* path){
     print_element_namesq(calendario, root_element);
     */
     parse_answers(calendario, path);
-    parse_questions(calendario, path);
+    //parse_questions(calendario, path); //TIRAR ESTA FUNCAO DE COMENTARIO CASO O PARSE ESTEJA A CORRER MAL!
     parse_users(usersht, path);
     
     set_array_anos(com, calendario);
