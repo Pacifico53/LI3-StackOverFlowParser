@@ -33,5 +33,8 @@ int main(int argc, char** argv){
     end = createDate(31, 3, 2013);
     char *tag = "package-management";
     questions_with_tag(new, tag, begin, end);
+    printf("\n----------------------------------------------------------------\n");
+    printf("\tTESTAR QUERY 5 COM ID = 15811\n");
+    get_user_info(new, 15811); 
     return 0;
 }

@@ -235,7 +235,63 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 }
 
 // query 5
-USER get_user_info(TAD_community com, long id);
+USER get_user_info(TAD_community com, long id){
+    long postsIDs[10];
+
+    GHashTable *usershash = get_hash_userss(com);
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+
+    USERS userTarget = g_hash_table_lookup(usershash, (gpointer)id);
+    GString *shortbio = get_aboutme(userTarget);
+    
+    long ownedUserID = 0;
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    
+    for (i = 9; i >= 0; i--) {
+        meses = g_array_index(anos,GArray *,i);
+        for (j = 11; j >= 0; j--) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = 30; d >= 0; d--) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* respostashash = get_answers(dia);
+                GHashTable* questionshash = get_questions(dia);
+                GHashTableIter iter;
+                gpointer key, value;
+                g_hash_table_iter_init(&iter, questionshash);
+                while (g_hash_table_iter_next (&iter, &key, &value) && ii < 10){
+                    ownedUserID = get_user_id(value);
+                    if (ownedUserID == id) {
+                        postsIDs[ii] = get_id_p(value);
+                        ii++;
+                    }
+                }
+                GHashTableIter iter2;
+                gpointer key2, value2;
+                g_hash_table_iter_init(&iter2, respostashash);
+                while (g_hash_table_iter_next (&iter2, &key2, &value2) && ii < 10){
+                    ownedUserID = get_user_id_a(value2);
+                    if (ownedUserID == id) {
+                        postsIDs[ii] = get_id_a(value2);
+                        ii++;
+                    }
+                }
+            }
+        }
+    }
+    printf("Bio -> \"%s\"\n", shortbio->str);
+    for (ii = 0; ii < 10; ii++) {
+        printf("%d -> %lu\n",ii+1, postsIDs[ii]);
+    }
+
+    USER result = create_user(shortbio->str, postsIDs); 
+    return result;
+}
 
 // query 6
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end);
