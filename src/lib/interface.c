@@ -162,11 +162,21 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     int i = 0;
     int j = 0;
     int d = 0;
+    int k = 0;
+    int l = 0;
+    int p = 0;
+    int o = 0;
     for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
         meses = g_array_index(anos, GArray *, i);
-        for (j = mesBegin - 1; j <= mesEnd - 1; j++) {
+        if(i == anoBegin -2009) k=mesBegin;
+        if(i == anoEnd -2009) l=mesEnd;
+        else{k=1;l=12;}
+        for (j = k - 1; j <= l - 1; j++) {
             dias = g_array_index(meses, GArray *,j);
-            for (d = diaBegin - 1; d <= diaEnd - 1 ; d++) {
+            if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+            if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+            else{p=1;o=31;}           
+            for (d = p - 1; d <= o - 1 ; d++) {
                 dia = g_array_index(dias,DIA,d);
                 GHashTable* respostashash = get_answers(dia);
                 GHashTable* questionshash = get_questions(dia);
@@ -203,11 +213,21 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     int j = 0;
     int d = 0;
     int ii = 0;
+    int k = 0;
+    int l = 0;
+    int p = 0;
+    int o = 0;
     for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
         meses = g_array_index(anos, GArray *, i);
-        for (j = mesBegin - 1; j <= mesEnd - 1; j++) {
+        if(i == anoBegin -2009) k=mesBegin;
+        if(i == anoEnd -2009) l=mesEnd;
+        else{k=1;l=12;}
+        for (j = k - 1; j <= l - 1; j++) {
             dias = g_array_index(meses, GArray *,j);
-            for (d = diaBegin - 1; d <= diaEnd - 1 ; d++) {
+            if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+            if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+            else{p=1;o=31;} 
+            for (d = p - 1; d <= o - 1 ; d++) {
                 dia = g_array_index(dias,DIA,d);
                 GHashTable* questionshash = get_questions(dia);
                 GHashTableIter iter;
@@ -293,8 +313,78 @@ USER get_user_info(TAD_community com, long id){
     return result;
 }
 
+int comparaScore(gconstpointer a, gconstpointer b){
+    int result = 0;
+    ANSWERS ua = a;
+    ANSWERS ub = b;
+    int numeroPostsa = get_score_a(ua);
+    int numeroPostsb = get_score_a(ub);
+
+    if (numeroPostsa > numeroPostsb) {result = -1;}
+    else if (numeroPostsa < numeroPostsb) {result = 1;}
+    
+    return result;
+}
+
 // query 6
-LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end);
+LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end);/*{
+    LONG_list result = create_list(N);
+
+    long respostaID = 0;
+    int size = 0;
+    int scoreresposta = 0;
+
+    int anoBegin = get_year(begin);
+    int mesBegin = get_month(begin);
+    int diaBegin = get_day(begin);
+
+    int anoEnd = get_year(end);
+    int mesEnd = get_month(end);
+    int diaEnd = get_day(end);
+    
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    GList *listaIDs;
+
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    int k = 0;
+    int l = 0;
+    int p = 0;
+    int o = 0;
+    for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        meses = g_array_index(anos, GArray *, i);
+        if(i == anoBegin -2009) k=mesBegin;
+        if(i == anoEnd -2009) l=mesEnd;
+        else{k=1;l=12;}
+        for (j = k - 1; j <= l - 1; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+            if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+            else{p=1;o=31;} 
+            for (d = p - 1; d <= o - 1 ; d++) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* respostashash = get_answers(dia);
+                respostaID = get_id_a(respostashash);
+                listaIDs = g_list_prepend(listaIDs, (gpointer)respostaID);
+            }
+        }
+    }
+    listaIDs = g_list_sort(listaIDs, comparaScore);
+    for (ii = 0; ii < N; ii++) {
+        respostaID = (long)listaIDs->data;
+        set_list(result, ii, respostaID);
+        printf("%d = %lu\n", ii+1, get_list(result, ii));
+        listaIDs = listaIDs->next;
+    }
+    return result;
+}
+*/
+
 
 // query 7
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end);
