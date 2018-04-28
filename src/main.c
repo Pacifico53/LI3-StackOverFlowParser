@@ -12,13 +12,13 @@ int main(int argc, char** argv){
     tpf = clock()- tpf;
     printf("Demorou %f segundos a ler\n", ((float)tpf)/CLOCKS_PER_SEC);
    
-    printf("*************************TESTES DE QUERIES********************\n\n");
+    printf("*************************TESTES DE QUERIES(DUMP UBUNTU)********************\n\n");
     printf("----------------------------------------------------------------\n");
-    printf("\tTESTAR QUERY 1 COM ID = 15136 e ID = 187273\n\n");
-    printf("-->ID = 15136:\n");
-    info_from_post(new, 15136); // 15137  15136
+    printf("\tTESTAR QUERY 1 COM ID = 801049 e ID = 796430\n\n");
+    printf("-->ID = 801049:\n");
+    info_from_post(new, 801049); // 15137  15136
     printf("\n-->ID = 187273:\n");
-    info_from_post(new, 187273); // 15137  15136
+    info_from_post(new, 796430); // 15137  15136
     printf("\n----------------------------------------------------------------\n");
     printf("\tTESTAR QUERY 2 COM N = 10\n");
     top_most_active(new, 10);
@@ -27,5 +27,11 @@ int main(int argc, char** argv){
     Date begin = createDate(1, 1, 2014);
     Date end = createDate(31, 12, 2014);
     total_posts(new, begin, end);
+    printf("\n----------------------------------------------------------------\n");
+    printf("\tTESTAR QUERY 4 COM DATA INICIAL = 2013-03-01 E DATA FINAL = 2013-03-31 E TAG \"package-management\"\n");
+    begin = createDate(1, 3, 2013);
+    end = createDate(31, 3, 2013);
+    char *tag = "package-management";
+    questions_with_tag(new, tag, begin, end);
     return 0;
 }

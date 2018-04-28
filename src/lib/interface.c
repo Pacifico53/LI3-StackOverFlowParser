@@ -87,10 +87,12 @@ void incrementaNumbersQ(gpointer key, gpointer value, gpointer userdata){
     increment_numberOfPosts(g_hash_table_lookup(userdata, GINT_TO_POINTER(userID)));
 }
 
-int comparaNumeroPosts(USERS a, USERS b){
+int comparaNumeroPosts(gconstpointer a, gconstpointer b){
     int result = 0;
-    int numeroPostsa = get_numberOfPosts(a);
-    int numeroPostsb = get_numberOfPosts(b);
+    USERS ua = a;
+    USERS ub = b;
+    int numeroPostsa = get_numberOfPosts(ua);
+    int numeroPostsb = get_numberOfPosts(ub);
 
     if (numeroPostsa > numeroPostsb) {result = -1;}
     else if (numeroPostsa < numeroPostsb) {result = 1;}
@@ -179,7 +181,58 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 }
 
 // query 4
-LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end);
+LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
+    long questionID = 0;
+    int size = 0;
+
+    int anoBegin = get_year(begin);
+    int mesBegin = get_month(begin);
+    int diaBegin = get_day(begin);
+
+    int anoEnd = get_year(end);
+    int mesEnd = get_month(end);
+    int diaEnd = get_day(end);
+    
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    GList *listaIDs;
+
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        meses = g_array_index(anos, GArray *, i);
+        for (j = mesBegin - 1; j <= mesEnd - 1; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = diaBegin - 1; d <= diaEnd - 1 ; d++) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* questionshash = get_questions(dia);
+                GHashTableIter iter;
+                gpointer key, value;
+                g_hash_table_iter_init(&iter, questionshash);
+                while (g_hash_table_iter_next (&iter, &key, &value)){
+                    GString *tagsPost = get_tags(value);
+                    if (strstr(tagsPost->str, tag) != NULL) {
+                        size++;
+                        questionID = get_id_p(value);
+                        listaIDs = g_list_prepend(listaIDs, (gpointer)questionID);
+                    }
+                }
+            }
+        }
+    }
+    LONG_list result = create_list(size);
+    for (ii = 0; ii < size; ii++) {
+        questionID = (long)listaIDs->data;
+        set_list(result, ii, questionID);
+        printf("%d -> %lu\n",ii+1, get_list(result, ii));
+        listaIDs = listaIDs->next;
+    }
+    return result;
+}
 
 // query 5
 USER get_user_info(TAD_community com, long id);
