@@ -22,6 +22,8 @@ int main(int argc, char** argv){
     printf("\n----------------------------------------------------------------\n");
     printf("\tTESTAR QUERY 2 COM N = 10\n");
     top_most_active(new, 10);
+    printf("\n\tTESTAR QUERY 2 COM N = 25\n");
+    top_most_active(new, 25);
     printf("\n----------------------------------------------------------------\n");
     printf("\tTESTAR QUERY 3 COM DATA INICIAL = 2014-01-01 E DATA FINAL = 2014-12-31\n");
     Date begin = createDate(1, 1, 2014);
@@ -36,9 +38,10 @@ int main(int argc, char** argv){
     printf("\n----------------------------------------------------------------\n");
     printf("\tTESTAR QUERY 5 COM ID = 15811\n");
     get_user_info(new, 15811); 
+    printf("\n----------------------------------------------------------------\n");
     printf("\tTESTAR QUERY 6 COM N = \n");
     begin = createDate(1,1,2013);
     end = createDate(31,3,2013);
-    most_voted_answers(new,10, begin,end);
+    //most_voted_answers(new,10, begin,end);
     return 0;
 }

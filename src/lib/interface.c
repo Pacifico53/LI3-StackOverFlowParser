@@ -133,9 +133,10 @@ LONG_list top_most_active(TAD_community com, int N){
         user = listaUsers->data;
         userID = get_id(user);
         set_list(result, ii, userID);
-        printf("%d = %lu\n", ii+1, get_list(result, ii));
+        printf("%d = %lu\t", ii+1, get_list(result, ii));
         listaUsers = listaUsers->next;
     }
+    printf("\n");
     return result;
 }
 
@@ -248,9 +249,10 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     for (ii = 0; ii < size; ii++) {
         questionID = (long)listaIDs->data;
         set_list(result, ii, questionID);
-        printf("%d -> %lu\n",ii+1, get_list(result, ii));
+        printf("%d -> %lu\t",ii+1, get_list(result, ii));
         listaIDs = listaIDs->next;
     }
+    printf("\n");
     return result;
 }
 
@@ -306,8 +308,9 @@ USER get_user_info(TAD_community com, long id){
     }
     printf("Bio -> \"%s\"\n", shortbio->str);
     for (ii = 0; ii < 10; ii++) {
-        printf("%d -> %lu\n",ii+1, postsIDs[ii]);
+        printf("%d -> %lu\t",ii+1, postsIDs[ii]);
     }
+    printf("\n");
 
     USER result = create_user(shortbio->str, postsIDs); 
     return result;
