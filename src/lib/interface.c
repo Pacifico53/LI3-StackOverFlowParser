@@ -507,7 +507,93 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 }
 
 // query 9
-LONG_list both_participated(TAD_community com, long id1, long id2, int N);
+LONG_list both_participated(TAD_community com, long id1, long id2, int N){
+    LONG_list result = create_list(N);
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    GList *listaAnswers1 = NULL;
+    GList *listaAnswers2 = NULL; 
+    GList *listaQuestions1 = NULL;
+    GList *listaQuestions2 = NULL;
+    long questionID = 0;
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    int jj = 0;
+    for (i = 9; i >= 0; i--) {
+        meses = g_array_index(anos,GArray *,i);
+        for (j = 11; j >= 0; j--) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = 30; d >= 0; d--) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* questionshash = get_questions(dia);
+                GHashTable* answershash = get_answers(dia);
+
+                GHashTableIter iter;
+                gpointer key, value;
+                g_hash_table_iter_init(&iter, answershash);
+                while (g_hash_table_iter_next(&iter, &key, &value)){
+                    if(get_user_id_a(value) == id1){
+                        listaAnswers1 = g_list_prepend(listaAnswers1, (gpointer)get_parent_id(value));
+                    }
+                    if(get_user_id_a(value) == id2){
+                        listaAnswers2 = g_list_prepend(listaAnswers2, (gpointer)get_parent_id(value));
+                    }
+                }
+                
+                GHashTableIter iter2;
+                gpointer key2, value2;
+                g_hash_table_iter_init(&iter2, questionshash);
+                while (g_hash_table_iter_next(&iter2, &key2, &value2)){
+                    if(get_user_id(value2) == id1){
+                        listaQuestions1 = g_list_prepend(listaQuestions1, (gpointer)get_id_p(value2));
+                    }
+                    if(get_user_id(value2) == id2){
+                        listaQuestions2 = g_list_prepend(listaQuestions2, (gpointer)get_id_p(value2));
+                    }
+                }
+            }
+        }
+    }
+    
+    for (ii = 0; ii < g_list_length(listaQuestions1) && jj < N; ii++) {
+        questionID = (long)listaQuestions1->data;
+        if (g_list_find(listaAnswers2, (gpointer)questionID)) {
+            set_list(result, jj, questionID);
+            jj++;
+        }
+        listaQuestions1 = listaQuestions1->next;
+    }
+
+    for (ii = 0; ii < g_list_length(listaQuestions2) && jj < N; ii++) {
+        questionID = (long)listaQuestions2->data;
+        if (g_list_find(listaAnswers1, (gpointer)questionID)) {
+            set_list(result, jj, questionID);
+            jj++;
+        }
+        listaQuestions2 = listaQuestions2->next;
+    } 
+    
+    if (jj<N) {
+        LONG_list smallerlist = create_list(jj);
+        for (ii = 0; ii < jj; ii++) {
+            set_list(smallerlist, ii, get_list(result, ii));
+            printf("%d = %lu\t", ii+1, get_list(smallerlist, ii));
+        }
+        printf("\n");
+        return smallerlist;
+    }
+
+    for (ii = 0; ii < N; ii++) {
+        printf("%d = %lu\t", ii+1, get_list(result, ii));
+    }
+    printf("\n");
+    return result;
+}
+
 
 // query 10
 long better_answer(TAD_community com, long id);

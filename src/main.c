@@ -58,6 +58,11 @@ int main(int argc, char** argv){
     printf("======>TESTAR QUERY 8 COM WORD = \"kde\" E N = 10 \n");
     contains_word(new,"kde", 10);
     printf("\n======>TESTAR QUERY 8 COM WORD = \"glib\" E N = 10 \n");
-    contains_word(new,"glib", 10);
+    contains_word(new,"glib", 10); 
+    printf("\n-----------------------------------------------------------------------\n");
+    printf("======>TESTAR QUERY 9 COM ID1 = 87 E ID2 = 5691 E N = 10\n");
+    both_participated(new, 87, 5691, 10);
+    printf("\n======>TESTAR QUERY 9 COM ID1 = 253 E ID2 = 455 E N = 5\n");
+    both_participated(new, 253, 455, 5);
     return 0;
 }
