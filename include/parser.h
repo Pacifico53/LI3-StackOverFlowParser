@@ -13,6 +13,7 @@
 #include "anosArray.h"
 #include "mesesArray.h"
 #include "diaNodo.h"
+#include "tags.h"
 #include "tad_community.h"
 #include "interface.h"
 
@@ -30,11 +31,15 @@ void print_element_namesq(GArray *calendario, xmlNode * a_node);
 
 void print_element_namesa(GArray * calendario, xmlNode * a_node);
 
+void print_element_tags(GHashTable *tagsht, xmlNode * a_node);
+
 void parse_answers(GArray * calendario, char* path);
 
 void parse_questions(GArray * calendario, char* path);
 
 void parse_users(GHashTable * usersht, char* path);
+
+void parse_tags(GHashTable * tagsht, char* path);
 
 void parse(TAD_community com, char* path);
 

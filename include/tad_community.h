@@ -16,4 +16,8 @@ void set_ht_users(TAD_community s, GHashTable *usersht);
 
 void free_TCD_community(TAD_community s);
 
+void set_ht_tags(TAD_community s, GHashTable *tagssht);
+
+GHashTable* get_hash_tags(TAD_community s);
+
 #endif

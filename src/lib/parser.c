@@ -87,8 +87,6 @@ GArray * insert_hastable_questions_calendario(GArray * calendario, POSTS qq, int
 void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* value = NULL;
-    //char* nomec;
-    //char* aboutmec;
     long id;
     int reputation;
     USERS users;
@@ -124,6 +122,41 @@ void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
             g_hash_table_insert(usersht, GSIZE_TO_POINTER(id), users);
         }
     print_element_namesu(usersht, cur_node->children);
+    }
+}
+
+void print_element_tags(GHashTable * tagsht, xmlNode * a_node){
+    xmlNode *cur_node = NULL;
+    xmlChar* value = NULL;
+    long id;
+    int count;
+    TAG uma_tag;
+    for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
+        if (cur_node->type == XML_ELEMENT_NODE) {
+            xmlAttr* attribute = cur_node->properties;
+            GString *name = g_string_new(NULL);
+            while (attribute && attribute->name && attribute->children) {
+                if(!strcmp((char *)attribute->name,"Count")){
+                    value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
+                    count = atoi((char *)value);
+                    xmlFree(value);
+                }
+                if(!strcmp((char *)attribute->name,"Id")){
+                    value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
+                    id = atol((char *)value);
+                    xmlFree(value);
+                }
+                if(!strcmp((char *)attribute->name,"TagName")){
+                    value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
+                    name = g_string_assign(name, (char *)value);
+                    xmlFree(value);
+                }
+                attribute = attribute->next;
+            }
+            uma_tag = create_hashtable_tag(id, name, count);
+            g_hash_table_insert(tagsht, GSIZE_TO_POINTER(id), uma_tag);
+        }
+    print_element_tags(tagsht, cur_node->children);
     }
 }
 
@@ -333,9 +366,27 @@ void parse_users(GHashTable *users, char* path){
     printf("DONE!!!\n");
 }
 
+void parse_tags(GHashTable *tagsht, char* path){
+    printf("--------------------------\nA iniciar parse tags...\n--------------------------\n");
+    char* pathfile = malloc(128 * sizeof(char));
+    strcpy(pathfile, path);
+    xmlDoc *doc = NULL;
+    xmlNode *root_element = NULL;
+    strcat(pathfile, "/Tags.xml");
+    doc = xmlReadFile(pathfile, NULL, 0);
+    //Get the root element node 
+    root_element = xmlDocGetRootElement(doc);
+    print_element_tags(tagsht, root_element); 
+    xmlFreeDoc(doc);
+    xmlCleanupParser();
+    printf("DONE!!!\n");
+}
+
 void parse(TAD_community com, char* path){
     GArray * calendario = init_calendario();
     GHashTable * usersht = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
+    GHashTable * tagsht = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
+    
     //xmlDoc *doc = NULL;
     //xmlNode *root_element = NULL;
   
@@ -352,11 +403,10 @@ void parse(TAD_community com, char* path){
     parse_answers(calendario, path);
     //parse_questions(calendario, path); //TIRAR ESTA FUNCAO DE COMENTARIO CASO O PARSE ESTEJA A CORRER MAL!
     parse_users(usersht, path);
-    
+    parse_tags(tagsht, path);
+
     set_array_anos(com, calendario);
     set_ht_users(com, usersht);
-    
-    //xmlFreeDoc(doc);       // free document
-    //xmlCleanupParser();    // Free globals
+    set_ht_tags(com, tagsht);
 }
 

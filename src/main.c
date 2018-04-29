@@ -69,5 +69,6 @@ int main(int argc, char** argv){
     better_answer(new, 30334);
     printf("\n======>TESTAR QUERY 10 COM ID = 5942\n");
     better_answer(new, 5942);
+    //most_used_best_rep(new, 3,begin,end);
     return 0;
 }

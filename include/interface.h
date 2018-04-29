@@ -4,6 +4,7 @@
 #include "user.h"
 #include "answersHashTable.h"
 #include "postHashTable.h"
+#include "tags.h"
 #include "usersHashTable.h"
 #include "tad_community.h"
 

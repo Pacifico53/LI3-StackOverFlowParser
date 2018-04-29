@@ -8,6 +8,7 @@
 #include "tad_community.h"
 #include "anosArray.h"
 #include "diaNodo.h"
+#include "tags.h"
 #include "parser.h"
 #include <glib.h>
 
@@ -670,11 +671,11 @@ long better_answer(TAD_community com, long id){
             }
         }
     }
-
-    listaAnswersdaQuestion = g_list_sort_with_data(listaAnswersdaQuestion, comparaBestQuestion, usersht);
-    
-    result = get_id_a(listaAnswersdaQuestion->data);
-    printf("Best answer = %lu\n", result);
+    if(g_list_length(listaAnswersdaQuestion)>0){
+        listaAnswersdaQuestion = g_list_sort_with_data(listaAnswersdaQuestion, comparaBestQuestion, usersht);
+        result = get_id_a(listaAnswersdaQuestion->data);
+        printf("Best answer = %lu\n", result);
+    }else printf("Nao encontrei a answer.\n");
     return result;
 }
 
