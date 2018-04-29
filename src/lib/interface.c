@@ -89,8 +89,8 @@ void incrementaNumbersQ(gpointer key, gpointer value, gpointer userdata){
 
 int comparaNumeroPosts(gconstpointer a, gconstpointer b){
     int result = 0;
-    USERS ua = a;
-    USERS ub = b;
+    USERS ua = (gpointer)a;
+    USERS ub = (gpointer)b;
     int numeroPostsa = get_numberOfPosts(ua);
     int numeroPostsb = get_numberOfPosts(ub);
 
@@ -318,8 +318,8 @@ USER get_user_info(TAD_community com, long id){
 
 int comparaScore(gconstpointer a, gconstpointer b){
     int result = 0;
-    ANSWERS ua = a;
-    ANSWERS ub = b;
+    ANSWERS ua = (gpointer)a;
+    ANSWERS ub = (gpointer)b;
     int numeroPostsa = get_score_a(ua);
     int numeroPostsb = get_score_a(ub);
 
