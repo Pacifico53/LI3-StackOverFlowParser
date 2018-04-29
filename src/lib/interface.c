@@ -606,9 +606,77 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     return result;
 }
 
+int comparaBestQuestion(gconstpointer a, gconstpointer b, gpointer user_data){
+    int result = 0;
+    ANSWERS aa = (gpointer)a;
+    ANSWERS ab = (gpointer)b;
+    long user1ID = get_user_id_a(aa);
+    long user2ID = get_user_id_a(ab);
+
+    USERS u1 = g_hash_table_lookup(user_data, (gpointer)user1ID);
+    USERS u2 = g_hash_table_lookup(user_data, (gpointer)user2ID);
+    
+    int userRep1 = get_reputation(u1);
+    int userRep2 = get_reputation(u2);
+    int score1 = get_score_a(aa);
+    int score2 = get_score_a(ab);
+    int commentCount1 = get_comment_count_a(aa);
+    int commentCount2 = get_comment_count_a(ab);
+
+    int scoreFinal1 = (score1 * 0.65) + (userRep1 * 0.25) + (commentCount1 * 0.1);
+    int scoreFinal2 = (score2 * 0.65) + (userRep2 * 0.25) + (commentCount2 * 0.1);
+    
+    if (scoreFinal1 > scoreFinal2) {
+        result = -1;
+    }else if (scoreFinal1 < scoreFinal2) {
+            result = 1;
+    }
+
+    return result;
+}
 
 // query 10
-long better_answer(TAD_community com, long id);
+long better_answer(TAD_community com, long id){
+    long result = 0;
+    GHashTable *usersht = get_hash_userss(com);
+    
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    GList *listaAnswersdaQuestion = NULL;
+    long parentID = 0;
+
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    for (i = 0; i < 10; i++) {
+        meses = g_array_index(anos,GArray *,i);
+        for (j = 0; j < 12; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = 0; d < 31; d++) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* answershash = get_answers(dia);
+            
+                GHashTableIter iter;
+                gpointer key, value;
+                g_hash_table_iter_init(&iter, answershash);
+                while (g_hash_table_iter_next(&iter, &key, &value)){
+                    parentID = get_parent_id(value);
+                    if (parentID == id) {
+                        listaAnswersdaQuestion = g_list_prepend(listaAnswersdaQuestion, value);
+                    }
+                }
+            }
+        }
+    }
+
+    listaAnswersdaQuestion = g_list_sort_with_data(listaAnswersdaQuestion, comparaBestQuestion, usersht);
+    
+    result = get_id_a(listaAnswersdaQuestion->data);
+    printf("Best answer = %lu\n", result);
+    return result;
+}
 
 // query 11
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);

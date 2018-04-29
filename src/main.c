@@ -64,5 +64,10 @@ int main(int argc, char** argv){
     both_participated(new, 87, 5691, 10);
     printf("\n======>TESTAR QUERY 9 COM ID1 = 253 E ID2 = 455 E N = 5\n");
     both_participated(new, 253, 455, 5);
+    printf("\n-----------------------------------------------------------------------\n");
+    printf("======>TESTAR QUERY 10 COM ID = 30334\n");
+    better_answer(new, 30334);
+    printf("\n======>TESTAR QUERY 10 COM ID = 5942\n");
+    better_answer(new, 5942);
     return 0;
 }
