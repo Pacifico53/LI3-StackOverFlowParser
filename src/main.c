@@ -54,5 +54,10 @@ int main(int argc, char** argv){
     begin = createDate(1,8,2014);
     end = createDate(11,8,2014);
     most_answered_questions(new,10, begin,end);
+    printf("\n-----------------------------------------------------------------------\n");
+    printf("======>TESTAR QUERY 8 COM WORD = \"kde\" E N = 10 \n");
+    contains_word(new,"kde", 10);
+    printf("\n======>TESTAR QUERY 8 COM WORD = \"glib\" E N = 10 \n");
+    contains_word(new,"glib", 10);
     return 0;
 }

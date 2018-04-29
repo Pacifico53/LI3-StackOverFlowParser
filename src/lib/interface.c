@@ -469,7 +469,42 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 }
 
 // query 8
-LONG_list contains_word(TAD_community com, char* word, int N);
+LONG_list contains_word(TAD_community com, char* word, int N){
+    LONG_list result = create_list(N);
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    for (i = 9; i >= 0; i--) {
+        meses = g_array_index(anos,GArray *,i);
+        for (j = 11; j >= 0; j--) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = 30; d >= 0; d--) {
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* questionshash = get_questions(dia);
+                GHashTableIter iter;
+                gpointer key, value;
+                g_hash_table_iter_init(&iter, questionshash);
+                while (g_hash_table_iter_next(&iter, &key, &value) && ii < N){
+                    GString *titlePost = get_titulo(value);
+                    if (strstr(titlePost->str, word) != NULL) {
+                        set_list(result, ii, get_id_p(value));
+                        ii++;
+                    }
+                }
+            }
+        }
+    }
+    for (ii = 0; ii < N; ii++) {
+        printf("%d = %lu\t", ii+1, get_list(result, ii));
+    }
+    printf("\n");
+    return result;
+}
 
 // query 9
 LONG_list both_participated(TAD_community com, long id1, long id2, int N);
