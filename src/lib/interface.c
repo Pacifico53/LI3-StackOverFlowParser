@@ -499,6 +499,18 @@ LONG_list contains_word(TAD_community com, char* word, int N){
             }
         }
     }
+    
+    int size = ii;
+    if (size<N) {
+        LONG_list smallerlist = create_list(size);
+        for (ii = 0; ii < size; ii++) {
+            set_list(smallerlist, ii, get_list(result, ii));
+            printf("%d = %lu\t", ii+1, get_list(smallerlist, ii));
+        }
+        printf("\n");
+        return smallerlist;
+    }
+
     for (ii = 0; ii < N; ii++) {
         printf("%d = %lu\t", ii+1, get_list(result, ii));
     }
@@ -558,7 +570,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
             }
         }
     }
-    
+   
     for (ii = 0; ii < g_list_length(listaQuestions1) && jj < N; ii++) {
         questionID = (long)listaQuestions1->data;
         if (g_list_find(listaAnswers2, (gpointer)questionID)) {
