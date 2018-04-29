@@ -392,9 +392,81 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
     return result;
 }
 
+int comparaNumeroAnswers(gconstpointer a, gconstpointer b){
+    int result = 0;
+    POSTS aa = (gpointer)a;
+    POSTS ab = (gpointer)b;
+    int nAnswersa = get_numeroRespostas(aa);
+    int nAnswersb = get_numeroRespostas(ab);
+
+    if (nAnswersa > nAnswersb) {result = -1;}
+    else if (nAnswersa < nAnswersb) {result = 1;}
+    
+    return result;
+}
 
 // query 7
-LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end);
+LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
+    LONG_list result = create_list(N);
+
+    int anoBegin = get_year(begin);
+    int mesBegin = get_month(begin);
+    int diaBegin = get_day(begin);
+
+    int anoEnd = get_year(end);
+    int mesEnd = get_month(end);
+    int diaEnd = get_day(end);
+    
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    GList *listaQuestions = NULL;
+    GList *questionsdoDia = NULL;
+    long questionID = 0;
+
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    int k = 0;
+    int l = 0;
+    int p = 0;
+    int o = 0;
+    int jj = 0;
+    int sizeDia = 0;
+    for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        meses = g_array_index(anos, GArray *, i);
+        if(i == anoBegin -2009) k=mesBegin;
+        if(i == anoEnd -2009) l=mesEnd;
+        else{k=1;l=12;}
+        for (j = k - 1; j <= l - 1; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+            if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+            else{p=1;o=31;} 
+            for (d = p - 1; d <= o - 1 ; d++) { 
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* questionshash = get_questions(dia);
+                questionsdoDia = g_hash_table_get_values(questionshash);
+                sizeDia = g_list_length(questionsdoDia);
+                for (jj = 0; jj < sizeDia; jj++) {
+                    listaQuestions = g_list_prepend(listaQuestions, questionsdoDia->data);
+                    questionsdoDia = questionsdoDia->next;
+                }
+            }
+        }
+    }
+    listaQuestions = g_list_sort(listaQuestions, comparaNumeroAnswers);
+    for (ii = 0; ii < N; ii++) {
+        questionID = get_id_a(listaQuestions->data);
+        set_list(result, ii, questionID);
+        printf("%d = %lu\t", ii+1, get_list(result, ii));
+        listaQuestions = listaQuestions->next;
+    }
+    printf("\n");
+    return result;
+}
 
 // query 8
 LONG_list contains_word(TAD_community com, char* word, int N);

@@ -49,5 +49,10 @@ int main(int argc, char** argv){
     begin = createDate(1,5,2013);
     end = createDate(6,5,2013);
     most_voted_answers(new,50, begin,end);
+    printf("\n-----------------------------------------------------------------------\n");
+    printf("======>TESTAR QUERY 7 COM DATA INICIAL = 2014-08-1 E DATA FINAL = 2014-08-11 E N = 10 \n");
+    begin = createDate(1,8,2014);
+    end = createDate(11,8,2014);
+    most_answered_questions(new,10, begin,end);
     return 0;
 }
