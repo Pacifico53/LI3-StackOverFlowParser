@@ -679,7 +679,155 @@ long better_answer(TAD_community com, long id){
     return result;
 }
 
+int comparaReputation(gconstpointer a, gconstpointer b){
+    int result = 0;
+    USERS ua = (gpointer)a;
+    USERS ub = (gpointer)b;
+    int repA = get_reputation(ua);
+    int repB = get_reputation(ub);
+
+    if (repA > repB) {
+        result = -1;
+    }else if (repA < repB) {
+            result = 1;
+          }
+    return result;
+}
+
+void auxIncrementaTags(gpointer key, gpointer value, gpointer userdata){
+    GString *gtag = g_string_new(userdata);
+    GString *tag = g_string_erase(gtag, 0, 1);
+    if (!strcmp(get_tagName(value)->str, tag->str)) {
+        increment_tagCount(value);
+    }
+}
+
+void incrementaTags(POSTS ppp, GHashTable *tagsht){
+    GList *listaTags = get_listaTags(ppp);
+    int listaTagsSize = g_list_length(listaTags);
+    int i = 0;
+    for (i = 0; i < listaTagsSize; i++) {
+        g_hash_table_foreach(tagsht, auxIncrementaTags, listaTags->data);
+        listaTags = listaTags->next;
+    }
+}
+
+int comparaTagCount(gconstpointer a, gconstpointer b){
+    int result = 0;
+    int countA = get_tagCount((gpointer)a);
+    int countB = get_tagCount((gpointer)b);
+    if (countA > countB) {
+        result = -1;
+    }else if (countA < countB) {
+            result = 1;  
+          }
+    
+    return result;
+}
+
 // query 11
-LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);
+LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
+    LONG_list result = create_list(N);
+
+    int anoBegin = get_year(begin);
+    int mesBegin = get_month(begin);
+    int diaBegin = get_day(begin);
+
+    int anoEnd = get_year(end);
+    int mesEnd = get_month(end);
+    int diaEnd = get_day(end);
+    
+    GHashTable *tagsht = get_hash_tags(com);
+    GHashTable *usersht = get_hash_userss(com);
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    GList *questionsdoDia = NULL;
+    GList *listaQuestions = NULL;
+    
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    int ii = 0;
+    int k = 0;
+    int l = 0;
+    int p = 0;
+    int o = 0;
+    int jj = 0;
+    int sizeDia = 0;
+    for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        meses = g_array_index(anos, GArray *, i);
+        if(i == anoBegin -2009) k=mesBegin;
+        if(i == anoEnd -2009) l=mesEnd;
+        else{k=1;l=12;}
+        for (j = k - 1; j <= l - 1; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+            if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+            else{p=1;o=31;} 
+            for (d = p - 1; d <= o - 1 ; d++) { 
+                dia = g_array_index(dias,DIA,d);
+                GHashTable* questionshash = get_questions(dia);
+                questionsdoDia = g_hash_table_get_values(questionshash);
+                sizeDia = g_list_length(questionsdoDia);
+                for (jj = 0; jj < sizeDia; jj++) {
+                    listaQuestions = g_list_prepend(listaQuestions, questionsdoDia->data);
+                    questionsdoDia = questionsdoDia->next;
+                }
+            }
+        }
+    }
+    
+    long userID = 0;
+    USERS uuu;
+    GList *listaBestUsers = NULL;
+    GList *listaNBestUsers = NULL;
+    GList *nPosts = NULL;
+    GList *listaQuestionsCopy = listaQuestions;
+
+    int listaQuestionsSize = g_list_length(listaQuestions);
+    for (ii = 0; ii < listaQuestionsSize; ii++) {
+        userID = get_user_id(listaQuestions->data);
+        uuu = g_hash_table_lookup(usersht, (gpointer)userID);
+        listaBestUsers = g_list_prepend(listaBestUsers, uuu);
+        listaQuestions = listaQuestions->next;
+    }
+
+    listaBestUsers = g_list_sort(listaBestUsers, comparaReputation);
+    for (ii = 0; ii < N; ii++) {
+        listaNBestUsers = g_list_prepend(listaNBestUsers, listaBestUsers->data);
+        listaBestUsers = listaBestUsers->next;
+    }
+
+    for (ii = 0; ii < listaQuestionsSize; ii++) {
+        userID = get_user_id(listaQuestionsCopy->data);
+        uuu = g_hash_table_lookup(usersht, (gpointer)userID);
+        if (g_list_find(listaNBestUsers, uuu)) {
+            nPosts = g_list_prepend(nPosts, listaQuestionsCopy->data);
+        }
+        listaQuestionsCopy = listaQuestionsCopy->next;
+    }
+    POSTS ppp;
+    int nPostsSize = g_list_length(nPosts);
+
+    for (ii = 0; ii < nPostsSize; ii++) {
+        ppp = nPosts->data;
+        incrementaTags(ppp, tagsht);
+        nPosts = nPosts->next;
+    }
+    
+    GList *allTags = g_hash_table_get_values(tagsht);
+    allTags = g_list_sort(allTags, comparaTagCount);
+    long tagID = 0;
+    for (ii = 0; ii < N; ii++) {
+        tagID = get_id_tag(allTags->data);
+        set_list(result, ii, tagID);
+        printf("%d = %lu\t", ii+1, get_list(result, ii));
+        allTags = allTags->next;
+    }
+    printf("\n");
+    return result;   
+}
 
 TAD_community clean(TAD_community com);

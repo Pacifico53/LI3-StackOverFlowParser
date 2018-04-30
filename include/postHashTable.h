@@ -19,6 +19,8 @@ GString* get_tags(POSTS p);
 
 int get_numeroRespostas(POSTS p);
 
+GList *get_listaTags(POSTS p);
+
 void free_postHashTable(POSTS p);
 
 #endif

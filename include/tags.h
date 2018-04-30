@@ -10,6 +10,8 @@ GString* get_tagName(TAG t);
 
 int get_tagCount(TAG t);
 
+void increment_tagCount(TAG t);
+
 void free_tagsHashTable(TAG t);
 
 #endif

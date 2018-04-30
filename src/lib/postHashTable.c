@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "postHashTable.h"
 #include "common.h"
-
+#include <stdio.h>
 /*struct HASTABLE_posts
  * Estrutura da hastable de posts PERGUNTAS.
  *
@@ -57,6 +57,17 @@ GString* get_tags(POSTS p){
 
 int get_numeroRespostas(POSTS p){
 	return p->numeroRespostas;
+}
+
+GList *get_listaTags(POSTS p){
+    GList *result = NULL;
+    char *tags = get_tags(p)->str;
+    char *token = strtok(tags, ">");
+    while(token) {
+        result = g_list_prepend(result, token);
+        token = strtok(NULL, ">");
+    }
+    return result;
 }
 
 void free_postHashTable(POSTS p){

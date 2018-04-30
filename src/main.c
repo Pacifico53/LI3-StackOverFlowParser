@@ -69,6 +69,14 @@ int main(int argc, char** argv){
     better_answer(new, 30334);
     printf("\n======>TESTAR QUERY 10 COM ID = 5942\n");
     better_answer(new, 5942);
-    //most_used_best_rep(new, 3,begin,end);
+    printf("\n-----------------------------------------------------------------------\n");
+    printf("======>TESTAR QUERY 11 COM DATA INICIAL = 2013-11-01 E DATA FINAL = 2013-11-30 E N = 5\n");
+    begin = createDate(1,11,2013);
+    end = createDate(30,11,2013);
+    most_used_best_rep(new, 5,begin,end);
+    printf("\n======>TESTAR QUERY 11 COM DATA INICIAL = 2014-1-1 E DATA FINAL = 2014-12-31 E N = 10\n");
+    begin = createDate(1,1,2014);
+    end = createDate(31,12,2014);
+    most_used_best_rep(new, 10,begin,end);
     return 0;
 }

@@ -33,6 +33,10 @@ int get_tagCount(TAG t) {
     return t->count;
 }
 
+void increment_tagCount(TAG t){
+    t->count++;
+}
+
 void free_tagsHashTable(TAG t) {
     free(t->tagname);
     free(t);

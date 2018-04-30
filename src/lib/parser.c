@@ -129,18 +129,12 @@ void print_element_tags(GHashTable * tagsht, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* value = NULL;
     long id;
-    int count;
     TAG uma_tag;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
             xmlAttr* attribute = cur_node->properties;
             GString *name = g_string_new(NULL);
             while (attribute && attribute->name && attribute->children) {
-                if(!strcmp((char *)attribute->name,"Count")){
-                    value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
-                    count = atoi((char *)value);
-                    xmlFree(value);
-                }
                 if(!strcmp((char *)attribute->name,"Id")){
                     value = xmlNodeListGetString(cur_node->doc, attribute->children, 1);
                     id = atol((char *)value);
@@ -153,7 +147,7 @@ void print_element_tags(GHashTable * tagsht, xmlNode * a_node){
                 }
                 attribute = attribute->next;
             }
-            uma_tag = create_hashtable_tag(id, name, count);
+            uma_tag = create_hashtable_tag(id, name, 0);
             g_hash_table_insert(tagsht, GSIZE_TO_POINTER(id), uma_tag);
         }
     print_element_tags(tagsht, cur_node->children);
