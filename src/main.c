@@ -78,5 +78,8 @@ int main(int argc, char** argv){
     begin = createDate(1,1,2014);
     end = createDate(31,12,2014);
     most_used_best_rep(new, 10,begin,end);
+    printf("\n-----------------------------------------------------------------------\n");
+    printf("======>A DAR CLEAN A ESTRUTURA TODA\n");
+    clean(new);
     return 0;
 }

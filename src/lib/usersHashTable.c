@@ -51,7 +51,7 @@ void increment_numberOfPosts(USERS u){
 }
 
 void free_usersHashTable(USERS u) {
-    free(u->name);
-    free(u->aboutme);
+    g_string_free(u->name, TRUE);
+    g_string_free(u->aboutme, TRUE);
     free(u);
 }

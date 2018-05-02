@@ -38,6 +38,6 @@ void increment_tagCount(TAG t){
 }
 
 void free_tagsHashTable(TAG t) {
-    free(t->tagname);
+    g_string_free(t->tagname, TRUE);
     free(t);
 }

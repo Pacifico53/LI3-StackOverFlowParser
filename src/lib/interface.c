@@ -830,4 +830,44 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     return result;   
 }
 
-TAD_community clean(TAD_community com);
+void auxFreeUsers(gpointer key, gpointer value, gpointer userdata){
+   free_usersHashTable(value); 
+}
+
+void auxFreeTags(gpointer key, gpointer value, gpointer userdata){
+   free_tagsHashTable(value); 
+}
+
+TAD_community clean(TAD_community com){
+    GHashTable *usersht = get_hash_userss(com);
+    GHashTable *tagsht = get_hash_tags(com);
+    GArray *anos = get_array_anos(com);
+    GArray *meses;
+    GArray *dias;
+    DIA dia;
+    printf("A dar free aos dias...\n");
+    int i = 0;
+    int j = 0;
+    int d = 0;
+    for (i = 0; i < 10; i++) {
+        meses = g_array_index(anos,GArray *,i);
+        for (j = 0; j < 12; j++) {
+            dias = g_array_index(meses, GArray *,j);
+            for (d = 0; d < 31; d++) {
+                dia = g_array_index(dias,DIA,d);
+                free_diaNodo(dia); 
+            }
+        }
+    }
+    printf("Done.\n++++++++++\n");
+    printf("A dar free dos Users...\n");
+    g_hash_table_foreach(usersht, auxFreeUsers, NULL);
+    g_hash_table_destroy(usersht);
+    printf("Done.\n++++++++++\n");
+    printf("A dar free das Tags...\n");
+    g_hash_table_foreach(tagsht, auxFreeTags, NULL);
+    g_hash_table_destroy(tagsht);
+    printf("Done.\n++++++++++\n");
+    printf("All free.\n");
+    return com;
+}

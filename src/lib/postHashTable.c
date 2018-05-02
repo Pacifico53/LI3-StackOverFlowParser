@@ -20,43 +20,43 @@ struct HASHTABLE_posts {
 };
 
 POSTS create_hashtable_posts(long id_p, int score_p, long user_id, GString* titulo, int comment_count, GString* tags, int numeroRespostas){
-	POSTS p = malloc(sizeof(struct HASHTABLE_posts));
-	p->id_p = id_p;
-	p->score_p = score_p;
-	p->user_id = user_id;
-	p->titulo = titulo;
-	p->comment_count = comment_count;
-	p->tags = tags;
-	p->numeroRespostas = numeroRespostas;
-	return p;
+    POSTS p = malloc(sizeof(struct HASHTABLE_posts));
+    p->id_p = id_p;
+    p->score_p = score_p;
+    p->user_id = user_id;
+    p->titulo = titulo;
+    p->comment_count = comment_count;
+    p->tags = tags;
+    p->numeroRespostas = numeroRespostas;
+    return p;
 }
-	
+    
 long get_id_p(POSTS p){
-	return p->id_p;
+    return p->id_p;
 }
 
 int get_score_p(POSTS p){
-	return p->score_p;
+    return p->score_p;
 }
 
 long get_user_id(POSTS p){
-	return p->user_id;
+    return p->user_id;
 }
 
 GString* get_titulo(POSTS p){
-	return p->titulo;
+    return p->titulo;
 }
 
 int get_comment_count(POSTS p){
-	return p->comment_count;
+    return p->comment_count;
 }
 
 GString* get_tags(POSTS p){
-	return p->tags;
-}		
+    return p->tags;
+}
 
 int get_numeroRespostas(POSTS p){
-	return p->numeroRespostas;
+    return p->numeroRespostas;
 }
 
 GList *get_listaTags(POSTS p){
@@ -71,7 +71,7 @@ GList *get_listaTags(POSTS p){
 }
 
 void free_postHashTable(POSTS p){
-	free(p->titulo);
-    free(p->tags);
-	free(p);
+    g_string_free(p->titulo, TRUE);
+    g_string_free(p->tags, TRUE);
+    free(p);
 }

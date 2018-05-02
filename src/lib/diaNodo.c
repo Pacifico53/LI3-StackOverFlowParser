@@ -29,5 +29,7 @@ GHashTable* get_answers(DIA a){
 
 
 void free_diaNodo (DIA a){
+    g_hash_table_destroy(a->questions);
+    g_hash_table_destroy(a->answers);
     free(a);
 }
