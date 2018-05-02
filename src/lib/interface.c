@@ -25,17 +25,17 @@ TAD_community load(TAD_community com, char* dump_path){
 
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
-    STR_pair par;
+    STR_pair par = NULL;
     GHashTable* usershash = get_hash_userss(com);
-    USERS user;
+    USERS user = NULL;
     GArray* anos = get_array_anos(com);
-    GArray* meses;
-    GArray* dias;
-    DIA dia;
-    POSTS questions;
-    ANSWERS respostas;
-    GString* titulo;
-    GString* nome;
+    GArray* meses = NULL;
+    GArray* dias = NULL;
+    DIA dia = NULL;
+    POSTS questions = NULL;
+    ANSWERS respostas = NULL;
+    GString* titulo = NULL;
+    GString* nome = NULL;
     long id_p_u = 0;
     long id_parente = 0;
     int parar = 1;
@@ -105,12 +105,12 @@ int comparaNumeroPosts(gconstpointer a, gconstpointer b){
 LONG_list top_most_active(TAD_community com, int N){
     LONG_list result = create_list(N);
     GHashTable *usersht = get_hash_userss(com);
-    USERS user;
+    USERS user = NULL;
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
-    long userID;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
+    long userID = 0;
     int i = 0;
     int j = 0;
     int d = 0;
@@ -138,6 +138,7 @@ LONG_list top_most_active(TAD_community com, int N){
         listaUsers = listaUsers->next;
     }
     printf("\n");
+    g_list_free(listaUsers);
     return result;
 }
 
@@ -157,9 +158,9 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     int diaEnd = get_day(end);
     
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     
     int i = 0;
     int j = 0;
@@ -206,10 +207,10 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     int diaEnd = get_day(end);
     
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
-    GList *listaIDs;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
+    GList *listaIDs = NULL;
 
     int i = 0;
     int j = 0;
@@ -263,9 +264,9 @@ USER get_user_info(TAD_community com, long id){
 
     GHashTable *usershash = get_hash_userss(com);
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
 
     USERS userTarget = g_hash_table_lookup(usershash, (gpointer)id);
     GString *shortbio = get_aboutme(userTarget);
@@ -343,9 +344,9 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
     int diaEnd = get_day(end);
     
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     GList *listaAnswers = NULL;
     GList *answersdoDia = NULL;
     long respostaID = 0;
@@ -379,6 +380,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
                     listaAnswers = g_list_prepend(listaAnswers, answersdoDia->data);
                     answersdoDia = answersdoDia->next;
                 }
+                g_list_free(answersdoDia);
             }
         }
     }
@@ -390,6 +392,8 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
         listaAnswers = listaAnswers->next;
     }
     printf("\n");
+    g_list_free(listaAnswers);
+    g_list_free(answersdoDia);
     return result;
 }
 
@@ -419,9 +423,9 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
     int diaEnd = get_day(end);
     
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     GList *listaQuestions = NULL;
     GList *questionsdoDia = NULL;
     long questionID = 0;
@@ -455,6 +459,8 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
                     listaQuestions = g_list_prepend(listaQuestions, questionsdoDia->data);
                     questionsdoDia = questionsdoDia->next;
                 }
+                g_list_free(questionsdoDia);
+                g_hash_table_remove_all(questionshash);
             }
         }
     }
@@ -466,6 +472,8 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
         listaQuestions = listaQuestions->next;
     }
     printf("\n");
+    g_list_free(listaQuestions);
+    g_list_free(questionsdoDia);
     return result;
 }
 
@@ -473,9 +481,9 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 LONG_list contains_word(TAD_community com, char* word, int N){
     LONG_list result = create_list(N);
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     int i = 0;
     int j = 0;
     int d = 0;
@@ -523,9 +531,9 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     LONG_list result = create_list(N);
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     GList *listaAnswers1 = NULL;
     GList *listaAnswers2 = NULL; 
     GList *listaQuestions1 = NULL;
@@ -604,6 +612,11 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
         printf("%d = %lu\t", ii+1, get_list(result, ii));
     }
     printf("\n");
+    
+    g_list_free(listaAnswers1);
+    g_list_free(listaAnswers2);
+    g_list_free(listaQuestions1);
+    g_list_free(listaQuestions2);
     return result;
 }
 
@@ -642,9 +655,9 @@ long better_answer(TAD_community com, long id){
     GHashTable *usersht = get_hash_userss(com);
     
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     GList *listaAnswersdaQuestion = NULL;
     long parentID = 0;
 
@@ -700,6 +713,7 @@ void auxIncrementaTags(gpointer key, gpointer value, gpointer userdata){
     if (!strcmp(get_tagName(value)->str, tag->str)) {
         increment_tagCount(value);
     }
+    g_string_free(gtag, TRUE);
 }
 
 void incrementaTags(POSTS ppp, GHashTable *tagsht){
@@ -710,6 +724,7 @@ void incrementaTags(POSTS ppp, GHashTable *tagsht){
         g_hash_table_foreach(tagsht, auxIncrementaTags, listaTags->data);
         listaTags = listaTags->next;
     }
+    g_list_free(listaTags);
 }
 
 int comparaTagCount(gconstpointer a, gconstpointer b){
@@ -740,9 +755,9 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GHashTable *tagsht = get_hash_tags(com);
     GHashTable *usersht = get_hash_userss(com);
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     GList *questionsdoDia = NULL;
     GList *listaQuestions = NULL;
     
@@ -775,12 +790,13 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
                     listaQuestions = g_list_prepend(listaQuestions, questionsdoDia->data);
                     questionsdoDia = questionsdoDia->next;
                 }
+                g_list_free(questionsdoDia);
             }
         }
     }
     
     long userID = 0;
-    USERS uuu;
+    USERS uuu = NULL;
     GList *listaBestUsers = NULL;
     GList *listaNBestUsers = NULL;
     GList *nPosts = NULL;
@@ -808,7 +824,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
         }
         listaQuestionsCopy = listaQuestionsCopy->next;
     }
-    POSTS ppp;
+    POSTS ppp = NULL;
     int nPostsSize = g_list_length(nPosts);
 
     for (ii = 0; ii < nPostsSize; ii++) {
@@ -826,6 +842,12 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
         printf("%d = %lu\t", ii+1, get_list(result, ii));
         allTags = allTags->next;
     }
+
+    g_list_free(listaBestUsers);
+    g_list_free(listaNBestUsers);
+    g_list_free(nPosts);
+    g_list_free(listaQuestionsCopy);
+    g_list_free(questionsdoDia);
     printf("\n");
     return result;   
 }
@@ -838,13 +860,21 @@ void auxFreeTags(gpointer key, gpointer value, gpointer userdata){
    free_tagsHashTable(value); 
 }
 
+void auxFreeAnswers(gpointer key, gpointer value, gpointer userdata){
+   free_answersHashTable(value); 
+}
+
+void auxFreeQuestions(gpointer key, gpointer value, gpointer userdata){
+   free_postHashTable(value); 
+}
+
 TAD_community clean(TAD_community com){
     GHashTable *usersht = get_hash_userss(com);
     GHashTable *tagsht = get_hash_tags(com);
     GArray *anos = get_array_anos(com);
-    GArray *meses;
-    GArray *dias;
-    DIA dia;
+    GArray *meses = NULL;
+    GArray *dias = NULL;
+    DIA dia = NULL;
     printf("A dar free aos dias...\n");
     int i = 0;
     int j = 0;
@@ -855,6 +885,10 @@ TAD_community clean(TAD_community com){
             dias = g_array_index(meses, GArray *,j);
             for (d = 0; d < 31; d++) {
                 dia = g_array_index(dias,DIA,d);
+                GHashTable* respostashash = get_answers(dia);
+                GHashTable* questionshash = get_questions(dia);
+                g_hash_table_foreach(respostashash, auxFreeAnswers, NULL);
+                g_hash_table_foreach(questionshash, auxFreeQuestions, NULL);
                 free_diaNodo(dia); 
             }
         }

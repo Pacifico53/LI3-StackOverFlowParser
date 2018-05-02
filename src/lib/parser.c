@@ -3,7 +3,7 @@
 #include "interface.h"
 
 Date xmlToDate(char* val){
-    Date d;
+    Date d = NULL;
     int ano1 = 0;
     int mes1 = 0;
     int dia1 = 0;
@@ -56,10 +56,10 @@ GArray * init_calendario(){
 GArray * insert_hastable_answers_calendario(GArray * calendario, ANSWERS ans, int ano, int mes, int dia){
     int id = get_id_a(ans);
     //GHashTable* answers;
-    GArray* ano_post;
+    GArray* ano_post = NULL;
     ano_post = g_array_index(calendario, GArray *, ano);
     
-    GArray* mes_post;
+    GArray* mes_post = NULL;
     mes_post = g_array_index(ano_post, GArray *, mes-1);
     DIA dia_post = g_array_index(mes_post, DIA, dia-1);
     GHashTable* answers = get_answers(dia_post);
@@ -71,10 +71,10 @@ GArray * insert_hastable_answers_calendario(GArray * calendario, ANSWERS ans, in
 
 GArray * insert_hastable_questions_calendario(GArray * calendario, POSTS qq, int ano, int mes, int dia){
     int id = get_id_p(qq);
-    GArray* ano_post;
+    GArray* ano_post = NULL;
     ano_post = g_array_index(calendario, GArray *, ano);
     
-    GArray* mes_post;
+    GArray* mes_post = NULL;
     mes_post = g_array_index(ano_post, GArray *, mes-1);
     DIA dia_post = g_array_index(mes_post, DIA, dia-1);
     GHashTable* questions = get_questions(dia_post);
@@ -87,8 +87,8 @@ GArray * insert_hastable_questions_calendario(GArray * calendario, POSTS qq, int
 void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* value = NULL;
-    long id;
-    int reputation;
+    long id = 0;
+    int reputation = 0;
     USERS users;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
@@ -128,8 +128,8 @@ void print_element_namesu(GHashTable * usersht, xmlNode * a_node){
 void print_element_tags(GHashTable * tagsht, xmlNode * a_node){
     xmlNode *cur_node = NULL;
     xmlChar* value = NULL;
-    long id;
-    TAG uma_tag;
+    long id = 0;
+    TAG uma_tag = NULL;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
             xmlAttr* attribute = cur_node->properties;
@@ -159,14 +159,14 @@ void print_element_namesq(GArray *calendario, xmlNode * a_node){
     xmlChar* tipo = NULL;
     int para = 1;
     int parar = 1;
-    long id_p;
-    int score_p;
-    long user_id;
-    int comment_count;
-    int numeroRespostas;
+    long id_p = 0;
+    int score_p = 0;
+    long user_id = 0;
+    int comment_count = 0;
+    int numeroRespostas = 0;
     char* data;
-    Date d;
-    POSTS questions;
+    Date d = NULL;
+    POSTS questions = NULL;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
         para = 1;
         parar = 1;
@@ -175,6 +175,7 @@ void print_element_namesq(GArray *calendario, xmlNode * a_node){
             xmlAttr* aux = cur_node->properties;
             while (aux && aux->name && aux->children && para){
                 if(!strcmp((char *)aux->name, "PostTypeId")){
+                    xmlFree(tipo);
                     para = 0;
                     tipo = xmlNodeListGetString(cur_node->doc, aux->children, 1);
                 }
@@ -185,10 +186,12 @@ void print_element_namesq(GArray *calendario, xmlNode * a_node){
                 GString* titulo = g_string_new(NULL);
                 while (aux && aux->name && aux->children && parar){
                     if(!strcmp((char *)aux->name, "CreationDate")){
+                        free_date(d);
                         parar = 0;
                         xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
                         data = (char *)value;
                         d = xmlToDate(data);
+                        xmlFree(value);
                     }
                     aux = aux->next;
                 }
@@ -243,14 +246,14 @@ void print_element_namesa(GArray * calendario, xmlNode * a_node){
     xmlChar* tipo = NULL;
     int para = 1;
     int parar = 1;
-    long id_a;
-    int score_a;
-    long user_id_a;
-    int comment_count_a;
-    long parent_id;
+    long id_a = 0;
+    int score_a = 0;
+    long user_id_a = 0;
+    int comment_count_a = 0;
+    long parent_id = 0;
     char* data;
-    Date d;
-    ANSWERS respostas;
+    Date d = NULL;
+    ANSWERS respostas = NULL;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
         para = 1;
         parar = 1;
@@ -259,6 +262,7 @@ void print_element_namesa(GArray * calendario, xmlNode * a_node){
             xmlAttr* aux = cur_node->properties;
             while (aux && aux->name && aux->children && para){
                 if(!strcmp((char *)aux->name, "PostTypeId")){
+                    xmlFree(tipo);
                     para = 0;
                     tipo = xmlNodeListGetString(cur_node->doc, aux->children, 1);
                 }
@@ -267,10 +271,12 @@ void print_element_namesa(GArray * calendario, xmlNode * a_node){
             if(tipo && !strcmp((char *)tipo, "2")){
                 while (aux && aux->name && aux->children && parar){
                     if(!strcmp((char *)aux->name, "CreationDate")){
+                        free_date(d);
                         parar = 0;
                         xmlChar* value = xmlNodeListGetString(cur_node->doc, aux->children, 1);
                         data = (char *)value;
                         d = xmlToDate(data);
+                        xmlFree(value);
                     }
                     aux = aux->next;
                 }
