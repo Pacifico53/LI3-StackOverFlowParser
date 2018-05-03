@@ -51,7 +51,6 @@ STR_pair info_from_post(TAD_community com, long id){
                 GHashTable* respostashash = get_answers(dia);
                 GHashTable* questionshash = get_questions(dia);
                 if(g_hash_table_contains(respostashash,GINT_TO_POINTER(id))){
-                    printf("ENCONTREI A RESPOSTA EM ANO = %d , MES = %d , DIA = %d!\nVOU PROCURAR A PERGUNTA!\n", i, j, d);
                     parar = 0;
                     respostas = g_hash_table_lookup(respostashash,GINT_TO_POINTER(id));
                     id_parente = get_parent_id(respostas);
@@ -59,14 +58,12 @@ STR_pair info_from_post(TAD_community com, long id){
                 }
                 if(g_hash_table_contains(questionshash,GINT_TO_POINTER(id))){
                     parar = 0;
-                    printf("ENCONTREI EM ANO = %d , MES = %d , DIA = %d\n", i, j, d);
                     questions = g_hash_table_lookup(questionshash,GINT_TO_POINTER(id));
                     titulo = get_titulo(questions);
                     id_p_u = get_user_id(questions);
                     user = g_hash_table_lookup(usershash, GINT_TO_POINTER(id_p_u));
                     nome = get_name(user);
                     par = create_str_pair(titulo->str, nome->str);
-                    printf("TITULO = \"%s\". USER NAME =\"%s\".\n", get_fst_str(par), get_snd_str(par));
                 }
             }
         }
@@ -134,10 +131,8 @@ LONG_list top_most_active(TAD_community com, int N){
         user = listaUsers->data;
         userID = get_id(user);
         set_list(result, ii, userID);
-        printf("%d = %lu\t", ii+1, get_list(result, ii));
         listaUsers = listaUsers->next;
     }
-    printf("\n");
     g_list_free(listaUsers);
     return result;
 }
@@ -189,7 +184,6 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
         }
     }
     LONG_pair result = create_long_pair(nQuestions, nAnswers);
-    printf("Answers = %lu.\nQuestions = %lu.\n", nQuestions, nAnswers);
     return result;
 }
 
@@ -251,10 +245,8 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     for (ii = 0; ii < size; ii++) {
         questionID = (long)listaIDs->data;
         set_list(result, ii, questionID);
-        printf("%d -> %lu\t",ii+1, get_list(result, ii));
         listaIDs = listaIDs->next;
     }
-    printf("\n");
     return result;
 }
 
@@ -308,11 +300,6 @@ USER get_user_info(TAD_community com, long id){
             }
         }
     }
-    printf("Bio -> \"%s\"\n", shortbio->str);
-    for (ii = 0; ii < 10; ii++) {
-        printf("%d -> %lu\t",ii+1, postsIDs[ii]);
-    }
-    printf("\n");
 
     USER result = create_user(shortbio->str, postsIDs); 
     return result;
@@ -388,10 +375,8 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
     for (ii = 0; ii < N; ii++) {
         respostaID = get_id_a(listaAnswers->data);
         set_list(result, ii, respostaID);
-        printf("%d = %lu\t", ii+1, get_list(result, ii));
         listaAnswers = listaAnswers->next;
     }
-    printf("\n");
     g_list_free(listaAnswers);
     g_list_free(answersdoDia);
     return result;
@@ -468,10 +453,8 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
     for (ii = 0; ii < N; ii++) {
         questionID = get_id_a(listaQuestions->data);
         set_list(result, ii, questionID);
-        printf("%d = %lu\t", ii+1, get_list(result, ii));
         listaQuestions = listaQuestions->next;
     }
-    printf("\n");
     g_list_free(listaQuestions);
     g_list_free(questionsdoDia);
     return result;
@@ -514,16 +497,10 @@ LONG_list contains_word(TAD_community com, char* word, int N){
         LONG_list smallerlist = create_list(size);
         for (ii = 0; ii < size; ii++) {
             set_list(smallerlist, ii, get_list(result, ii));
-            printf("%d = %lu\t", ii+1, get_list(smallerlist, ii));
         }
-        printf("\n");
         return smallerlist;
     }
-
-    for (ii = 0; ii < N; ii++) {
-        printf("%d = %lu\t", ii+1, get_list(result, ii));
-    }
-    printf("\n");
+    
     return result;
 }
 
@@ -579,8 +556,13 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
             }
         }
     }
-   
-    for (ii = 0; ii < g_list_length(listaQuestions1) && jj < N; ii++) {
+    
+    int lQ1size = g_list_length(listaQuestions1);
+    int lQ2size = g_list_length(listaQuestions2);
+    int lA1size = g_list_length(listaAnswers1);
+    int checkRepeat = 1;
+    
+    for (ii = 0; ii < lQ1size && jj < N; ii++) {
         questionID = (long)listaQuestions1->data;
         if (g_list_find(listaAnswers2, (gpointer)questionID)) {
             set_list(result, jj, questionID);
@@ -589,30 +571,38 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
         listaQuestions1 = listaQuestions1->next;
     }
 
-    for (ii = 0; ii < g_list_length(listaQuestions2) && jj < N; ii++) {
+    for (ii = 0; ii < lQ2size && jj < N; ii++) {
         questionID = (long)listaQuestions2->data;
         if (g_list_find(listaAnswers1, (gpointer)questionID)) {
             set_list(result, jj, questionID);
             jj++;
         }
         listaQuestions2 = listaQuestions2->next;
-    } 
+    }
+
+    for (ii = 0; ii < lA1size && jj < N; ii++) {
+        questionID = (long)listaAnswers1->data;
+        if (g_list_find(listaAnswers2, (gpointer)questionID)) {
+            for (i = 0; i < N && checkRepeat; i++) {
+                if (get_list(result, i) == questionID) {checkRepeat = 0;}
+            }
+            if (checkRepeat == 1) {
+                set_list(result, jj, questionID);
+                jj++;
+            }
+            checkRepeat = 1;
+        }
+        listaAnswers1 = listaAnswers1->next;
+    }
     
     if (jj<N) {
         LONG_list smallerlist = create_list(jj);
         for (ii = 0; ii < jj; ii++) {
             set_list(smallerlist, ii, get_list(result, ii));
-            printf("%d = %lu\t", ii+1, get_list(smallerlist, ii));
         }
-        printf("\n");
         return smallerlist;
     }
-
-    for (ii = 0; ii < N; ii++) {
-        printf("%d = %lu\t", ii+1, get_list(result, ii));
-    }
-    printf("\n");
-    
+ 
     g_list_free(listaAnswers1);
     g_list_free(listaAnswers2);
     g_list_free(listaQuestions1);
@@ -670,8 +660,7 @@ long better_answer(TAD_community com, long id){
             dias = g_array_index(meses, GArray *,j);
             for (d = 0; d < 31; d++) {
                 dia = g_array_index(dias,DIA,d);
-                GHashTable* answershash = get_answers(dia);
-            
+                GHashTable* answershash = get_answers(dia);            
                 GHashTableIter iter;
                 gpointer key, value;
                 g_hash_table_iter_init(&iter, answershash);
@@ -687,8 +676,9 @@ long better_answer(TAD_community com, long id){
     if(g_list_length(listaAnswersdaQuestion)>0){
         listaAnswersdaQuestion = g_list_sort_with_data(listaAnswersdaQuestion, comparaBestQuestion, usersht);
         result = get_id_a(listaAnswersdaQuestion->data);
-        printf("Best answer = %lu\n", result);
-    }else printf("Nao encontrei a answer.\n");
+    }
+
+    g_list_free(listaAnswersdaQuestion);
     return result;
 }
 
@@ -839,7 +829,6 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     for (ii = 0; ii < N; ii++) {
         tagID = get_id_tag(allTags->data);
         set_list(result, ii, tagID);
-        printf("%d = %lu\t", ii+1, get_list(result, ii));
         allTags = allTags->next;
     }
 
@@ -848,7 +837,6 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     g_list_free(nPosts);
     g_list_free(listaQuestionsCopy);
     g_list_free(questionsdoDia);
-    printf("\n");
     return result;   
 }
 
@@ -875,7 +863,6 @@ TAD_community clean(TAD_community com){
     GArray *meses = NULL;
     GArray *dias = NULL;
     DIA dia = NULL;
-    printf("A dar free aos dias...\n");
     int i = 0;
     int j = 0;
     int d = 0;
@@ -893,15 +880,9 @@ TAD_community clean(TAD_community com){
             }
         }
     }
-    printf("Done.\n++++++++++\n");
-    printf("A dar free dos Users...\n");
     g_hash_table_foreach(usersht, auxFreeUsers, NULL);
     g_hash_table_destroy(usersht);
-    printf("Done.\n++++++++++\n");
-    printf("A dar free das Tags...\n");
     g_hash_table_foreach(tagsht, auxFreeTags, NULL);
     g_hash_table_destroy(tagsht);
-    printf("Done.\n++++++++++\n");
-    printf("All free.\n");
     return com;
 }

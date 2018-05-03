@@ -317,7 +317,6 @@ void print_element_namesa(GArray * calendario, xmlNode * a_node){
 }
 
 void parse_answers(GArray * calendario, char* path){
-    printf("--------------------------\nA iniciar parse answers...\n--------------------------\n");
     char* pathfile = malloc(128 * sizeof(char));
     strcpy(pathfile, path);
     xmlDoc *doc = NULL;
@@ -327,31 +326,12 @@ void parse_answers(GArray * calendario, char* path){
     //Get the root element node 
     root_element = xmlDocGetRootElement(doc);
     print_element_namesa(calendario, root_element);
-    printf("Parse questions...\n"); //SE POR ACASO ALGO ESTIVER A CORRER MAL NO PARSE PODE SER POR ISTO, POR ISSO BASTA ELIMAR A FUNCAO print_element_namesq QUE ESTA NA LINHA EM BAIXO E TIRAR A FUNCAO DE COMENTARIO, TAMBEM NA MAIN!!!
     print_element_namesq(calendario, root_element);
     xmlFreeDoc(doc);
     xmlCleanupParser();
-    printf("DONE!!!!!!\n");
 }
-/*
-void parse_questions(GArray * calendario, char* path){
-    printf("--------------------------\nA iniciar parse questions...\n--------------------------\n");
-    char* pathfile = malloc(128 * sizeof(char));
-    strcpy(pathfile, path);
-    xmlDoc *doc = NULL;
-    xmlNode *root_element = NULL;
-    strcat(pathfile, "/Posts.xml");
-    doc = xmlReadFile(pathfile, NULL, 0);
-    //Get the root element node 
-    root_element = xmlDocGetRootElement(doc);
-    print_element_namesq(calendario, root_element);
-    xmlFreeDoc(doc);
-    xmlCleanupParser();
-    printf("DONE!!!\n");
-}
-*/
+
 void parse_users(GHashTable *users, char* path){
-    printf("--------------------------\nA iniciar parse users...\n--------------------------\n");
     char* pathfile = malloc(128 * sizeof(char));
     strcpy(pathfile, path);
     xmlDoc *doc = NULL;
@@ -363,11 +343,9 @@ void parse_users(GHashTable *users, char* path){
     print_element_namesu(users, root_element); 
     xmlFreeDoc(doc);
     xmlCleanupParser();
-    printf("DONE!!!\n");
 }
 
 void parse_tags(GHashTable *tagsht, char* path){
-    printf("--------------------------\nA iniciar parse tags...\n--------------------------\n");
     char* pathfile = malloc(128 * sizeof(char));
     strcpy(pathfile, path);
     xmlDoc *doc = NULL;
@@ -379,7 +357,6 @@ void parse_tags(GHashTable *tagsht, char* path){
     print_element_tags(tagsht, root_element); 
     xmlFreeDoc(doc);
     xmlCleanupParser();
-    printf("DONE!!!\n");
 }
 
 void parse(TAD_community com, char* path){
@@ -393,17 +370,12 @@ void parse(TAD_community com, char* path){
     LIBXML_TEST_VERSION    // Macro to check API for match with
                           // the DLL we are using
     //parse the file and get the DOM
-    /*
-    doc = xmlReadFile("Posts.xml", NULL, 0);
-    
-    //Get the root element node 
-    root_element = xmlDocGetRootElement(doc);
-    print_element_namesq(calendario, root_element);
-    */
+   
+    printf("A começar o parse...\n");
     parse_answers(calendario, path);
-    //parse_questions(calendario, path); //TIRAR ESTA FUNCAO DE COMENTARIO CASO O PARSE ESTEJA A CORRER MAL!
     parse_users(usersht, path);
     parse_tags(tagsht, path);
+    printf("Parse completo.\n");
 
     set_array_anos(com, calendario);
     set_ht_users(com, usersht);
