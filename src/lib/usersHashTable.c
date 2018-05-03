@@ -5,7 +5,7 @@
 #include "common.h"
 
 /* struct HASHTABLE_users
- * Estrutura da hashtable de users.
+ * Estrutura do que esta em cada value da hashtable de users.
  *
  */
 struct HASHTABLE_users {
@@ -13,7 +13,7 @@ struct HASHTABLE_users {
     GString* name;
     GString* aboutme;
     int reputation;
-    int numberOfPosts;
+    int numberOfPosts;      //inicializado a 0, e so alterado pela funçao increment_numberOfPosts
 };
 
 USERS create_hashtable_users(long id, GString* name, GString* aboutme, int reputation, int numberPosts) {
@@ -46,6 +46,7 @@ int get_numberOfPosts(USERS u){
     return u->numberOfPosts;
 }
 
+//Esta funçao é utilizada na query 2, em que se ordena os utilizadores pelo numero de posts
 void increment_numberOfPosts(USERS u){
     u->numberOfPosts++;
 }

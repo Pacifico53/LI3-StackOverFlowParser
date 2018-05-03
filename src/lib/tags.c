@@ -9,7 +9,7 @@
  */
 struct HASHTABLE_tags {
     GString * tagname;
-    int count;
+    int count;      //inicializado sempre a 0, e so alterado pela funçao increment_tagCount
     long tag_id;
 };
 
@@ -33,6 +33,7 @@ int get_tagCount(TAG t) {
     return t->count;
 }
 
+//Esta funçao é necessaria na query 11, para incrementar o uso de uma tag, e depois poder se ordenar as tags por esse valor
 void increment_tagCount(TAG t){
     t->count++;
 }

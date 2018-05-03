@@ -6,7 +6,7 @@
 #include "common.h"
 
 /* struct HASHTABLE_answers
- * Estrutura da hashtable de posts de resposta.
+ * Estrutura de cada value da hashtable de posts de resposta.
  *
  */
 struct HASHTABLE_answers {

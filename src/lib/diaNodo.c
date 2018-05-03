@@ -5,7 +5,7 @@
 #include "common.h"
 
 /* diaNodo
- *  Isto é o que esta dentro de cada dia
+ *  Estrutura de cada nodo dia, com hashtable de posts questions e hashtable posts answers
  */
 struct diaNodo{
     GHashTable* questions;

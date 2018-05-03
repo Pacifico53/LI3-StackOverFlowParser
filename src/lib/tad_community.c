@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "tad_community.h"
 
+//Esta é a estrutura de todos os dados armazenados pelo parser, e é o que cada query recebe
 struct TCD_community{
     GArray* anos;
    	GHashTable* userss;
@@ -29,6 +30,7 @@ GHashTable* get_hash_tags(TAD_community s){
 	return s->tagsht;
 }
 
+//Estes sets sao essenciais para que o parser possa guardar as estruturas no sitio correto
 void set_ht_users(TAD_community s, GHashTable *usersht){
 	s->userss = usersht;
 }

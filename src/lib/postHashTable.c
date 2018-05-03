@@ -5,18 +5,19 @@
 #include "postHashTable.h"
 #include "common.h"
 #include <stdio.h>
+
 /*struct HASTABLE_posts
- * Estrutura da hastable de posts PERGUNTAS.
+ * Estrutura de cada value da hastable de posts PERGUNTAS.
  *
  */
 struct HASHTABLE_posts {
     long id_p;
-    int score_p;           //Upvotes - Downvotes
+    int score_p;
     long user_id;
     GString* titulo;
     int comment_count;
     GString* tags;
-    int numeroRespostas; //Calculado por nos
+    int numeroRespostas; 
 };
 
 POSTS create_hashtable_posts(long id_p, int score_p, long user_id, GString* titulo, int comment_count, GString* tags, int numeroRespostas){
@@ -59,6 +60,7 @@ int get_numeroRespostas(POSTS p){
     return p->numeroRespostas;
 }
 
+//Esta funçao retorna uma lista com as tags de um post, a utilizaçao do strtok é para separar a string original de tags em varias, isto é utilizado na query 11
 GList *get_listaTags(POSTS p){
     GList *result = NULL;
     char *tags = get_tags(p)->str;
@@ -70,6 +72,7 @@ GList *get_listaTags(POSTS p){
     return result;
 }
 
+//Utiliza se g_string_free devido ao uso de GStrings, da documentaçao glib
 void free_postHashTable(POSTS p){
     g_string_free(p->titulo, TRUE);
     g_string_free(p->tags, TRUE);
