@@ -1,8 +1,4 @@
-#include <glib.h>
-#include <string.h>
-#include <stdlib.h>
 #include "diaNodo.h"
-#include "common.h"
 
 /* diaNodo
  *  Estrutura de cada nodo dia, com hashtable de posts questions e hashtable posts answers

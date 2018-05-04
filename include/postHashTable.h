@@ -1,4 +1,9 @@
 #include <glib.h>
+#include "common.h"
+#include <stdio.h>
+#include "date.h"
+#include <string.h>
+#include <stdlib.h>
 #ifndef __POSTS__
 #define __POSTS__
 typedef struct HASHTABLE_posts* POSTS;

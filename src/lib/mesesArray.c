@@ -1,8 +1,4 @@
-#include <glib.h>
-#include <string.h>
-#include <stdlib.h>
 #include "mesesArray.h"
-#include "common.h"
 
 /* mesesArray
  *  Array dos meses, que esta dentro de cada ano, e dentro deste vao estar dias

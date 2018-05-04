@@ -1,8 +1,4 @@
-#include <glib.h>
-#include <string.h>
-#include <stdlib.h>
 #include "usersHashTable.h"
-#include "common.h"
 
 /* struct HASHTABLE_users
  * Estrutura do que esta em cada value da hashtable de users.

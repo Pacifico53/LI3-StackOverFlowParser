@@ -1,10 +1,4 @@
-#include <glib.h>
-#include "date.h"
-#include <string.h>
-#include <stdlib.h>
 #include "postHashTable.h"
-#include "common.h"
-#include <stdio.h>
 
 /*struct HASTABLE_posts
  * Estrutura de cada value da hastable de posts PERGUNTAS.

@@ -1,9 +1,4 @@
-#include <glib.h>
-#include "date.h"
-#include <string.h>
-#include <stdlib.h>
 #include "answersHashTable.h"
-#include "common.h"
 
 /* struct HASHTABLE_answers
  * Estrutura de cada value da hashtable de posts de resposta.

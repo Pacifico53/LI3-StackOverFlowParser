@@ -1,4 +1,8 @@
 #include "date.h"
+#include <glib.h>
+#include "common.h"
+#include <string.h>
+#include <stdlib.h>
 #ifndef __ANOS__
 #define __ANOS__
 

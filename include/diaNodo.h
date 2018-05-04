@@ -1,4 +1,8 @@
 #include "date.h"
+#include <glib.h>
+#include "common.h"
+#include <string.h>
+#include <stdlib.h>
 #ifndef __DIA__
 #define __DIA__
 

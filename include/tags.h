@@ -1,3 +1,7 @@
+#include <glib.h>
+#include <string.h>
+#include <stdlib.h>
+#include "common.h"
 #ifndef __TAG__
 #define __TAG__
 typedef struct HASHTABLE_tags* TAG;

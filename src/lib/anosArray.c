@@ -1,8 +1,4 @@
-#include <glib.h>
-#include <string.h>
-#include <stdlib.h>
 #include "anosArray.h"
-#include "common.h"
 
 /* anosArray
  *  Array dos anos, dentro deste vai estar array de meses

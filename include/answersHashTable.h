@@ -1,4 +1,8 @@
 #include "date.h"
+#include <glib.h>
+#include <string.h>
+#include "common.h"
+#include <stdlib.h>
 #ifndef __ANSWERS__
 #define __ANSWERS__
 

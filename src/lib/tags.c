@@ -1,8 +1,4 @@
-#include <glib.h>
-#include <string.h>
-#include <stdlib.h>
 #include "tags.h"
-#include "common.h"
 
 /* Estrutura do que esta em cada nodo da hastable das tags
  *  

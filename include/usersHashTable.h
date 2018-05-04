@@ -1,3 +1,7 @@
+#include <glib.h>
+#include <string.h>
+#include <stdlib.h>
+#include "common.h"
 #ifndef __USERS__
 #define __USERS__
 typedef struct HASHTABLE_users* USERS;
