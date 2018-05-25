@@ -55,7 +55,14 @@ public class Tag {
                 tag_id == tags.tag_id &&
                 Objects.equals(tagname, tags.tagname);
     }
-
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "tagname='" + tagname + '\'' +
+                ", count=" + count +
+                ", tag_id=" + tag_id +
+                '}';
+    }
     public Tag clone (){
         return new Tag(this);
     }

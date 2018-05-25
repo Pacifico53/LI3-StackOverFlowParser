@@ -1,3 +1,7 @@
+package common;
+
+import java.util.Objects;
+
 public class User {
     private long id;
     private String name, aboutme;
@@ -86,5 +90,9 @@ public class User {
         sb.append("Reputation: ").append(reputation).append("\n");
         sb.append("NumberOfPosts: ").append(numberOfPosts).append("\n");
         return sb.toString();
+    }
+
+    public User clone (){
+        return new User (this);
     }
 }
