@@ -13,15 +13,19 @@ public class Main {
     public static void main(String[] args){
 
         String path = "../../../li3/android";
+        long before, after;
 
         System.out.println("Path = \"" + path + "\"");
         System.out.println("A iniciar o parse dos ficheiros...");
 
         Parser parser = new Parser();
+        before = System.currentTimeMillis();
         parser.parseruser(path);
         parser.parseranswers(path);
         parser.parserquestions(path);
         parser.parsertags(path);
+        after = System.currentTimeMillis();
+        System.out.println("PARSE DEMOROU -> "+(after-before)+" ms");
 
 
         /*
@@ -31,7 +35,6 @@ public class Main {
         MyLog logtime = new MyLog("times");
         /* -------------------------------------------------------------------------------------------*/
 
-        long before, after;
         TADCommunity qe = new TCDExample();
 
         /*
