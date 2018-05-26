@@ -2,6 +2,7 @@ package li3;
 
 import common.MyLog;
 import common.Pair;
+import common.Parser;
 import engine.TCDExample;
 
 import java.time.LocalDate;
@@ -9,9 +10,19 @@ import java.time.Month;
 import java.util.List;
 
 public class Main {
-
-
     public static void main(String[] args){
+
+        String path = "../../../li3/android";
+
+        System.out.println("Path = \"" + path + "\"");
+        System.out.println("A iniciar o parse dos ficheiros...");
+
+        Parser parser = new Parser();
+        parser.parseruser(path);
+        parser.parseranswers(path);
+        parser.parserquestions(path);
+        parser.parsertags(path);
+
 
         /*
             LOG CONFIGURATION

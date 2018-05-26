@@ -25,9 +25,9 @@ public class Answer {
         this.parent_id = a.getParent_id();
     }
 
-    public Answer () { this(0, 0, 0, 0, 0);}
-
-
+    public Answer () {
+        this(0, 0, 0, 0, 0);
+    }
 
     public long getId_a() {
         return id_a;
@@ -69,7 +69,6 @@ public class Answer {
         this.parent_id = parent_id;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -82,13 +81,13 @@ public class Answer {
     }
 
     public String toString() {
-        return "Answer{" +
-                "id_a=" + id_a +
-                ", score_a=" + score_a +
-                ", user_id_a=" + user_id_a +
-                ", comment_count_a=" + comment_count_a +
-                ", parent_id=" + parent_id +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID: ").append(this.id_a).append("\n");
+        sb.append("Score: ").append(this.score_a).append("\n");
+        sb.append("ParentID: ").append(this.parent_id).append("\n");
+        sb.append("UserID: ").append(this.user_id_a).append("\n");
+        sb.append("CommentCount: ").append(this.comment_count_a).append("\n");
+        return sb.toString();
     }
 
     public Answer clone () {

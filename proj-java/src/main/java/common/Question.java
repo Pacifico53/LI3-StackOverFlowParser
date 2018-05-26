@@ -91,7 +91,7 @@ public class Question {
         this.numberAnswers = numberAnswers;
     }
 
-    @Override
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -104,17 +104,17 @@ public class Question {
                 Objects.equals(titulo, question.titulo) &&
                 Objects.equals(tags, question.tags);
     }
-    @Override
+
     public String toString() {
-        return "Question{" +
-                "id_q=" + id_q +
-                ", score_q=" + score_q +
-                ", user_id=" + user_id +
-                ", titulo='" + titulo + '\'' +
-                ", comment_count=" + comment_count +
-                ", tags='" + tags + '\'' +
-                ", numberAnswers=" + numberAnswers +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID: ").append(this.id_q).append("\n");
+        sb.append("Title: ").append(this.titulo).append("\n");
+        sb.append("Score: ").append(this.score_q).append("\n");
+        sb.append("UserID: ").append(this.user_id).append("\n");
+        sb.append("Tags: ").append(this.tags).append("\n");
+        sb.append("CommentCount: ").append(this.comment_count).append("\n");
+        sb.append("NumberAnswers: ").append(this.numberAnswers).append("\n");
+        return sb.toString();
     }
 
     public Question clone (){

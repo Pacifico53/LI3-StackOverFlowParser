@@ -46,23 +46,23 @@ public class Tag {
         this.tag_id = tag_id;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tags = (Tag) o;
-        return count == tags.count &&
+        return  count == tags.count &&
                 tag_id == tags.tag_id &&
                 Objects.equals(tagname, tags.tagname);
     }
-    @Override
+
     public String toString() {
-        return "Tag{" +
-                "tagname='" + tagname + '\'' +
-                ", count=" + count +
-                ", tag_id=" + tag_id +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID: ").append(this.tag_id).append("\n");
+        sb.append("Name: ").append(this.tagname).append("\n");
+        sb.append("Count: ").append(this.count).append("\n");
+        return sb.toString();
     }
+
     public Tag clone (){
         return new Tag(this);
     }
