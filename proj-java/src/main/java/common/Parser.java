@@ -40,7 +40,7 @@ public class Parser {
             e.printStackTrace();
         }
     }
-    public void parserquestions(String path) {
+    public void parserQuestionsAnswers(String path) {
         try {
             String pathFile = path.concat("/Posts.xml");
             File inputFile = new File(pathFile);
@@ -50,6 +50,7 @@ public class Parser {
             doc.getDocumentElement().normalize();
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("row");
+            NodeList nList2 = doc.getElementsByTagName("row");
             System.out.println("--------------PARSE QUESTIONS--------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
@@ -78,29 +79,14 @@ public class Parser {
                     }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-
-    public void parseranswers(String path) {
-        try {
-            String pathFile = path.concat("/Posts.xml");
-            File inputFile = new File(pathFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
-            doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-            NodeList nList = doc.getElementsByTagName("row");
-            System.out.println("------------PARSE ANSWERS----------------");
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                Node nNode = nList.item(temp);
+            System.out.println("-------------PARSE ANSWERS----------------");
+            for (int temp = 0; temp < nList2.getLength(); temp++) {
+                Node nNode = nList2.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     if(eElement.getAttribute("PostTypeId").equals("2")) {
-                        System.out.println("-----------------------");
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
                         System.out.println("tipo : "
                                 + eElement.getAttribute("PostTypeId"));
                         System.out.println("ID : "
@@ -122,6 +108,7 @@ public class Parser {
             e.printStackTrace();
         }
     }
+
     public void parsertags(String path) {
         try {
             String pathFile = path.concat("/Tags.xml");

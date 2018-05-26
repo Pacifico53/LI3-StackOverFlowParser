@@ -20,9 +20,8 @@ public class Main {
 
         Parser parser = new Parser();
         before = System.currentTimeMillis();
+        parser.parserQuestionsAnswers(path);
         parser.parseruser(path);
-        parser.parseranswers(path);
-        parser.parserquestions(path);
         parser.parsertags(path);
         after = System.currentTimeMillis();
         System.out.println("PARSE DEMOROU -> "+(after-before)+" ms");
