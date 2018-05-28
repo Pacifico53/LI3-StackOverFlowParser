@@ -3,9 +3,9 @@ package common;
 import java.util.ArrayList;
 
 public class Year {
-    private ArrayList<Month> months;
+    private ArrayList<MMonth> months;
 
-    public Year(ArrayList<Month> months) {
+    public Year(ArrayList<MMonth> months) {
         this.months = months;
     }
 
@@ -14,14 +14,14 @@ public class Year {
     }
 
     public Year(){
-        this.months = new ArrayList<Month>(12);
+        this.months = new ArrayList<MMonth>(12);
     }
 
-    public ArrayList<Month> getMonths() {
+    public ArrayList<MMonth> getMonths() {
         return months;
     }
 
-    public void setMonths(ArrayList<Month> months) {
+    public void setMonths(ArrayList<MMonth> months) {
         this.months = months;
     }
 }

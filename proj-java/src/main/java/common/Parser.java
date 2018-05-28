@@ -57,7 +57,7 @@ public class Parser {
             e.printStackTrace();
         }
     }
-    public void parserQuestionsAnswers(String path) {
+    public void parserQuestionsAnswers(DataCalendar calendar, String path) {
         try {
             String pathFile = path.concat("/Posts.xml");
             File inputFile = new File(pathFile);
@@ -94,7 +94,7 @@ public class Parser {
                         System.out.println("data : "
                                 + eElement.getAttribute("CreationDate").substring(0, 10));
                         LocalDate datateste = xmlToDate(eElement.getAttribute("CreationDate"));
-                        System.out.println("DATA :::::::::> " + datateste);
+                        calendar.addID(datateste.getYear() - 2009, datateste.getMonthValue() - 1, datateste.getDayOfMonth() - 1, Long.parseLong(eElement.getAttribute("Id")));
                     }
                 }
             }
@@ -120,6 +120,8 @@ public class Parser {
                                 + eElement.getAttribute("ParentId"));
                         System.out.println("data : "
                                 + eElement.getAttribute("CreationDate"));
+                        LocalDate datateste = xmlToDate(eElement.getAttribute("CreationDate"));
+                        calendar.addID(datateste.getYear() - 2009, datateste.getMonthValue() - 1, datateste.getDayOfMonth() - 1, Long.parseLong(eElement.getAttribute("Id")));
                     }
                 }
             }
