@@ -2,18 +2,18 @@ package common;
 
 import java.util.ArrayList;
 
-public class Month {
+public class MMonth {
     private ArrayList<Day> days;
 
-    public Month(ArrayList<Day> days) {
+    public MMonth(ArrayList<Day> days) {
         this.days = days;
     }
 
-    public Month(Month m){
+    public MMonth(MMonth m){
         this.days = m.getDays();
     }
 
-    public Month(){
+    public MMonth(){
         this.days = new ArrayList<Day>(31);
     }
 

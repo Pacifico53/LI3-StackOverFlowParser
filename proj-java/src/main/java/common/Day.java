@@ -14,7 +14,7 @@ public class Day {
     }
 
     public Day(){
-        this.ids = new ArrayList<Long>();
+        this.ids = new ArrayList<>();
     }
 
     public ArrayList<Long> getIds() {

@@ -1,6 +1,10 @@
 package li3;
+import common.DataCalendar;
 import common.MyLog;
 import common.Pair;
+import common.Year;
+import common.MMonth;
+import common.Day;
 import common.Parser;
 import engine.TCDExample;
 
@@ -12,16 +16,16 @@ public class Main {
     public static void main(String[] args){
         String path = args[0];
         long before, after;
-
+        DataCalendar calendar = new DataCalendar();
+        calendar.init();
         System.out.println("A iniciar o parse dos ficheiros...");
 
         Parser parser = new Parser();
         before = System.currentTimeMillis();
-        parser.parserQuestionsAnswers(path);
+        parser.parserQuestionsAnswers(calendar, path);
         parser.parseruser(path);
         parser.parsertags(path);
         after = System.currentTimeMillis();
-
 
         System.out.println("PARSE DEMOROU -> "+(after-before)+" ms");
 
