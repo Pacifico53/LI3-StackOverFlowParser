@@ -27,15 +27,6 @@ public class DataCalendar {
 
 
     public void init(){
-<<<<<<< HEAD
-        for(Year y: this.years){
-            ArrayList<Month> months = new ArrayList<>(12);
-            for (Month m: months){
-                ArrayList<Day> days = new ArrayList<>(31);
-                for(Day d: days) {
-                    ArrayList<Long> ids = new ArrayList<>();
-                    d.getIds().add(ids);
-=======
         int i = 0, j = 0, k = 0;
         for(i = 0; i < 10; i++){
             Year months = new Year();
@@ -44,7 +35,6 @@ public class DataCalendar {
                 for(k = 0; k < 31; k++) {
                     Day ids = new Day();
                     days.getDays().add(k, ids);
->>>>>>> cdedbc33ac824298e645c64403d507d97a8ce5c2
                 }
                 months.getMonths().add(j, days);
             }

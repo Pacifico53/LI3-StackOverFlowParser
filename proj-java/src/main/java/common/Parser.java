@@ -66,11 +66,8 @@ public class Parser {
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
-    public void parserQuestionsAnswers(String path, HashMap<Long,Question> hashquestions , HashMap<Long,Answer> hashanswers) {
-=======
-    public void parserQuestionsAnswers(DataCalendar calendar, String path) {
->>>>>>> cdedbc33ac824298e645c64403d507d97a8ce5c2
+
+    public void parserQuestionsAnswers(DataCalendar calendar, String path, HashMap<Long,Question> hashquestions , HashMap<Long,Answer> hashanswers) {
         try {
             String pathFile = path.concat("/Posts.xml");
             File inputFile = new File(pathFile);
