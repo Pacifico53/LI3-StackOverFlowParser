@@ -1,7 +1,5 @@
 package common;
 
-import java.util.Objects;
-
 public class User {
     private long id;
     private String name, aboutme;
@@ -66,7 +64,6 @@ public class User {
     public void setNumberOfPosts(int numberOfPosts){
         this.numberOfPosts = numberOfPosts;
     }
-
 
 
     public boolean equals(Object o){

@@ -1,5 +1,4 @@
 package li3;
-
 import common.MyLog;
 import common.Pair;
 import common.Parser;
@@ -11,11 +10,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args){
-
         String path = args[0];
         long before, after;
 
-        System.out.println("Path = \"" + path + "\"");
         System.out.println("A iniciar o parse dos ficheiros...");
 
         Parser parser = new Parser();
@@ -24,6 +21,8 @@ public class Main {
         parser.parseruser(path);
         parser.parsertags(path);
         after = System.currentTimeMillis();
+
+
         System.out.println("PARSE DEMOROU -> "+(after-before)+" ms");
 
 

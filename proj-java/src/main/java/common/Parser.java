@@ -1,6 +1,8 @@
 package common;
 
 import java.io.File;
+import java.text.ParseException;
+import java.time.LocalDate;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -10,6 +12,21 @@ import org.w3c.dom.Element;
 
 
 public class Parser {
+
+    private LocalDate xmlToDate(String date) throws ParseException {
+        LocalDate date1;
+        int year = 0;
+        int month = 0;
+        int day = 0;
+        date = date.substring(0, 10);
+        year = Integer.parseInt(date.substring(0, 4));
+        month = Integer.parseInt(date.substring(5, 7));
+        day = Integer.parseInt(date.substring(8, 10));
+
+        date1 = LocalDate.of(year, month, day);
+        return date1;
+    }
+
     public void parseruser(String path) {
         try {
             String pathFile = path.concat("/Users.xml");
@@ -75,7 +92,9 @@ public class Parser {
                         System.out.println("AnswerCount : "
                                 + eElement.getAttribute("AnswerCount"));
                         System.out.println("data : "
-                                + eElement.getAttribute("CreationDate"));
+                                + eElement.getAttribute("CreationDate").substring(0, 10));
+                        LocalDate datateste = xmlToDate(eElement.getAttribute("CreationDate"));
+                        System.out.println("DATA :::::::::> " + datateste);
                     }
                 }
             }
