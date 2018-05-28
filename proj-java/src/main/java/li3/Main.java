@@ -1,12 +1,8 @@
 package li3;
-import common.DataCalendar;
+
 import common.MyLog;
 import common.Pair;
-import common.Year;
-import common.MMonth;
-import common.Day;
-import common.Parser;
-import engine.TCDCom;
+
 import engine.TCDCom;
 
 import java.time.LocalDate;
@@ -15,7 +11,6 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args){
-        String path = args[0];
         long before, after;
         /*
             LOG CONFIGURATION

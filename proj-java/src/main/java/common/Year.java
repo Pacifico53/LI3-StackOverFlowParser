@@ -14,7 +14,7 @@ public class Year {
     }
 
     public Year(){
-        this.months = new ArrayList<MMonth>(12);
+        this.months = new ArrayList<>(12);
     }
 
     public ArrayList<MMonth> getMonths() {

@@ -1,7 +1,5 @@
 package common;
 
-import java.util.Objects;
-
 public class Answer {
     private long id_a;
     private int score_a;

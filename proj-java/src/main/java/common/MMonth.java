@@ -14,7 +14,7 @@ public class MMonth {
     }
 
     public MMonth(){
-        this.days = new ArrayList<Day>(31);
+        this.days = new ArrayList<>(31);
     }
 
     public ArrayList<Day> getDays() {
