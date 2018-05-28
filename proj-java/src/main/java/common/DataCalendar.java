@@ -28,11 +28,11 @@ public class DataCalendar {
 
     public void init(){
         for(Year y: this.years){
-            ArrayList<Month> months = new ArrayList<Month>(12);
+            ArrayList<Month> months = new ArrayList<>(12);
             for (Month m: months){
-                ArrayList<Day> days = new ArrayList<Day>(31);
+                ArrayList<Day> days = new ArrayList<>(31);
                 for(Day d: days) {
-                    ArrayList<Long> ids = new ArrayList<Long>();
+                    ArrayList<Long> ids = new ArrayList<>();
                     d.getIds().add(ids);
                 }
                 m.getDays().add(days);

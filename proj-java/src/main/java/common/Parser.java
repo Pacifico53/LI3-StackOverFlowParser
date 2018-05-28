@@ -3,6 +3,7 @@ package common;
 import java.io.File;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -27,7 +28,7 @@ public class Parser {
         return date1;
     }
 
-    public void parseruser(String path) {
+    public void parseruser(String path, HashMap<Long,User> hashusers) {
         try {
             String pathFile = path.concat("/Users.xml");
             File inputFile = new File(pathFile);
@@ -43,6 +44,14 @@ public class Parser {
                 System.out.println("-----------------------");
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
+                    long id = Long.parseLong(eElement.getAttribute("Id"));
+                    int rep = Integer.parseInt(eElement.getAttribute("Reputation"));
+                    String aboutme = eElement.getAttribute("AboutMe");
+                    String name = eElement.getAttribute("DisplayName");
+
+                    User u = new User(id, name, aboutme, rep , 0);
+                    hashusers.put(id,u);
+
                     System.out.println("Reputação : "
                             + eElement.getAttribute("Reputation"));
                     System.out.println("ID : "
@@ -57,7 +66,7 @@ public class Parser {
             e.printStackTrace();
         }
     }
-    public void parserQuestionsAnswers(String path) {
+    public void parserQuestionsAnswers(String path, HashMap<Long,Question> hashquestions , HashMap<Long,Answer> hashanswers) {
         try {
             String pathFile = path.concat("/Posts.xml");
             File inputFile = new File(pathFile);
@@ -75,6 +84,19 @@ public class Parser {
                     Element eElement = (Element) nNode;
                     if(eElement.getAttribute("PostTypeId").equals("1")) {
                         System.out.println("-----------------------");
+
+                        long idq = Long.parseLong(eElement.getAttribute("Id"));
+                        int scoreq = Integer.parseInt(eElement.getAttribute("Score"));
+                        long user_idq = Long.parseLong(eElement.getAttribute("OwnerUserId"));
+                        String titleq = eElement.getAttribute("Title");
+                        int commentcountq = Integer.parseInt(eElement.getAttribute("CommentCount"));
+                        String tagsq = eElement.getAttribute("Tags");
+                        int numberanswersq = Integer.parseInt(eElement.getAttribute("AnswerCount"));
+
+                        Question q = new Question(idq,scoreq,user_idq,titleq,commentcountq,tagsq,numberanswersq);
+                        hashquestions.put(idq,q);
+
+
                         System.out.println("tipo : "
                                 + eElement.getAttribute("PostTypeId"));
                         System.out.println("ID : "
@@ -106,6 +128,16 @@ public class Parser {
                     Element eElement = (Element) nNode;
                     if(eElement.getAttribute("PostTypeId").equals("2")) {
                         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+
+                        long ida = Long.parseLong(eElement.getAttribute("Id"));
+                        int scorea = Integer.parseInt(eElement.getAttribute("Score"));
+                        long user_ida = Long.parseLong(eElement.getAttribute("OwnerUserId"));
+                        int commentcounta = Integer.parseInt(eElement.getAttribute("CommentCount"));
+                        long parentida = Long.parseLong(eElement.getAttribute("ParentId"));
+
+                        Answer a = new Answer(ida,scorea,user_ida,commentcounta,parentida);
+                        hashanswers.put(ida,a);
+
                         System.out.println("tipo : "
                                 + eElement.getAttribute("PostTypeId"));
                         System.out.println("ID : "
@@ -128,7 +160,7 @@ public class Parser {
         }
     }
 
-    public void parsertags(String path) {
+    public void parsertags(String path, HashMap<Long,Tag> hashtags) {
         try {
             String pathFile = path.concat("/Tags.xml");
             File inputFile = new File(pathFile);
@@ -144,10 +176,17 @@ public class Parser {
                 System.out.println("-----------------------");
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
+                    long id = Long.parseLong(eElement.getAttribute("Id"));
+                    String tagname = eElement.getAttribute("TagName");
+
+                    Tag t = new Tag(tagname, 0, id);
+                    hashtags.put(id,t);
+
                     System.out.println("ID : "
                             + eElement.getAttribute("Id"));
                     System.out.println("TagName : "
                             + eElement.getAttribute("TagName"));
+
                 }
             }
         } catch (Exception e) {

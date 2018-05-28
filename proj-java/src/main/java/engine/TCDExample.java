@@ -5,6 +5,11 @@ import common.Pair;
 import li3.TADCommunity;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import common.User;
+import common.Question;
+import common.Answer;
+import common.Tag;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,17 +18,76 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class TCDExample implements TADCommunity {
 
     private MyLog qelog;
+    private HashMap<Long, User> hashUsers;
+    private HashMap<Long, Tag> hashTags;
+    private HashMap<Long, Question> hashQuestions;
+    private HashMap<Long, Answer> hashAnswers;
 
+
+    public TCDExample(HashMap<Long, User> hashUsers, HashMap<Long, Tag> hashTags, HashMap<Long, Question> hashQuestions, HashMap<Long, Answer> hashAnswers) {
+        this.hashUsers = hashUsers;
+        this.hashTags = hashTags;
+        this.hashQuestions = hashQuestions;
+        this.hashAnswers = hashAnswers;
+    }
+
+    public TCDExample () {
+        this.hashUsers = new HashMap<>();
+        this.hashTags = new HashMap<>();
+        this.hashQuestions = new HashMap<>();
+        this.hashAnswers = new HashMap<>();
+    }
+
+    public TCDExample (TCDExample tcd){
+        this.hashUsers = tcd.getHashUsers();
+        this.hashTags = tcd.getHashTags();
+        this.hashQuestions = tcd.getHashQuestions();
+        this.hashAnswers = tcd.getHashAnswers();
+    }
+
+    public HashMap<Long, User> getHashUsers() {
+        return hashUsers;
+    }
+
+    public void setHashUsers(HashMap<Long, User> hashUsers) {
+        this.hashUsers = hashUsers;
+    }
+
+    public HashMap<Long, Tag> getHashTags() {
+        return hashTags;
+    }
+
+    public void setHashTags(HashMap<Long, Tag> hashTags) {
+        this.hashTags = hashTags;
+    }
+
+    public HashMap<Long, Question> getHashQuestions() {
+        return hashQuestions;
+    }
+
+    public void setHashQuestions(HashMap<Long, Question> hashQuestions) {
+        this.hashQuestions = hashQuestions;
+    }
+
+    public HashMap<Long, Answer> getHashAnswers() {
+        return hashAnswers;
+    }
+
+    public void setHashAnswers(HashMap<Long, Answer> hashAnswers) {
+        this.hashAnswers = hashAnswers;
+    }
     /*
     public void init() {
         this.qelog = new MyLog("queryengine");
     }
     */
+
 
     public void load(String dumpPath) {
         File inputFile = new File(dumpPath);
