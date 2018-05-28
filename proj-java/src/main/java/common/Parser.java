@@ -97,7 +97,6 @@ public class Parser {
                         Question q = new Question(idq,scoreq,user_idq,titleq,commentcountq,tagsq,numberanswersq);
                         hashquestions.put(idq,q);
 
-
                         System.out.println("tipo : "
                                 + eElement.getAttribute("PostTypeId"));
                         System.out.println("ID : "

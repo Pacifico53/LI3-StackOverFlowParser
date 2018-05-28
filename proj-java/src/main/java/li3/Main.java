@@ -6,7 +6,8 @@ import common.Year;
 import common.MMonth;
 import common.Day;
 import common.Parser;
-import engine.TCDExample;
+import engine.TCDCom;
+import engine.TCDCom;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -16,20 +17,6 @@ public class Main {
     public static void main(String[] args){
         String path = args[0];
         long before, after;
-        DataCalendar calendar = new DataCalendar();
-        calendar.init();
-        System.out.println("A iniciar o parse dos ficheiros...");
-
-        Parser parser = new Parser();
-        before = System.currentTimeMillis();
-        parser.parserQuestionsAnswers(calendar, path);
-        parser.parseruser(path);
-        parser.parsertags(path);
-        after = System.currentTimeMillis();
-
-        System.out.println("PARSE DEMOROU -> "+(after-before)+" ms");
-
-
         /*
             LOG CONFIGURATION
         */
@@ -37,7 +24,7 @@ public class Main {
         MyLog logtime = new MyLog("times");
         /* -------------------------------------------------------------------------------------------*/
 
-        TADCommunity qe = new TCDExample();
+        TADCommunity qe = new TCDCom();
 
         /*
             LOAD PHASE

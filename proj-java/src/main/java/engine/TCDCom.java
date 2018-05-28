@@ -1,15 +1,9 @@
 package engine;
 
-import common.MyLog;
-import common.Pair;
+import common.*;
 import li3.TADCommunity;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import common.User;
-import common.Question;
-import common.Answer;
-import common.Tag;
-
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class TCDExample implements TADCommunity {
+public class TCDCom implements TADCommunity {
 
     private MyLog qelog;
     private HashMap<Long, User> hashUsers;
@@ -30,21 +24,21 @@ public class TCDExample implements TADCommunity {
     private HashMap<Long, Answer> hashAnswers;
 
 
-    public TCDExample(HashMap<Long, User> hashUsers, HashMap<Long, Tag> hashTags, HashMap<Long, Question> hashQuestions, HashMap<Long, Answer> hashAnswers) {
+    public TCDCom(HashMap<Long, User> hashUsers, HashMap<Long, Tag> hashTags, HashMap<Long, Question> hashQuestions, HashMap<Long, Answer> hashAnswers) {
         this.hashUsers = hashUsers;
         this.hashTags = hashTags;
         this.hashQuestions = hashQuestions;
         this.hashAnswers = hashAnswers;
     }
 
-    public TCDExample () {
+    public TCDCom () {
         this.hashUsers = new HashMap<>();
         this.hashTags = new HashMap<>();
         this.hashQuestions = new HashMap<>();
         this.hashAnswers = new HashMap<>();
     }
 
-    public TCDExample (TCDExample tcd){
+    public TCDCom (TCDCom tcd){
         this.hashUsers = tcd.getHashUsers();
         this.hashTags = tcd.getHashTags();
         this.hashQuestions = tcd.getHashQuestions();
@@ -90,25 +84,15 @@ public class TCDExample implements TADCommunity {
 
 
     public void load(String dumpPath) {
-        File inputFile = new File(dumpPath);
-        try {
+        Parser parser = new Parser();
+        DataCalendar calendar = new DataCalendar();
+        calendar.init();
+        System.out.println("A iniciar o parse dos ficheiros...");
 
-        DocumentBuilderFactory dbFactory
-                = DocumentBuilderFactory.newInstance();
+        parser.parserQuestionsAnswers(calendar, dumpPath, this.hashQuestions, this.hashAnswers);
+        parser.parseruser(dumpPath, this.hashUsers);
+        parser.parsertags(dumpPath, this.hashTags);
 
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-
-        Document doc = null;
-
-            doc = dBuilder.parse(inputFile);
-            doc.getDocumentElement().normalize();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
     }
 
     // Query 1
