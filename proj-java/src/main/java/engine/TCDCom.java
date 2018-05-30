@@ -14,6 +14,7 @@ public class TCDCom implements TADCommunity {
     private HashMap<Long, Tag> hashTags;
     private HashMap<Long, Question> hashQuestions;
     private HashMap<Long, Answer> hashAnswers;
+    private DataCalendar calendar;
 
 
     public TCDCom(HashMap<Long, User> hashUsers, HashMap<Long, Tag> hashTags, HashMap<Long, Question> hashQuestions, HashMap<Long, Answer> hashAnswers) {
@@ -21,6 +22,7 @@ public class TCDCom implements TADCommunity {
         this.hashTags = hashTags;
         this.hashQuestions = hashQuestions;
         this.hashAnswers = hashAnswers;
+
     }
 
     public TCDCom () {
@@ -28,6 +30,7 @@ public class TCDCom implements TADCommunity {
         this.hashTags = new HashMap<>();
         this.hashQuestions = new HashMap<>();
         this.hashAnswers = new HashMap<>();
+        this.calendar = new DataCalendar();
     }
 
     public TCDCom (TCDCom tcd){
@@ -77,11 +80,10 @@ public class TCDCom implements TADCommunity {
 
     public void load(String dumpPath) {
         Parser parser = new Parser();
-        DataCalendar calendar = new DataCalendar();
-        calendar.init();
+        this.calendar.init();
         System.out.println("A iniciar o parse dos ficheiros...");
 
-        parser.parserQuestionsAnswers(calendar, dumpPath, this.hashQuestions, this.hashAnswers);
+        parser.parserQuestionsAnswers(this.calendar, dumpPath, this.hashQuestions, this.hashAnswers);
         parser.parseruser(dumpPath, this.hashUsers);
         parser.parsertags(dumpPath, this.hashTags);
 
