@@ -3,7 +3,11 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class TCDCom implements TADCommunity {
 
@@ -89,9 +93,9 @@ public class TCDCom implements TADCommunity {
 
     // Query 1
     public Pair<String,String> infoFromPost(long id) {
-        Answer a = new Answer();
-        Question q = new Question();
-        User u = new User();
+        Answer a;
+        Question q;
+        User u;
         if( this.hashQuestions.containsKey(id)) {
             q = this.hashQuestions.get(id);
             u = this.hashUsers.get(q.getUser_id());
@@ -105,7 +109,6 @@ public class TCDCom implements TADCommunity {
             return new Pair<>(q.getTitulo(), u.getName());
         }
         return new Pair<>(null,null);
-        //return new Pair<>("What are the actual risks of giving www-data sudo nopasswd access?", "WebNinja");
     }
 
     // Query 2

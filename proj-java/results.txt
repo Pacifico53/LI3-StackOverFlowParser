@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Query1 -> (What are the actual risks of giving www-data sudo nopasswd access?, WebNinja)
 Query 2 -> [15811, 449, 158442, 167850, 367165, 295286, 59676, 93977, 35795, 3940]
 Query 3 -> (3667, 4102)
@@ -12,5 +11,3 @@ Query 8 -> [980835, 979082, 974117, 974105, 973832, 971812, 971056, 968451, 9649
 Query 9 -> [594]
 Query 10 -> 175891
 Query 11 -> [6, 29, 72, 163, 587]
-=======
->>>>>>> 074bd2f560e9d5aed3c5d2fb681a4a13f65a3e44
