@@ -161,23 +161,23 @@ public class TCDCom implements TADCommunity {
         int anoEnd = end.getYear();
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
-        for (i=anoBegin-2009; i<anoEnd-2009;i++){
+
+        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
             Year y = this.calendar.getYears().get(i);
-            if(i == anoBegin -2009) k=mesBegin;
-            if(i == anoEnd -2009) l=mesEnd;
-            else{k=1;l=12;}
-            for (j=k-1;j<=l-1;j++){
+            if(i == anoBegin - 2009) k = mesBegin;
+            if(i == anoEnd - 2009) l = mesEnd;
+            else{k = 1; l = 12;}
+            for (j = k - 1; j <= l - 1; j++){
                 MMonth m = y.getMonths().get(j);
                 if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
                 if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
-                else{p=1;o=31;}
-                for(d=p-1;d<=o-1;d++){
+                else{p = 1; o = 31;}
+                for(d = p - 1; d <= o-1; d++){
                     Day day = m.getDays().get(d);
                     for(long id : day.getIds()){
                         if(this.hashQuestions.containsKey(id)){
                             questions++;
-                        }
-                        if(this.hashAnswers.containsKey(id)){
+                        } else if(this.hashAnswers.containsKey(id)){
                             answers++;
                         }
                     }
