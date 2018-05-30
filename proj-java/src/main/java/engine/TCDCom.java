@@ -3,9 +3,7 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TCDCom implements TADCommunity {
 
@@ -91,12 +89,61 @@ public class TCDCom implements TADCommunity {
 
     // Query 1
     public Pair<String,String> infoFromPost(long id) {
-        return new Pair<>("What are the actual risks of giving www-data sudo nopasswd access?", "WebNinja");
+        Answer a = new Answer();
+        Question q = new Question();
+        User u = new User();
+        if( this.hashQuestions.containsKey(id)) {
+            q = this.hashQuestions.get(id);
+            u = this.hashUsers.get(q.getUser_id());
+            return new Pair<>(q.getTitulo(), u.getName());
+        }
+        else if ( this.hashAnswers.containsKey(id)) {
+            a = this.hashAnswers.get(id);
+            q = this.hashQuestions.get(a.getParent_id());
+            u = this.hashUsers.get(q.getUser_id());
+
+            return new Pair<>(q.getTitulo(), u.getName());
+        }
+        return new Pair<>(null,null);
+        //return new Pair<>("What are the actual risks of giving www-data sudo nopasswd access?", "WebNinja");
     }
 
     // Query 2
     public List<Long> topMostActive(int N) {
-        return Arrays.asList(15811L,449L,158442L,167850L,367165L,295286L,59676L,93977L,35795L,3940L);
+        for(Year year : this.calendar.getYears()) {
+            for(MMonth month : year.getMonths()){
+                for (Day day : month.getDays()){
+                    for (long id : day.getIds()){
+                        if (this.hashAnswers.containsKey(id)){
+                            Answer a = this.hashAnswers.get(id);
+                            User u = this.hashUsers.get(a.getUser_id_a());
+                            u.incrementNumberOfPosts();
+                        }else if (this.hashQuestions.containsKey(id)){
+                            Question q = this.hashQuestions.get(id);
+                            User u = this.hashUsers.get(q.getUser_id());
+                            u.incrementNumberOfPosts();
+                        }
+                    }
+                }
+            }
+        }
+
+        Comparator comparator = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                if (u1.getNumberofPosts() > u2.getNumberofPosts()) return -1;
+                else if (u1.getNumberofPosts() < u2.getNumberofPosts()) return 1;
+                else return 0;
+            }
+        };
+
+        ArrayList<User> allUsers = new ArrayList<>(this.hashUsers.values());
+        allUsers.sort(comparator);
+        List<Long> result = new ArrayList<>(10);
+        for (int i = 0; i <10; i++) {
+            result.add(allUsers.get(i).getId());
+        }
+        return result;
     }
 
     // Query 3
