@@ -151,7 +151,40 @@ public class TCDCom implements TADCommunity {
 
     // Query 3
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end) {
-        return new Pair<>(3667L,4102L);
+        long questions = 0;
+        long answers = 0;
+        int i=0, j=0, k=0, d=0, l=0, o=0, p=0;
+        int anoBegin = begin.getYear();
+        int mesBegin = begin.getMonthValue();
+        int diaBegin = begin.getDayOfMonth();
+
+        int anoEnd = end.getYear();
+        int mesEnd = end.getMonthValue();
+        int diaEnd = end.getDayOfMonth();
+        for (i=anoBegin-2009; i<anoEnd-2009;i++){
+            Year y = this.calendar.getYears().get(i);
+            if(i == anoBegin -2009) k=mesBegin;
+            if(i == anoEnd -2009) l=mesEnd;
+            else{k=1;l=12;}
+            for (j=k-1;j<=l-1;j++){
+                MMonth m = y.getMonths().get(j);
+                if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else{p=1;o=31;}
+                for(d=p-1;d<=o-1;d++){
+                    Day day = m.getDays().get(d);
+                    for(long id : day.getIds()){
+                        if(this.hashQuestions.containsKey(id)){
+                            questions++;
+                        }
+                        if(this.hashAnswers.containsKey(id)){
+                            answers++;
+                        }
+                    }
+                }
+            }
+        }
+        return new Pair<>(questions,answers);
     }
 
     // Query 4
