@@ -89,6 +89,10 @@ public class User {
         return sb.toString();
     }
 
+    public void incrementNumberOfPosts(){
+        this.numberOfPosts ++;
+    }
+
     public User clone (){
         return new User (this);
     }

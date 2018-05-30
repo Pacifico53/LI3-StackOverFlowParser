@@ -1,7 +1,7 @@
-LOAD -> 11752 ms
-Query 1: -> 2 ms
-Query 2 -> 0 ms
-Query 3 -> 1 ms
+LOAD -> 17759 ms
+Query 1: -> 0 ms
+Query 2 -> 391 ms
+Query 3 -> 0 ms
 Query 4 -> 0 ms
 Query 5 -> 0 ms
 Query6 -> 0 ms
