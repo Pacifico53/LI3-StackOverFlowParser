@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 LOAD -> 17759 ms
 Query 1: -> 0 ms
 Query 2 -> 391 ms
@@ -11,3 +12,5 @@ Query9 -> 0 ms
 Query 10 -> 0 ms
 Query 11 -> 0 ms
 CLEAN -> 0 ms
+=======
+>>>>>>> 074bd2f560e9d5aed3c5d2fb681a4a13f65a3e44
