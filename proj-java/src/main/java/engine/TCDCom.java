@@ -91,7 +91,23 @@ public class TCDCom implements TADCommunity {
 
     // Query 1
     public Pair<String,String> infoFromPost(long id) {
-        return new Pair<>("What are the actual risks of giving www-data sudo nopasswd access?", "WebNinja");
+        Answer a = new Answer();
+        Question q = new Question();
+        User u = new User();
+        if( this.hashQuestions.containsKey(id)) {
+            q = this.hashQuestions.get(id);
+            u = this.hashUsers.get(q.getUser_id());
+            return new Pair<>(q.getTitulo(), u.getName());
+        }
+        else if ( this.hashAnswers.containsKey(id)) {
+            a = this.hashAnswers.get(id);
+            q = this.hashQuestions.get(a.getParent_id());
+            u = this.hashUsers.get(q.getUser_id());
+
+            return new Pair<>(q.getTitulo(), u.getName());
+        }
+        return new Pair<>(null,null);
+        //return new Pair<>("What are the actual risks of giving www-data sudo nopasswd access?", "WebNinja");
     }
 
     // Query 2
