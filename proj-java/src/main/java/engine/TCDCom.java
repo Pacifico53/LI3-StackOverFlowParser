@@ -158,6 +158,7 @@ public class TCDCom implements TADCommunity {
         int anoEnd = end.getYear();
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
+
         for (i=anoBegin-2009; i<anoEnd-2009;i++){
             Year y = this.calendar.getYears().get(i);
             if(i == anoBegin -2009) k=mesBegin;
@@ -206,7 +207,52 @@ public class TCDCom implements TADCommunity {
 
     // Query 6
     public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end) {
-        return Arrays.asList(701775L,697197L,694560L,696641L,704208L);
+        ArrayList<Answer> answers = new ArrayList<>();
+        List<Long> result = new ArrayList<>(N);
+        int i=0, j=0, k=0, d=0, l=0, o=0, p=0;
+        int anoBegin = begin.getYear();
+        int mesBegin = begin.getMonthValue();
+        int diaBegin = begin.getDayOfMonth();
+
+        int anoEnd = end.getYear();
+        int mesEnd = end.getMonthValue();
+        int diaEnd = end.getDayOfMonth();
+
+        Comparator comparator = new Comparator<Answer>() {
+            @Override
+            public int compare(Answer a1, Answer a2) {
+                if (a1.getScore_a() > a2.getScore_a()) return -1;
+                else if (a1.getScore_a() < a2.getScore_a()) return 1;
+                else return 0;
+            }
+        };
+
+        for (i=anoBegin-2009; i<anoEnd-2009;i++){
+            Year y = this.calendar.getYears().get(i);
+            if(i == anoBegin -2009) k=mesBegin;
+            if(i == anoEnd -2009) l=mesEnd;
+            else{k=1;l=12;}
+            for (j=k-1;j<=l-1;j++){
+                MMonth m = y.getMonths().get(j);
+                if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else{p=1;o=31;}
+                for(d=p-1;d<=o-1;d++){
+                    Day day = m.getDays().get(d);
+                    for(long id : day.getIds()){
+                        if(this.hashAnswers.containsKey(id)){
+                            Answer a = this.hashAnswers.get(id);
+                            answers.add(a);
+                        }
+                    }
+                }
+            }
+        }
+        answers.sort(comparator);
+        for (i = 0; i <10; i++) {
+            result.add(answers.get(i).getId_a());
+        }
+        return result;
     }
 
     // Query 7
