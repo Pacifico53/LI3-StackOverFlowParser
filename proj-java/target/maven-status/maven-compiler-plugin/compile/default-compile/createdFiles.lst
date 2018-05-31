@@ -1,9 +1,11 @@
 li3/TADCommunity.class
 common/Day.class
+common/ComparatorVotosAnswer.class
 engine/TCDCom.class
 common/Answer.class
 common/Question.class
 common/MyLog.class
+common/ComparatorNumberPosts.class
 common/User.class
 common/Tag.class
 common/Year.class
@@ -12,4 +14,3 @@ common/Pair.class
 common/DataCalendar.class
 li3/Main.class
 common/MMonth.class
-engine/TCDCom$1.class

@@ -5,7 +5,6 @@ import li3.TADCommunity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -131,21 +130,15 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        Comparator comparator = new Comparator<User>() {
-            @Override
-            public int compare(User u1, User u2) {
-                if (u1.getNumberofPosts() > u2.getNumberofPosts()) return -1;
-                else if (u1.getNumberofPosts() < u2.getNumberofPosts()) return 1;
-                else return 0;
-            }
-        };
-
+        ComparatorNumberPosts comparator = new ComparatorNumberPosts();
         ArrayList<User> allUsers = new ArrayList<>(this.hashUsers.values());
         allUsers.sort(comparator);
+
         List<Long> result = new ArrayList<>(10);
         for (int i = 0; i <10; i++) {
             result.add(allUsers.get(i).getId());
         }
+
         return result;
     }
 
@@ -210,8 +203,9 @@ public class TCDCom implements TADCommunity {
 
     // Query 6
     public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end) {
-        ArrayList<Answer> answers = new ArrayList<>();
+        ArrayList<Answer> answers = new ArrayList<>(N);
         List<Long> result = new ArrayList<>(N);
+
         int i=0, j=0, k=0, d=0, l=0, o=0, p=0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
@@ -221,14 +215,7 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
-        Comparator comparator = new Comparator<Answer>() {
-            @Override
-            public int compare(Answer a1, Answer a2) {
-                if (a1.getScore_a() > a2.getScore_a()) return -1;
-                else if (a1.getScore_a() < a2.getScore_a()) return 1;
-                else return 0;
-            }
-        };
+        ComparatorVotosAnswer comparator = new ComparatorVotosAnswer();
 
         for (i=anoBegin-2009; i<=anoEnd-2009;i++){
             Year y = this.calendar.getYears().get(i);
@@ -251,8 +238,9 @@ public class TCDCom implements TADCommunity {
                 }
             }
         }
+
         answers.sort(comparator);
-        for (i = 0; i <10; i++) {
+        for (i = 0; i <N; i++) {
             result.add(answers.get(i).getId_a());
         }
         return result;

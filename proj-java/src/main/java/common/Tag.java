@@ -56,11 +56,10 @@ public class Tag {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(this.tag_id).append("\n");
-        sb.append("Name: ").append(this.tagname).append("\n");
-        sb.append("Count: ").append(this.count).append("\n");
-        return sb.toString();
+        String sb = "ID: " + this.tag_id + "\n" +
+                "Name: " + this.tagname + "\n" +
+                "Count: " + this.count + "\n";
+        return sb;
     }
 
     public Tag clone (){

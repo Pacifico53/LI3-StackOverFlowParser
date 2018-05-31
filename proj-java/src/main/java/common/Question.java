@@ -106,15 +106,14 @@ public class Question {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(this.id_q).append("\n");
-        sb.append("Title: ").append(this.titulo).append("\n");
-        sb.append("Score: ").append(this.score_q).append("\n");
-        sb.append("UserID: ").append(this.user_id).append("\n");
-        sb.append("Tags: ").append(this.tags).append("\n");
-        sb.append("CommentCount: ").append(this.comment_count).append("\n");
-        sb.append("NumberAnswers: ").append(this.numberAnswers).append("\n");
-        return sb.toString();
+        String sb = "ID: " + this.id_q + "\n" +
+                "Title: " + this.titulo + "\n" +
+                "Score: " + this.score_q + "\n" +
+                "UserID: " + this.user_id + "\n" +
+                "Tags: " + this.tags + "\n" +
+                "CommentCount: " + this.comment_count + "\n" +
+                "NumberAnswers: " + this.numberAnswers + "\n";
+        return sb;
     }
 
     public Question clone (){

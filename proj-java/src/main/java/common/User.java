@@ -80,13 +80,12 @@ public class User {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(id).append("\n");
-        sb.append("Name: ").append(name).append("\n");
-        sb.append("AboutMe: ").append(aboutme).append("\n");
-        sb.append("Reputation: ").append(reputation).append("\n");
-        sb.append("NumberOfPosts: ").append(numberOfPosts).append("\n");
-        return sb.toString();
+        String sb = "ID: " + id + "\n" +
+                "Name: " + name + "\n" +
+                "AboutMe: " + aboutme + "\n" +
+                "Reputation: " + reputation + "\n" +
+                "NumberOfPosts: " + numberOfPosts + "\n";
+        return sb;
     }
 
     public void incrementNumberOfPosts(){

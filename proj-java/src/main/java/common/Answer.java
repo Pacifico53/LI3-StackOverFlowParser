@@ -79,13 +79,12 @@ public class Answer {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(this.id_a).append("\n");
-        sb.append("Score: ").append(this.score_a).append("\n");
-        sb.append("ParentID: ").append(this.parent_id).append("\n");
-        sb.append("UserID: ").append(this.user_id_a).append("\n");
-        sb.append("CommentCount: ").append(this.comment_count_a).append("\n");
-        return sb.toString();
+        String sb = "ID: " + this.id_a + "\n" +
+                "Score: " + this.score_a + "\n" +
+                "ParentID: " + this.parent_id + "\n" +
+                "UserID: " + this.user_id_a + "\n" +
+                "CommentCount: " + this.comment_count_a + "\n";
+        return sb;
     }
 
     public Answer clone () {
