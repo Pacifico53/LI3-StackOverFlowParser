@@ -25,4 +25,7 @@ public class Day {
         this.ids = ids;
     }
 
+    public Day clone(){
+        return new Day(this);
+    }
 }

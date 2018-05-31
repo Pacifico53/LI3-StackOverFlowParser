@@ -2,6 +2,8 @@ package engine;
 
 import common.*;
 import li3.TADCommunity;
+
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -219,13 +221,33 @@ public class TCDCom implements TADCommunity {
 
     // Query 5
     public Pair<String, List<Long>> getUserInfo(long id) {
-        String shortBio = "<p>Coder. JS, Perl, Python, Basic<br>Books/movies: SF+F.<br>Dead:" +
-                "dell 9300<br>Dead: dell 1720 as of may 10th 2011.</p>\n" +
-                "<p>Current system: Acer Aspire 7750G.<br>\n" +
-                "Works OOTB as of Ubuntu 12.04.<br></p>";
-        List<Long> ids = Arrays.asList(982507L,982455L,980877L,980197L,980189L,976713L,974412L,
-                974359L,973895L,973838L);
-        return new Pair<>(shortBio,ids);
+        String aboutMe = this.hashUsers.get(id).getAboutme();
+        DataCalendar copyCalendar = this.calendar.clone();
+        Collections.reverse(copyCalendar.getYears());
+        ArrayList<Long> posts = new ArrayList<>();
+
+        for(Year year : copyCalendar.getYears()) {
+            Year copyYear = year.clone();
+            Collections.reverse(copyYear.getMonths());
+            for(MMonth month : year.getMonths()){
+                MMonth copyMonth = month.clone();
+                Collections.reverse(copyMonth.getDays());
+                for (Day day : month.getDays()){
+                    Day copyDay = day.clone();
+                    Collections.reverse(copyDay.getIds());
+                    for (long ids : day.getIds()){
+                        if(this.hashQuestions.containsKey(ids)){
+                            if (this.hashQuestions.get(ids).getUser_id() == id) posts.add(ids);
+                        } else if(this.hashAnswers.containsKey(ids)){
+                            if (this.hashAnswers.get(ids).getUser_id_a() == id) posts.add(ids);
+                        }
+                    }
+                }
+            }
+        }
+
+        posts = new ArrayList<>(posts.subList(0, 10));
+        return new Pair<>(aboutMe,posts);
     }
 
     // Query 6

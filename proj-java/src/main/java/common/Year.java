@@ -24,4 +24,8 @@ public class Year {
     public void setMonths(ArrayList<MMonth> months) {
         this.months = months;
     }
+
+    public Year clone(){
+        return new Year(this);
+    }
 }

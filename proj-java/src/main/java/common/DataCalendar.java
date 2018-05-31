@@ -48,4 +48,8 @@ public class DataCalendar {
         Day d = m.getDays().get(day);
         d.getIds().add(id);
     }
+
+    public DataCalendar clone(){
+        return new DataCalendar(this);
+    }
 }
