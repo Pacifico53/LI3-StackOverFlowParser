@@ -3,7 +3,11 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class TCDCom implements TADCommunity {
 
@@ -89,9 +93,9 @@ public class TCDCom implements TADCommunity {
 
     // Query 1
     public Pair<String,String> infoFromPost(long id) {
-        Answer a = new Answer();
-        Question q = new Question();
-        User u = new User();
+        Answer a;
+        Question q;
+        User u;
         if( this.hashQuestions.containsKey(id)) {
             q = this.hashQuestions.get(id);
             u = this.hashUsers.get(q.getUser_id());
@@ -105,7 +109,6 @@ public class TCDCom implements TADCommunity {
             return new Pair<>(q.getTitulo(), u.getName());
         }
         return new Pair<>(null,null);
-        //return new Pair<>("What are the actual risks of giving www-data sudo nopasswd access?", "WebNinja");
     }
 
     // Query 2
@@ -159,23 +162,26 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
+<<<<<<< HEAD
         for (i=anoBegin-2009; i<anoEnd-2009;i++){
+=======
+        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
+>>>>>>> c7316016862b89d9932b56ba12400bbcb0e26e8f
             Year y = this.calendar.getYears().get(i);
-            if(i == anoBegin -2009) k=mesBegin;
-            if(i == anoEnd -2009) l=mesEnd;
-            else{k=1;l=12;}
-            for (j=k-1;j<=l-1;j++){
+            if(i == anoBegin - 2009) k = mesBegin;
+            if(i == anoEnd - 2009) l = mesEnd;
+            else{k = 1; l = 12;}
+            for (j = k - 1; j <= l - 1; j++){
                 MMonth m = y.getMonths().get(j);
                 if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
                 if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
-                else{p=1;o=31;}
-                for(d=p-1;d<=o-1;d++){
+                else{p = 1; o = 31;}
+                for(d = p - 1; d <= o-1; d++){
                     Day day = m.getDays().get(d);
                     for(long id : day.getIds()){
                         if(this.hashQuestions.containsKey(id)){
                             questions++;
-                        }
-                        if(this.hashAnswers.containsKey(id)){
+                        } else if(this.hashAnswers.containsKey(id)){
                             answers++;
                         }
                     }

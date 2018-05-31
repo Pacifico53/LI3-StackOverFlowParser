@@ -37,7 +37,7 @@ public class Main {
            Query 1
         */
         before = System.currentTimeMillis();
-        Pair<String,String> q1 = qe.infoFromPost(801049);
+        Pair<String,String> q1 = qe.infoFromPost(801054);
         after = System.currentTimeMillis();
         logtime.writeLog("Query 1: -> "+(after-before)+" ms");
         log.writeLog("Query1 -> " + q1);
