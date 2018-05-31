@@ -162,11 +162,8 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
-<<<<<<< HEAD
-        for (i=anoBegin-2009; i<anoEnd-2009;i++){
-=======
+
         for (i = anoBegin-2009; i <= anoEnd-2009; i++){
->>>>>>> c7316016862b89d9932b56ba12400bbcb0e26e8f
             Year y = this.calendar.getYears().get(i);
             if(i == anoBegin - 2009) k = mesBegin;
             if(i == anoEnd - 2009) l = mesEnd;
@@ -233,7 +230,7 @@ public class TCDCom implements TADCommunity {
             }
         };
 
-        for (i=anoBegin-2009; i<anoEnd-2009;i++){
+        for (i=anoBegin-2009; i<=anoEnd-2009;i++){
             Year y = this.calendar.getYears().get(i);
             if(i == anoBegin -2009) k=mesBegin;
             if(i == anoEnd -2009) l=mesEnd;
