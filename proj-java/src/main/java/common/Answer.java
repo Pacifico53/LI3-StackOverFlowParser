@@ -79,12 +79,11 @@ public class Answer {
     }
 
     public String toString() {
-        String sb = "ID: " + this.id_a + "\n" +
+        return "ID: " + this.id_a + "\n" +
                 "Score: " + this.score_a + "\n" +
                 "ParentID: " + this.parent_id + "\n" +
                 "UserID: " + this.user_id_a + "\n" +
                 "CommentCount: " + this.comment_count_a + "\n";
-        return sb;
     }
 
     public Answer clone () {

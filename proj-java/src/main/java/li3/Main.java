@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args){
-        long before, after;
+
         /*
             LOG CONFIGURATION
         */
@@ -20,6 +20,7 @@ public class Main {
         /* -------------------------------------------------------------------------------------------*/
 
         TADCommunity qe = new TCDCom();
+        long before, after;
 
         /*
             LOAD PHASE
@@ -40,7 +41,7 @@ public class Main {
         Pair<String,String> q1 = qe.infoFromPost(801054);
         after = System.currentTimeMillis();
         logtime.writeLog("Query 1: -> "+(after-before)+" ms");
-        log.writeLog("Query1 -> " + q1);
+        log.writeLog("Query 1 -> " + q1);
 
         /*
            Query 2
@@ -87,8 +88,8 @@ public class Main {
         List<Long> q6 = qe.mostVotedAnswers(5, LocalDate.of(2015, Month.NOVEMBER, 1),
                 LocalDate.of(2015, Month.NOVEMBER,30));
         after = System.currentTimeMillis();
-        logtime.writeLog("Query6 -> " + (after - before) + " ms");
-        log.writeLog("Query6 -> " + q6);
+        logtime.writeLog("Query 6 -> " + (after - before) + " ms");
+        log.writeLog("Query 6 -> " + q6);
 
         /*
            Query 7

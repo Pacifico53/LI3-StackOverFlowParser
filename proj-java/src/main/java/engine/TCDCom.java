@@ -3,28 +3,46 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
+/**
+ * Classe onde se encontra a estrutura geral, e onde se faz o
+ * parse dos ficheiros (a partir da classe Parse) e as queries
+ */
 public class TCDCom implements TADCommunity {
 
-    private MyLog qelog;
-    private HashMap<Long, User> hashUsers;
-    private HashMap<Long, Tag> hashTags;
-    private HashMap<Long, Question> hashQuestions;
-    private HashMap<Long, Answer> hashAnswers;
-    private DataCalendar calendar;
+    //Em todas as HashMaps usamos o ID como key para encontrarmos o value
+    private HashMap<Long, User> hashUsers;          //HashMap onde se vai guardar os Users
+    private HashMap<Long, Tag> hashTags;            //HashMap onde se guardam as Tags
+    private HashMap<Long, Question> hashQuestions;  //HashMap onde se guardam as Questions
+    private HashMap<Long, Answer> hashAnswers;      //HashMap onde se guardam as Answers
+    private DataCalendar calendar;                  //O "Calendario" onde se vai guardar os ids de
+                                                    //Questions e Answers de cada dia
 
-
-    public TCDCom(HashMap<Long, User> hashUsers, HashMap<Long, Tag> hashTags, HashMap<Long, Question> hashQuestions, HashMap<Long, Answer> hashAnswers) {
+    /**
+     * Construtor parameterizado
+     * @param hashUsers HashMap dos Users
+     * @param hashTags HashMap das Tags
+     * @param hashQuestions HashMap das Questions
+     * @param hashAnswers HashMap das Answers
+     * @param calendar Estrutura do calendario
+     */
+    public TCDCom(HashMap<Long, User> hashUsers, HashMap<Long, Tag> hashTags, HashMap<Long, Question> hashQuestions, HashMap<Long, Answer> hashAnswers, DataCalendar calendar) {
         this.hashUsers = hashUsers;
         this.hashTags = hashTags;
         this.hashQuestions = hashQuestions;
         this.hashAnswers = hashAnswers;
-
+        this.calendar = calendar;
     }
 
+    /**
+     * Construtor vazio
+     */
     public TCDCom () {
         this.hashUsers = new HashMap<>();
         this.hashTags = new HashMap<>();
@@ -33,13 +51,19 @@ public class TCDCom implements TADCommunity {
         this.calendar = new DataCalendar();
     }
 
+    /**
+     * Construtor de copia
+     * @param tcd Objecto da Classe TCDCom que se quer copiar
+     */
     public TCDCom (TCDCom tcd){
         this.hashUsers = tcd.getHashUsers();
         this.hashTags = tcd.getHashTags();
         this.hashQuestions = tcd.getHashQuestions();
         this.hashAnswers = tcd.getHashAnswers();
+        this.calendar = tcd.getCalendar();
     }
 
+    //GETTERS E SETTERS
     public HashMap<Long, User> getHashUsers() {
         return hashUsers;
     }
@@ -71,13 +95,20 @@ public class TCDCom implements TADCommunity {
     public void setHashAnswers(HashMap<Long, Answer> hashAnswers) {
         this.hashAnswers = hashAnswers;
     }
-    /*
-    public void init() {
-        this.qelog = new MyLog("queryengine");
+
+
+    public DataCalendar getCalendar() {
+        return calendar;
     }
-    */
 
+    public void setCalendar(DataCalendar calendar) {
+        this.calendar = calendar;
+    }
 
+    /**
+     * Funçao que faz parse e enche a estrutura com os dados do dump
+     * @param dumpPath Path para os ficheiros dump, android ou ubuntu
+     */
     public void load(String dumpPath) {
         Parser parser = new Parser();
         this.calendar.init();
@@ -86,7 +117,6 @@ public class TCDCom implements TADCommunity {
         parser.parserQuestionsAnswers(this.calendar, dumpPath, this.hashQuestions, this.hashAnswers);
         parser.parseruser(dumpPath, this.hashUsers);
         parser.parsertags(dumpPath, this.hashTags);
-
     }
 
     // Query 1
@@ -145,7 +175,7 @@ public class TCDCom implements TADCommunity {
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end) {
         long questions = 0;
         long answers = 0;
-        int i=0, j=0, k=0, d=0, l=0, o=0, p=0;
+        int i, j, k=0, d, l, o, p=0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -184,7 +214,7 @@ public class TCDCom implements TADCommunity {
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) {
         ArrayList<Long> questionsID = new ArrayList<>();
 
-        int i=0, j=0, k=0, d=0, l=0, o=0, p=0;
+        int i, j, k=0, d, l, o, p=0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -193,17 +223,17 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
-        for (i=anoBegin-2009; i<=anoEnd-2009;i++){
+        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
             Year y = this.calendar.getYears().get(i);
-            if(i == anoBegin -2009) k=mesBegin;
-            if(i == anoEnd -2009) l=mesEnd;
-            else{k=1;l=12;}
-            for (j=k-1;j<=l-1;j++){
+            if(i == anoBegin-2009) k = mesBegin;
+            if(i == anoEnd-2009) l = mesEnd;
+            else{k = 1; l = 12;}
+            for (j = k-1; j <= l-1; j++){
                 MMonth m = y.getMonths().get(j);
-                if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
-                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
-                else{p=1;o=31;}
-                for(d=p-1;d<=o-1;d++){
+                if(i == anoBegin-2009 && j == mesBegin) p = diaBegin;
+                if(i == anoEnd-2009 && j == mesEnd) o = diaEnd;
+                else{p = 1; o = 31;}
+                for(d = p-1; d <= o-1; d++){
                     Day day = m.getDays().get(d);
                     for(long id : day.getIds()){
                         if(this.hashQuestions.containsKey(id)){
@@ -255,7 +285,7 @@ public class TCDCom implements TADCommunity {
         ArrayList<Answer> answers = new ArrayList<>(N);
         List<Long> result = new ArrayList<>(N);
 
-        int i=0, j=0, k=0, d=0, l=0, o=0, p=0;
+        int i, j, k=0, d, l, o, p=0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -266,17 +296,17 @@ public class TCDCom implements TADCommunity {
 
         ComparatorVotosAnswer comparator = new ComparatorVotosAnswer();
 
-        for (i=anoBegin-2009; i<=anoEnd-2009;i++){
+        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
             Year y = this.calendar.getYears().get(i);
-            if(i == anoBegin -2009) k=mesBegin;
-            if(i == anoEnd -2009) l=mesEnd;
-            else{k=1;l=12;}
-            for (j=k-1;j<=l-1;j++){
+            if(i == anoBegin-2009) k = mesBegin;
+            if(i == anoEnd-2009) l = mesEnd;
+            else{k = 1; l = 12;}
+            for (j = k-1; j <= l-1; j++){
                 MMonth m = y.getMonths().get(j);
-                if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if(i == anoBegin-2009 && j == mesBegin) p = diaBegin;
                 if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
-                else{p=1;o=31;}
-                for(d=p-1;d<=o-1;d++){
+                else{p = 1; o = 31;}
+                for(d = p-1; d <= o-1; d++){
                     Day day = m.getDays().get(d);
                     for(long id : day.getIds()){
                         if(this.hashAnswers.containsKey(id)){

@@ -106,14 +106,13 @@ public class Question {
     }
 
     public String toString() {
-        String sb = "ID: " + this.id_q + "\n" +
+        return "ID: " + this.id_q + "\n" +
                 "Title: " + this.titulo + "\n" +
                 "Score: " + this.score_q + "\n" +
                 "UserID: " + this.user_id + "\n" +
                 "Tags: " + this.tags + "\n" +
                 "CommentCount: " + this.comment_count + "\n" +
                 "NumberAnswers: " + this.numberAnswers + "\n";
-        return sb;
     }
 
     public Question clone (){

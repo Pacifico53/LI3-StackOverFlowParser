@@ -10,9 +10,17 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-
+/**
+ * Classe utilizada para fazer parse dos ficheiros dump, isto é utilizado no "load", e vai encher as estruturas com os dados do dump
+ */
 public class Parser {
 
+    /**
+     * Funcao utilizada para converter uma String que contem uma data, como
+     * aparece no dump, para uma LocalDate
+     * @param date Uma data em formato string, por exemplo "2016-07-20T22:55:21.177"
+     * @return A mesma data no formato LocalDate
+     */
     private LocalDate xmlToDate(String date) {
         LocalDate date1;
         int year;
@@ -27,6 +35,11 @@ public class Parser {
         return date1;
     }
 
+    /**
+     * Metodo para percorrer o ficheiro Users.xml e encher a HashMap de users com os dados necessarios
+     * @param path Path para a pasta que contem o dump
+     * @param hashUsers HashMap dos users
+     */
     public void parseruser(String path, HashMap<Long,User> hashUsers) {
         try {
             String pathFile = path.concat("/Users.xml");
@@ -55,6 +68,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Metodo para percorrer o ficheiro Posts.xml, vai colocar os ids dos posts na devida data,
+     * e guardar os dados das Answers e Questions nas HashMaps correspondentes
+     * @param calendar A estrutura do calendario
+     * @param path  Path para a pasta contendo o dump
+     * @param hashQuestions HashMap das Questions
+     * @param hashAnswers   HashMap das Answers
+     */
     public void parserQuestionsAnswers(DataCalendar calendar, String path, HashMap<Long,Question> hashQuestions , HashMap<Long,Answer> hashAnswers) {
         try {
             String pathFile = path.concat("/Posts.xml");
@@ -113,6 +134,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Metodo para percorrer o ficheiro Tags.xml e encher a HashMap de tags com os dados necessarios
+     * @param path Path para a pasta com o dump
+     * @param hashTags HashMap das tags
+     */
     public void parsertags(String path, HashMap<Long,Tag> hashTags) {
         try {
             String pathFile = path.concat("/Tags.xml");

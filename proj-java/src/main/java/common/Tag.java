@@ -56,10 +56,9 @@ public class Tag {
     }
 
     public String toString() {
-        String sb = "ID: " + this.tag_id + "\n" +
+        return "ID: " + this.tag_id + "\n" +
                 "Name: " + this.tagname + "\n" +
                 "Count: " + this.count + "\n";
-        return sb;
     }
 
     public Tag clone (){
