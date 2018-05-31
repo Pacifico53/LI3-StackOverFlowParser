@@ -3,10 +3,7 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TCDCom implements TADCommunity {
 
@@ -183,11 +180,41 @@ public class TCDCom implements TADCommunity {
 
     // Query 4
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) {
-        return Arrays.asList(276174L,276029L,274462L,274324L,274316L,274141L,274100L,272937L,
-                272813L,272754L,272666L,272565L,272450L,272313L,271816L,271683L,271647L,270853L,270608L,270528L,270488L,
-                270188L,270014L,269876L,269781L,269095L,268501L,268155L,267746L,267656L,267625L,266742L,266335L,266016L,
-                265531L,265483L,265443L,265347L,265104L,265067L,265028L,264764L,264762L,264616L,264525L,264292L,263816L,
-                263740L,263460L,263405L,263378L,263253L,262733L,262574L);
+        ArrayList<Long> questionsID = new ArrayList<>();
+
+        int i=0, j=0, k=0, d=0, l=0, o=0, p=0;
+        int anoBegin = begin.getYear();
+        int mesBegin = begin.getMonthValue();
+        int diaBegin = begin.getDayOfMonth();
+
+        int anoEnd = end.getYear();
+        int mesEnd = end.getMonthValue();
+        int diaEnd = end.getDayOfMonth();
+
+        for (i=anoBegin-2009; i<=anoEnd-2009;i++){
+            Year y = this.calendar.getYears().get(i);
+            if(i == anoBegin -2009) k=mesBegin;
+            if(i == anoEnd -2009) l=mesEnd;
+            else{k=1;l=12;}
+            for (j=k-1;j<=l-1;j++){
+                MMonth m = y.getMonths().get(j);
+                if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else{p=1;o=31;}
+                for(d=p-1;d<=o-1;d++){
+                    Day day = m.getDays().get(d);
+                    for(long id : day.getIds()){
+                        if(this.hashQuestions.containsKey(id)){
+                            Question q = this.hashQuestions.get(id);
+                            if (q.getTags().contains(tag)) questionsID.add(q.getId_q());
+                        }
+                    }
+                }
+            }
+        }
+
+        Collections.reverse(questionsID);
+        return questionsID;
     }
 
     // Query 5
