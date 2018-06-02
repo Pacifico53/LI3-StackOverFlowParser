@@ -3,6 +3,7 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -378,7 +379,29 @@ public class TCDCom implements TADCommunity {
 
     // Query 8
     public List<Long> containsWord(int N, String word) {
-        return Arrays.asList(980835L,979082L,974117L,974105L,973832L,971812L,971056L,968451L,964999L,962770L);
+        List<Long> result = new ArrayList<>(N);
+        DataCalendar copyCalendar = this.calendar.clone();
+        Collections.reverse(copyCalendar.getYears());
+
+        for(Year year : copyCalendar.getYears()) {
+            Year copyYear = year.clone();
+            Collections.reverse(copyYear.getMonths());
+            for (MMonth month : year.getMonths()) {
+                MMonth copyMonth = month.clone();
+                Collections.reverse(copyMonth.getDays());
+                for (Day day : month.getDays()) {
+                    Day copyDay = day.clone();
+                    Collections.reverse(copyDay.getIds());
+                    for (long ids : day.getIds()) {
+                        if (this.hashQuestions.containsKey(ids)) {
+                            if (this.hashQuestions.get(ids).getTitulo().contains(word)) result.add(ids);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+        //return Arrays.asList(980835L,979082L,974117L,974105L,973832L,971812L,971056L,968451L,964999L,962770L);
     }
 
     // Query 9
