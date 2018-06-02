@@ -327,7 +327,53 @@ public class TCDCom implements TADCommunity {
 
     // Query 7
     public List<Long> mostAnsweredQuestions(int N, LocalDate begin, LocalDate end) {
-        return Arrays.asList(505506L,508221L,506510L,508029L,506824L,505581L,505368L,509498L,509283L,508635L);
+       ArrayList<Question> questions = new ArrayList<>(N);
+       List<Long> result = new ArrayList<>(N);
+
+        int i, j, k=0, d, l, o, p=0;
+        int anoBegin = begin.getYear();
+        int mesBegin = begin.getMonthValue();
+        int diaBegin = begin.getDayOfMonth();
+
+        int anoEnd = end.getYear();
+        int mesEnd = end.getMonthValue();
+        int diaEnd = end.getDayOfMonth();
+
+        ComparatorNumberAnswers comparator = new ComparatorNumberAnswers();
+
+        for (i = anoBegin-2009; i <= anoEnd-2009; i++) {
+            Year y = this.calendar.getYears().get(i);
+            if (i == anoBegin - 2009) k = mesBegin;
+            if (i == anoEnd - 2009) l = mesEnd;
+            else {
+                k = 1;
+                l = 12;
+            }
+            for (j = k - 1; j <= l - 1; j++) {
+                MMonth m = y.getMonths().get(j);
+                if (i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if (i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else {
+                    p = 1;
+                    o = 31;
+                }
+                for (d = p - 1; d <= o - 1; d++) {
+                    Day day = m.getDays().get(d);
+                    for (long id : day.getIds()) {
+                        if (this.hashQuestions.containsKey(id)) {
+                            Question q = this.hashQuestions.get(id);
+                            questions.add(q);
+                        }
+                    }
+                }
+            }
+        }
+        questions.sort(comparator);
+        for(i=0; i<N; i++){
+            result.add(questions.get(i).getId_q());
+        }
+        return result;
+        // return Arrays.asList(505506L,508221L,506510L,508029L,506824L,505581L,505368L,509498L,509283L,508635L);
     }
 
     // Query 8
