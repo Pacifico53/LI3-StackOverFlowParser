@@ -4,18 +4,18 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 /**
- * Classe comparator para numero de posts de dois User
+ * Classe comparator para melhor Answer
  */
 public class ComparatorBestAnswer implements Comparator<Answer>
 {
     private HashMap<Long, User> hashUsers;
 
-    public ComparatorBestAnswer(HashMap hashUsers){
+    public ComparatorBestAnswer(HashMap<Long, User> hashUsers){
             this.hashUsers = hashUsers;
     }
 
     /**
-     * Compara dois valores dando dois Users como argumento
+     * Compara duas answers usando a formula de melhor answer
      */
     public int compare(Answer a1, Answer a2) {
         int repUser1 = hashUsers.get(a1.getUser_id_a()).getReputation();

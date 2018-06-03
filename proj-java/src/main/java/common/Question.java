@@ -1,5 +1,6 @@
 package common;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Question {
@@ -89,6 +90,18 @@ public class Question {
 
     public void setNumberAnswers(int numberAnswers) {
         this.numberAnswers = numberAnswers;
+    }
+
+    public ArrayList<String> getSeparateTags(){
+        ArrayList<String> result = new ArrayList<>();
+        String tagsCopy = this.tags;
+
+        for(String t : tagsCopy.split(">")){
+            t = t.substring(1, t.length());
+            result.add(t);
+        }
+
+        return result;
     }
 
 

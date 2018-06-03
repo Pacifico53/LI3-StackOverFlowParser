@@ -3,7 +3,6 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -520,7 +519,7 @@ public class TCDCom implements TADCommunity {
         ArrayList<Answer> answersDaQuestion = new ArrayList<>();
         ComparatorBestAnswer comparator = new ComparatorBestAnswer(hashUsersCopy);
 
-        for(Year year : calendarCopy.getYears()) {
+        for(Year year : calendarCopy.getYears()){
             for(MMonth month : year.getMonths()){
                 for (Day day : month.getDays()){
                     for (long ids : day.getIds()){
@@ -536,15 +535,85 @@ public class TCDCom implements TADCommunity {
 
         answersDaQuestion.sort(comparator);
         return answersDaQuestion.get(0).getId_a();
-        //return 175891;
     }
 
     // Query 11
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end) {
-        return Arrays.asList(6L,29L,72L,163L,587L);
+        DataCalendar calendarCopy = this.calendar.clone();
+        HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
+        HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
+        HashMap<Long, Tag> hashTagCopy = new HashMap<>(this.hashTags);
+
+        List<User> nBestUsers = new ArrayList<>();
+        ComparatorRepUsers comparatorRepUsers = new ComparatorRepUsers();
+
+        ArrayList<Question> questions = new ArrayList<>();
+
+        List<Long> result = new ArrayList<>();
+
+        int i, j, k=0, d, l, o, p=0;
+        int anoBegin = begin.getYear();
+        int mesBegin = begin.getMonthValue();
+        int diaBegin = begin.getDayOfMonth();
+
+        int anoEnd = end.getYear();
+        int mesEnd = end.getMonthValue();
+        int diaEnd = end.getDayOfMonth();
+
+        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
+            Year y = calendarCopy.getYears().get(i);
+            if(i == anoBegin-2009) k = mesBegin;
+            if(i == anoEnd-2009) l = mesEnd;
+            else{k = 1; l = 12;}
+            for (j = k-1; j <= l-1; j++){
+                MMonth m = y.getMonths().get(j);
+                if(i == anoBegin-2009 && j == mesBegin) p = diaBegin;
+                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else{p = 1; o = 31;}
+                for(d = p-1; d <= o-1; d++){
+                    Day day = m.getDays().get(d);
+                    for(long id : day.getIds()){
+                        if (hashQuestionsCopy.containsKey(id)){
+                            questions.add(hashQuestionsCopy.get(id));
+
+                            long userid = hashQuestionsCopy.get(id).getUser_id();
+                            User u = hashUsersCopy.get(userid).clone();
+                            nBestUsers.add(u);
+                        }
+                    }
+                }
+            }
+        }
+
+        nBestUsers.sort(comparatorRepUsers);
+        nBestUsers = nBestUsers.subList(0, N);
+
+        for(Question q : questions){
+            if (nBestUsers.contains(hashUsersCopy.get(q.getUser_id()))) {
+                for (String ts : q.getSeparateTags()) {
+                    for (Tag t : hashTagCopy.values()) {
+                        if (t.getTagname().equals(ts)) {
+                            t.incrementCount();
+                        }
+                    }
+                }
+            }
+        }
+
+        List<Tag> nTags = new ArrayList<>(hashTagCopy.values());
+        ComparatorTagCount comparatorTagCount = new ComparatorTagCount();
+
+        nTags.sort(comparatorTagCount);
+        nTags = nTags.subList(0, N);
+
+        for (Tag t : nTags){
+            result.add(t.getTag_id());
+        }
+
+        return result;
+        //return Arrays.asList(6L,29L,72L,163L,587L);
     }
 
     public void clear(){
-
     }
 }

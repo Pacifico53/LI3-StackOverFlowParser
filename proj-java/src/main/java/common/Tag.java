@@ -1,5 +1,6 @@
 package common;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Tag {
@@ -44,6 +45,10 @@ public class Tag {
 
     public void setTag_id(long tag_id) {
         this.tag_id = tag_id;
+    }
+
+    public void incrementCount(){
+        this.count++;
     }
 
     public boolean equals(Object o) {
