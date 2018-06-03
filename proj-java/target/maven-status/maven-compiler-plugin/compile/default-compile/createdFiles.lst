@@ -4,6 +4,7 @@ common/ComparatorVotosAnswer.class
 engine/TCDCom.class
 common/Answer.class
 common/Question.class
+common/ComparatorBestAnswer.class
 common/MyLog.class
 common/ComparatorNumberPosts.class
 common/User.class

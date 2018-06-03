@@ -401,7 +401,6 @@ public class TCDCom implements TADCommunity {
             result.add(questions.get(i).getId_q());
         }
         return result;
-        // return Arrays.asList(505506L,508221L,506510L,508029L,506824L,505581L,505368L,509498L,509283L,508635L);
     }
 
     // Query 8
@@ -436,17 +435,108 @@ public class TCDCom implements TADCommunity {
         }
 
         return result.subList(0, N);
-        //return Arrays.asList(980835L,979082L,974117L,974105L,973832L,971812L,971056L,968451L,964999L,962770L);
     }
 
     // Query 9
     public List<Long> bothParticipated(int N, long id1, long id2) {
-        return Arrays.asList(594L);
+        DataCalendar copyCalendar = new DataCalendar(this.calendar);
+        HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
+        HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
+
+        ArrayList<Year> copyYears = new ArrayList<>(copyCalendar.getYears());
+        Collections.reverse(copyYears);
+
+        ArrayList<Long> questionsUser1 = new ArrayList<>();
+        ArrayList<Long> questionsUser2 = new ArrayList<>();
+
+        ArrayList<Long> answersUser1 = new ArrayList<>();
+        ArrayList<Long> answersUser2 = new ArrayList<>();
+
+
+        List<Long> result = new ArrayList<>();
+
+        for(Year year : copyYears) {
+            Year copyYear = year.clone();
+            ArrayList<MMonth> copyMonths = new ArrayList<>(copyYear.getMonths());
+            Collections.reverse(copyMonths);
+            for(MMonth month : copyMonths){
+                MMonth copyMonth = month.clone();
+                ArrayList<Day> copyDays = new ArrayList<>(copyMonth.getDays());
+                Collections.reverse(copyDays);
+                for (Day day : copyDays){
+                    Day copyDay = day.clone();
+                    ArrayList<Long> copyIds = new ArrayList<>(copyDay.getIds());
+                    Collections.reverse(copyIds);
+                    for (long ids : copyIds){
+                        if (hashQuestionsCopy.containsKey(ids)){
+                            if (hashQuestionsCopy.get(ids).getUser_id() == id1){
+                                questionsUser1.add(hashQuestionsCopy.get(ids).getId_q());
+                            }
+                            if (hashQuestionsCopy.get(ids).getUser_id() == id2){
+                                questionsUser2.add(hashQuestionsCopy.get(ids).getId_q());
+                            }
+                        }
+                        if (hashAnswersCopy.containsKey(ids)){
+                            if (hashAnswersCopy.get(ids).getUser_id_a() == id1){
+                                answersUser1.add(hashAnswersCopy.get(ids).getParent_id());
+                            }
+                            if (hashAnswersCopy.get(ids).getUser_id_a() == id2){
+                                answersUser2.add(hashAnswersCopy.get(ids).getParent_id());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Long q1 : questionsUser1){
+            if(answersUser2.contains(q1) && !result.contains(q1)){
+                result.add(q1);
+            }
+        }
+
+        for (Long q2 : questionsUser2){
+            if(answersUser1.contains(q2) && !result.contains(q2)){
+                result.add(q2);
+            }
+        }
+
+        for (Long q2 : answersUser1){
+            if(answersUser2.contains(q2) && !result.contains(q2)){
+                result.add(q2);
+            }
+        }
+
+        return (N < result.size()) ? result.subList(0, N) : result;
+        //return Arrays.asList(594L);
     }
 
     // Query 10
     public long betterAnswer(long id) {
-        return 175891;
+        DataCalendar calendarCopy = this.calendar.clone();
+        HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
+        HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
+
+        ArrayList<Answer> answersDaQuestion = new ArrayList<>();
+        ComparatorBestAnswer comparator = new ComparatorBestAnswer(hashUsersCopy);
+
+        for(Year year : calendarCopy.getYears()) {
+            for(MMonth month : year.getMonths()){
+                for (Day day : month.getDays()){
+                    for (long ids : day.getIds()){
+                        if (hashAnswersCopy.containsKey(ids)){
+                            if (hashAnswersCopy.get(ids).getParent_id() == id){
+                                answersDaQuestion.add(hashAnswersCopy.get(ids).clone());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        answersDaQuestion.sort(comparator);
+        return answersDaQuestion.get(0).getId_a();
+        //return 175891;
     }
 
     // Query 11
