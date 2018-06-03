@@ -8,6 +8,7 @@ common/MyLog.class
 common/ComparatorNumberPosts.class
 common/User.class
 common/Tag.class
+common/ComparatorNumberAnswers.class
 common/Year.class
 common/Parser.class
 common/Pair.class

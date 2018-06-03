@@ -96,10 +96,10 @@ public class User {
         if ((o==null) || (this.getClass() != o.getClass()))
             return false;
         User m = (User) o;
-        return (this.id == getId() &&
+        return (this.id == m.getId() &&
                 this.name.equals(m.getName()) &&
                 this.aboutme.equals(m.getAboutme())&&
-                this.reputation == getReputation() &&
+                this.reputation == m.getReputation() &&
                 this.numberOfPosts == m.getNumberofPosts());
     }
 

@@ -38,7 +38,7 @@ public class Main {
            Query 1
         */
         before = System.currentTimeMillis();
-        Pair<String,String> q1 = qe.infoFromPost(801054);
+        Pair<String,String> q1 = qe.infoFromPost(801049);
         after = System.currentTimeMillis();
         logtime.writeLog("Query 1: -> "+(after-before)+" ms");
         log.writeLog("Query 1 -> " + q1);
@@ -96,7 +96,7 @@ public class Main {
         */
         before = System.currentTimeMillis();
         List<Long> q7 = qe.mostAnsweredQuestions(10, LocalDate.of(2014,Month.AUGUST,1),
-                LocalDate.of(2014,Month.AUGUST,10));
+                LocalDate.of(2014,Month.AUGUST,11));
         after = System.currentTimeMillis();
         logtime.writeLog("Query 7 -> "+(after-before)+" ms");
         log.writeLog("Query 7 -> "+q7);
