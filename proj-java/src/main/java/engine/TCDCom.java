@@ -647,11 +647,6 @@ public class TCDCom implements TADCommunity {
     }
 
     public void clear() {
-        DataCalendar calendarCopy = this.calendar.clone();
-        HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
-        HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
-        HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
-
         for (Year year : this.calendar.getYears()) {
             for (MMonth month : year.getMonths()) {
                 for (Day day : month.getDays()) {
