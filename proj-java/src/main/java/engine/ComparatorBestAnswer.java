@@ -1,4 +1,7 @@
-package common;
+package engine;
+
+import common.Answer;
+import common.User;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -24,8 +27,6 @@ public class ComparatorBestAnswer implements Comparator<Answer>
         double score1 = (a1.getScore_a() * 0.65) + (repUser1 * 0.25) + (a1.getComment_count_a() * 0.1);
         double score2 = (a2.getScore_a() * 0.65) + (repUser2 * 0.25) + (a2.getComment_count_a() * 0.1);
 
-        if (score1 > score2) return -1;
-        else if (score1 < score2) return 1;
-        else return 0;
+        return Double.compare(score2, score1);
     }
 }

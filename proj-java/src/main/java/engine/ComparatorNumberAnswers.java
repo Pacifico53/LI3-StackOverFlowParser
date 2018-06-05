@@ -1,4 +1,6 @@
-package common;
+package engine;
+
+import common.Question;
 
 import java.util.Comparator;
 
@@ -8,9 +10,7 @@ import java.util.Comparator;
 public class ComparatorNumberAnswers implements Comparator<Question>
 {
     public int compare (Question q1 , Question q2){
-        if (q1.getNumberAnswers() > q2.getNumberAnswers()) return -1;
-        else if (q1.getNumberAnswers() < q2.getNumberAnswers()) return 1;
-        else return 0;
+        return Integer.compare(q2.getNumberAnswers(), q1.getNumberAnswers());
     }
 
 }

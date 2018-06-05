@@ -5,13 +5,10 @@ import li3.TADCommunity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 
 /**
  * Classe onde se encontra a estrutura geral, e onde se faz o

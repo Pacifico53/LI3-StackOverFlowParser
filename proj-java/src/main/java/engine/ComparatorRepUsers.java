@@ -1,4 +1,6 @@
-package common;
+package engine;
+
+import common.User;
 
 import java.util.Comparator;
 
@@ -8,9 +10,7 @@ import java.util.Comparator;
 public class ComparatorRepUsers implements Comparator<User>
 {
     public int compare (User u1 , User u2){
-        if (u1.getReputation() > u2.getReputation()) return -1;
-        else if (u1.getReputation() < u2.getReputation()) return 1;
-        else return 0;
+        return Integer.compare(u2.getReputation(), u1.getReputation());
     }
 
 }
