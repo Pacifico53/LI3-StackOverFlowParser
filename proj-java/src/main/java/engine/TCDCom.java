@@ -22,15 +22,16 @@ public class TCDCom implements TADCommunity {
     private HashMap<Long, Question> hashQuestions;  //HashMap onde se guardam as Questions
     private HashMap<Long, Answer> hashAnswers;      //HashMap onde se guardam as Answers
     private DataCalendar calendar;                  //O "Calendario" onde se vai guardar os ids de
-                                                    //Questions e Answers de cada dia
+    //Questions e Answers de cada dia
 
     /**
      * Construtor parameterizado
-     * @param hashUsers HashMap dos Users
-     * @param hashTags HashMap das Tags
+     *
+     * @param hashUsers     HashMap dos Users
+     * @param hashTags      HashMap das Tags
      * @param hashQuestions HashMap das Questions
-     * @param hashAnswers HashMap das Answers
-     * @param calendar Estrutura do calendario
+     * @param hashAnswers   HashMap das Answers
+     * @param calendar      Estrutura do calendario
      */
     public TCDCom(HashMap<Long, User> hashUsers, HashMap<Long, Tag> hashTags, HashMap<Long, Question> hashQuestions, HashMap<Long, Answer> hashAnswers, DataCalendar calendar) {
         this.hashUsers = hashUsers;
@@ -43,7 +44,7 @@ public class TCDCom implements TADCommunity {
     /**
      * Construtor vazio
      */
-    public TCDCom () {
+    public TCDCom() {
         this.hashUsers = new HashMap<>();
         this.hashTags = new HashMap<>();
         this.hashQuestions = new HashMap<>();
@@ -53,9 +54,10 @@ public class TCDCom implements TADCommunity {
 
     /**
      * Construtor de copia
+     *
      * @param tcd Objecto da Classe TCDCom que se quer copiar
      */
-    public TCDCom (TCDCom tcd){
+    public TCDCom(TCDCom tcd) {
         this.hashUsers = tcd.getHashUsers();
         this.hashTags = tcd.getHashTags();
         this.hashQuestions = tcd.getHashQuestions();
@@ -107,6 +109,7 @@ public class TCDCom implements TADCommunity {
 
     /**
      * Funçao que faz parse e enche a estrutura com os dados do dump
+     *
      * @param dumpPath Path para os ficheiros dump, android ou ubuntu
      */
     public void load(String dumpPath) {
@@ -120,7 +123,7 @@ public class TCDCom implements TADCommunity {
     }
 
     // Query 1
-    public Pair<String,String> infoFromPost(long id) {
+    public Pair<String, String> infoFromPost(long id) {
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
@@ -128,19 +131,18 @@ public class TCDCom implements TADCommunity {
         Answer a;
         Question q;
         User u;
-        if( hashQuestionsCopy.containsKey(id)) {
+        if (hashQuestionsCopy.containsKey(id)) {
             q = hashQuestionsCopy.get(id);
             u = hashUsersCopy.get(q.getUser_id());
             return new Pair<>(q.getTitulo(), u.getName());
-        }
-        else if ( hashAnswersCopy.containsKey(id)) {
+        } else if (hashAnswersCopy.containsKey(id)) {
             a = hashAnswersCopy.get(id);
             q = hashQuestionsCopy.get(a.getParent_id());
             u = hashUsersCopy.get(q.getUser_id());
 
             return new Pair<>(q.getTitulo(), u.getName());
         }
-        return new Pair<>(null,null);
+        return new Pair<>(null, null);
     }
 
     // Query 2
@@ -150,15 +152,15 @@ public class TCDCom implements TADCommunity {
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
-        for(Year year : calendarCopy.getYears()) {
-            for(MMonth month : year.getMonths()){
-                for (Day day : month.getDays()){
-                    for (long id : day.getIds()){
-                        if (hashAnswersCopy.containsKey(id)){
+        for (Year year : calendarCopy.getYears()) {
+            for (MMonth month : year.getMonths()) {
+                for (Day day : month.getDays()) {
+                    for (long id : day.getIds()) {
+                        if (hashAnswersCopy.containsKey(id)) {
                             Answer a = hashAnswersCopy.get(id);
                             User u = hashUsersCopy.get(a.getUser_id_a());
                             u.incrementNumberOfPosts();
-                        }else if (hashQuestionsCopy.containsKey(id)){
+                        } else if (hashQuestionsCopy.containsKey(id)) {
                             Question q = hashQuestionsCopy.get(id);
                             User u = hashUsersCopy.get(q.getUser_id());
                             u.incrementNumberOfPosts();
@@ -173,7 +175,7 @@ public class TCDCom implements TADCommunity {
         allUsers.sort(comparator);
 
         List<Long> result = new ArrayList<>(10);
-        for (int i = 0; i <10; i++) {
+        for (int i = 0; i < 10; i++) {
             result.add(allUsers.get(i).getId());
         }
 
@@ -181,14 +183,14 @@ public class TCDCom implements TADCommunity {
     }
 
     // Query 3
-    public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end) {
+    public Pair<Long, Long> totalPosts(LocalDate begin, LocalDate end) {
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
         long questions = 0;
         long answers = 0;
-        int i, j, k=0, d, l, o, p=0;
+        int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -198,29 +200,35 @@ public class TCDCom implements TADCommunity {
         int diaEnd = end.getDayOfMonth();
 
 
-        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
             Year y = calendarCopy.getYears().get(i);
-            if(i == anoBegin - 2009) k = mesBegin;
-            if(i == anoEnd - 2009) l = mesEnd;
-            else{k = 1; l = 12;}
-            for (j = k - 1; j <= l - 1; j++){
+            if (i == anoBegin - 2009) k = mesBegin;
+            if (i == anoEnd - 2009) l = mesEnd;
+            else {
+                k = 1;
+                l = 12;
+            }
+            for (j = k - 1; j <= l - 1; j++) {
                 MMonth m = y.getMonths().get(j);
-                if(i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
-                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
-                else{p = 1; o = 31;}
-                for(d = p - 1; d <= o-1; d++){
+                if (i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if (i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else {
+                    p = 1;
+                    o = 31;
+                }
+                for (d = p - 1; d <= o - 1; d++) {
                     Day day = m.getDays().get(d);
-                    for(long id : day.getIds()){
-                        if(hashQuestionsCopy.containsKey(id)){
+                    for (long id : day.getIds()) {
+                        if (hashQuestionsCopy.containsKey(id)) {
                             questions++;
-                        } else if(hashAnswersCopy.containsKey(id)){
+                        } else if (hashAnswersCopy.containsKey(id)) {
                             answers++;
                         }
                     }
                 }
             }
         }
-        return new Pair<>(questions,answers);
+        return new Pair<>(questions, answers);
     }
 
     // Query 4
@@ -230,7 +238,7 @@ public class TCDCom implements TADCommunity {
 
         ArrayList<Long> questionsID = new ArrayList<>();
 
-        int i, j, k=0, d, l, o, p=0;
+        int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -239,20 +247,26 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
-        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
             Year y = calendarCopy.getYears().get(i);
-            if(i == anoBegin-2009) k = mesBegin;
-            if(i == anoEnd-2009) l = mesEnd;
-            else{k = 1; l = 12;}
-            for (j = k-1; j <= l-1; j++){
+            if (i == anoBegin - 2009) k = mesBegin;
+            if (i == anoEnd - 2009) l = mesEnd;
+            else {
+                k = 1;
+                l = 12;
+            }
+            for (j = k - 1; j <= l - 1; j++) {
                 MMonth m = y.getMonths().get(j);
-                if(i == anoBegin-2009 && j == mesBegin) p = diaBegin;
-                if(i == anoEnd-2009 && j == mesEnd) o = diaEnd;
-                else{p = 1; o = 31;}
-                for(d = p-1; d <= o-1; d++){
+                if (i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if (i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else {
+                    p = 1;
+                    o = 31;
+                }
+                for (d = p - 1; d <= o - 1; d++) {
                     Day day = m.getDays().get(d);
-                    for(long id : day.getIds()){
-                        if(hashQuestionsCopy.containsKey(id)){
+                    for (long id : day.getIds()) {
+                        if (hashQuestionsCopy.containsKey(id)) {
                             Question q = hashQuestionsCopy.get(id);
                             if (q.getTags().contains(tag)) questionsID.add(q.getId_q());
                         }
@@ -278,22 +292,22 @@ public class TCDCom implements TADCommunity {
 
         ArrayList<Long> posts = new ArrayList<>();
 
-        for(Year year : copyYears) {
+        for (Year year : copyYears) {
             Year copyYear = year.clone();
             ArrayList<MMonth> copyMonths = new ArrayList<>(copyYear.getMonths());
             Collections.reverse(copyMonths);
-            for(MMonth month : copyMonths){
+            for (MMonth month : copyMonths) {
                 MMonth copyMonth = month.clone();
                 ArrayList<Day> copyDays = new ArrayList<>(copyMonth.getDays());
                 Collections.reverse(copyDays);
-                for (Day day : copyDays){
+                for (Day day : copyDays) {
                     Day copyDay = day.clone();
                     ArrayList<Long> copyIds = new ArrayList<>(copyDay.getIds());
                     Collections.reverse(copyIds);
-                    for (long ids : copyIds){
-                        if(hashQuestionsCopy.containsKey(ids)){
+                    for (long ids : copyIds) {
+                        if (hashQuestionsCopy.containsKey(ids)) {
                             if (hashQuestionsCopy.get(ids).getUser_id() == id) posts.add(ids);
-                        } else if(hashAnswersCopy.containsKey(ids)){
+                        } else if (hashAnswersCopy.containsKey(ids)) {
                             if (hashAnswersCopy.get(ids).getUser_id_a() == id) posts.add(ids);
                         }
                     }
@@ -302,7 +316,7 @@ public class TCDCom implements TADCommunity {
         }
 
         posts = new ArrayList<>(posts.subList(0, 10));
-        return new Pair<>(aboutMe,posts);
+        return new Pair<>(aboutMe, posts);
     }
 
     // Query 6
@@ -313,7 +327,7 @@ public class TCDCom implements TADCommunity {
         ArrayList<Answer> answers = new ArrayList<>();
         List<Long> result = new ArrayList<>();
 
-        int i, j, k=0, d, l, o, p=0;
+        int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -324,20 +338,26 @@ public class TCDCom implements TADCommunity {
 
         ComparatorVotosAnswer comparator = new ComparatorVotosAnswer();
 
-        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
             Year y = calendarCopy.getYears().get(i);
-            if(i == anoBegin-2009) k = mesBegin;
-            if(i == anoEnd-2009) l = mesEnd;
-            else{k = 1; l = 12;}
-            for (j = k-1; j <= l-1; j++){
+            if (i == anoBegin - 2009) k = mesBegin;
+            if (i == anoEnd - 2009) l = mesEnd;
+            else {
+                k = 1;
+                l = 12;
+            }
+            for (j = k - 1; j <= l - 1; j++) {
                 MMonth m = y.getMonths().get(j);
-                if(i == anoBegin-2009 && j == mesBegin) p = diaBegin;
-                if(i == anoEnd-2009 && j == mesEnd) o = diaEnd;
-                else{p = 1; o = 31;}
-                for(d = p-1; d <= o-1; d++){
+                if (i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if (i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else {
+                    p = 1;
+                    o = 31;
+                }
+                for (d = p - 1; d <= o - 1; d++) {
                     Day day = m.getDays().get(d);
-                    for(long id : day.getIds()){
-                        if(hashAnswersCopy.containsKey(id)){
+                    for (long id : day.getIds()) {
+                        if (hashAnswersCopy.containsKey(id)) {
                             Answer a = hashAnswersCopy.get(id);
                             answers.add(a);
                         }
@@ -347,7 +367,7 @@ public class TCDCom implements TADCommunity {
         }
 
         answers.sort(comparator);
-        for (i = 0; i <N; i++) {
+        for (i = 0; i < N; i++) {
             result.add(answers.get(i).getId_a());
         }
         return result;
@@ -361,7 +381,7 @@ public class TCDCom implements TADCommunity {
         ArrayList<Question> questions = new ArrayList<>(N);
         List<Long> result = new ArrayList<>(N);
 
-        int i, j, k=0, d, l, o, p=0;
+        int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -372,20 +392,26 @@ public class TCDCom implements TADCommunity {
 
         ComparatorNumberAnswers comparator = new ComparatorNumberAnswers();
 
-        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
             Year y = calendarCopy.getYears().get(i);
-            if(i == anoBegin-2009) k = mesBegin;
-            if(i == anoEnd-2009) l = mesEnd;
-            else{k = 1; l = 12;}
-            for (j = k-1; j <= l-1; j++){
+            if (i == anoBegin - 2009) k = mesBegin;
+            if (i == anoEnd - 2009) l = mesEnd;
+            else {
+                k = 1;
+                l = 12;
+            }
+            for (j = k - 1; j <= l - 1; j++) {
                 MMonth m = y.getMonths().get(j);
-                if(i == anoBegin-2009 && j == mesBegin) p = diaBegin;
-                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
-                else{p = 1; o = 31;}
-                for(d = p-1; d <= o-1; d++){
+                if (i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if (i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else {
+                    p = 1;
+                    o = 31;
+                }
+                for (d = p - 1; d <= o - 1; d++) {
                     Day day = m.getDays().get(d);
-                    for(long id : day.getIds()){
-                        if(hashQuestionsCopy.containsKey(id)){
+                    for (long id : day.getIds()) {
+                        if (hashQuestionsCopy.containsKey(id)) {
                             Question q = hashQuestionsCopy.get(id);
                             questions.add(q);
                         }
@@ -396,7 +422,7 @@ public class TCDCom implements TADCommunity {
 
         questions.sort(comparator);
 
-        for(i=0; i<N; i++){
+        for (i = 0; i < N; i++) {
             result.add(questions.get(i).getId_q());
         }
         return result;
@@ -412,19 +438,19 @@ public class TCDCom implements TADCommunity {
 
         List<Long> result = new ArrayList<>();
 
-        for(Year year : copyYears) {
+        for (Year year : copyYears) {
             Year copyYear = year.clone();
             ArrayList<MMonth> copyMonths = new ArrayList<>(copyYear.getMonths());
             Collections.reverse(copyMonths);
-            for(MMonth month : copyMonths){
+            for (MMonth month : copyMonths) {
                 MMonth copyMonth = month.clone();
                 ArrayList<Day> copyDays = new ArrayList<>(copyMonth.getDays());
                 Collections.reverse(copyDays);
-                for (Day day : copyDays){
+                for (Day day : copyDays) {
                     Day copyDay = day.clone();
                     ArrayList<Long> copyIds = new ArrayList<>(copyDay.getIds());
                     Collections.reverse(copyIds);
-                    for (long ids : copyIds){
+                    for (long ids : copyIds) {
                         if (hashQuestionsCopy.containsKey(ids)) {
                             if (hashQuestionsCopy.get(ids).getTitulo().contains(word)) result.add(ids);
                         }
@@ -454,32 +480,32 @@ public class TCDCom implements TADCommunity {
 
         List<Long> result = new ArrayList<>();
 
-        for(Year year : copyYears) {
+        for (Year year : copyYears) {
             Year copyYear = year.clone();
             ArrayList<MMonth> copyMonths = new ArrayList<>(copyYear.getMonths());
             Collections.reverse(copyMonths);
-            for(MMonth month : copyMonths){
+            for (MMonth month : copyMonths) {
                 MMonth copyMonth = month.clone();
                 ArrayList<Day> copyDays = new ArrayList<>(copyMonth.getDays());
                 Collections.reverse(copyDays);
-                for (Day day : copyDays){
+                for (Day day : copyDays) {
                     Day copyDay = day.clone();
                     ArrayList<Long> copyIds = new ArrayList<>(copyDay.getIds());
                     Collections.reverse(copyIds);
-                    for (long ids : copyIds){
-                        if (hashQuestionsCopy.containsKey(ids)){
-                            if (hashQuestionsCopy.get(ids).getUser_id() == id1){
+                    for (long ids : copyIds) {
+                        if (hashQuestionsCopy.containsKey(ids)) {
+                            if (hashQuestionsCopy.get(ids).getUser_id() == id1) {
                                 questionsUser1.add(hashQuestionsCopy.get(ids).getId_q());
                             }
-                            if (hashQuestionsCopy.get(ids).getUser_id() == id2){
+                            if (hashQuestionsCopy.get(ids).getUser_id() == id2) {
                                 questionsUser2.add(hashQuestionsCopy.get(ids).getId_q());
                             }
                         }
-                        if (hashAnswersCopy.containsKey(ids)){
-                            if (hashAnswersCopy.get(ids).getUser_id_a() == id1){
+                        if (hashAnswersCopy.containsKey(ids)) {
+                            if (hashAnswersCopy.get(ids).getUser_id_a() == id1) {
                                 answersUser1.add(hashAnswersCopy.get(ids).getParent_id());
                             }
-                            if (hashAnswersCopy.get(ids).getUser_id_a() == id2){
+                            if (hashAnswersCopy.get(ids).getUser_id_a() == id2) {
                                 answersUser2.add(hashAnswersCopy.get(ids).getParent_id());
                             }
                         }
@@ -488,20 +514,20 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        for (Long q1 : questionsUser1){
-            if(answersUser2.contains(q1) && !result.contains(q1)){
+        for (Long q1 : questionsUser1) {
+            if (answersUser2.contains(q1) && !result.contains(q1)) {
                 result.add(q1);
             }
         }
 
-        for (Long q2 : questionsUser2){
-            if(answersUser1.contains(q2) && !result.contains(q2)){
+        for (Long q2 : questionsUser2) {
+            if (answersUser1.contains(q2) && !result.contains(q2)) {
                 result.add(q2);
             }
         }
 
-        for (Long q2 : answersUser1){
-            if(answersUser2.contains(q2) && !result.contains(q2)){
+        for (Long q2 : answersUser1) {
+            if (answersUser2.contains(q2) && !result.contains(q2)) {
                 result.add(q2);
             }
         }
@@ -519,12 +545,12 @@ public class TCDCom implements TADCommunity {
         ArrayList<Answer> answersDaQuestion = new ArrayList<>();
         ComparatorBestAnswer comparator = new ComparatorBestAnswer(hashUsersCopy);
 
-        for(Year year : calendarCopy.getYears()){
-            for(MMonth month : year.getMonths()){
-                for (Day day : month.getDays()){
-                    for (long ids : day.getIds()){
-                        if (hashAnswersCopy.containsKey(ids)){
-                            if (hashAnswersCopy.get(ids).getParent_id() == id){
+        for (Year year : calendarCopy.getYears()) {
+            for (MMonth month : year.getMonths()) {
+                for (Day day : month.getDays()) {
+                    for (long ids : day.getIds()) {
+                        if (hashAnswersCopy.containsKey(ids)) {
+                            if (hashAnswersCopy.get(ids).getParent_id() == id) {
                                 answersDaQuestion.add(hashAnswersCopy.get(ids).clone());
                             }
                         }
@@ -551,7 +577,7 @@ public class TCDCom implements TADCommunity {
 
         List<Long> result = new ArrayList<>();
 
-        int i, j, k=0, d, l, o, p=0;
+        int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
         int mesBegin = begin.getMonthValue();
         int diaBegin = begin.getDayOfMonth();
@@ -560,20 +586,26 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
-        for (i = anoBegin-2009; i <= anoEnd-2009; i++){
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
             Year y = calendarCopy.getYears().get(i);
-            if(i == anoBegin-2009) k = mesBegin;
-            if(i == anoEnd-2009) l = mesEnd;
-            else{k = 1; l = 12;}
-            for (j = k-1; j <= l-1; j++){
+            if (i == anoBegin - 2009) k = mesBegin;
+            if (i == anoEnd - 2009) l = mesEnd;
+            else {
+                k = 1;
+                l = 12;
+            }
+            for (j = k - 1; j <= l - 1; j++) {
                 MMonth m = y.getMonths().get(j);
-                if(i == anoBegin-2009 && j == mesBegin) p = diaBegin;
-                if(i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
-                else{p = 1; o = 31;}
-                for(d = p-1; d <= o-1; d++){
+                if (i == anoBegin - 2009 && j == mesBegin) p = diaBegin;
+                if (i == anoEnd - 2009 && j == mesEnd) o = diaEnd;
+                else {
+                    p = 1;
+                    o = 31;
+                }
+                for (d = p - 1; d <= o - 1; d++) {
                     Day day = m.getDays().get(d);
-                    for(long id : day.getIds()){
-                        if (hashQuestionsCopy.containsKey(id)){
+                    for (long id : day.getIds()) {
+                        if (hashQuestionsCopy.containsKey(id)) {
                             questions.add(hashQuestionsCopy.get(id));
 
                             long userid = hashQuestionsCopy.get(id).getUser_id();
@@ -588,7 +620,7 @@ public class TCDCom implements TADCommunity {
         nBestUsers.sort(comparatorRepUsers);
         nBestUsers = nBestUsers.subList(0, N);
 
-        for(Question q : questions){
+        for (Question q : questions) {
             if (nBestUsers.contains(hashUsersCopy.get(q.getUser_id()))) {
                 for (String ts : q.getSeparateTags()) {
                     for (Tag t : hashTagCopy.values()) {
@@ -606,7 +638,7 @@ public class TCDCom implements TADCommunity {
         nTags.sort(comparatorTagCount);
         nTags = nTags.subList(0, N);
 
-        for (Tag t : nTags){
+        for (Tag t : nTags) {
             result.add(t.getTag_id());
         }
 
@@ -614,6 +646,25 @@ public class TCDCom implements TADCommunity {
         //return Arrays.asList(6L,29L,72L,163L,587L);
     }
 
-    public void clear(){
+    public void clear() {
+        DataCalendar calendarCopy = this.calendar.clone();
+        HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
+        HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
+        HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
+
+        for (Year year : this.calendar.getYears()) {
+            for (MMonth month : year.getMonths()) {
+                for (Day day : month.getDays()) {
+                    day.getIds().clear();
+                }
+                month.getDays().clear();
+            }
+            year.getMonths().clear();
+        }
+        this.calendar.getYears().clear();
+        this.hashAnswers.clear();
+        this.hashQuestions.clear();
+        this.hashTags.clear();
+        this.hashUsers.clear();
     }
 }
