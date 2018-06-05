@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 /**
  * Classe onde se encontra a estrutura geral, e onde se faz o
@@ -171,15 +174,14 @@ public class TCDCom implements TADCommunity {
         }
 
         ComparatorNumberPosts comparator = new ComparatorNumberPosts();
-        ArrayList<User> allUsers = new ArrayList<>(hashUsersCopy.values());
-        allUsers.sort(comparator);
+       // ArrayList<User> allUsers = new ArrayList<>(hashUsersCopy.values());
+        //allUsers.sort(comparator);
 
-        List<Long> result = new ArrayList<>(10);
-        for (int i = 0; i < 10; i++) {
-            result.add(allUsers.get(i).getId());
-        }
-
-        return result;
+       // List<Long> result = new ArrayList<>(10);
+        //for (int i = 0; i < 10; i++) {
+        //    result.add(allUsers.get(i).getId());
+        //}
+        return hashUsersCopy.values().stream().sorted(comparator).limit(10).mapToLong(u->u.getId()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
     // Query 3
