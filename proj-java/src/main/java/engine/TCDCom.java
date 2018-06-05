@@ -368,11 +368,13 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        answers.sort(comparator);
-        for (i = 0; i < N; i++) {
-            result.add(answers.get(i).getId_a());
-        }
-        return result;
+        //answers.sort(comparator);
+        //for (i = 0; i < N; i++) {
+        //    result.add(answers.get(i).getId_a());
+        //}
+        return answers.stream().sorted(comparator).limit(N).mapToLong(a->a.getId_a()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        // return result;
+
     }
 
     // Query 7
@@ -422,12 +424,13 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        questions.sort(comparator);
+      //  questions.sort(comparator);
 
-        for (i = 0; i < N; i++) {
-            result.add(questions.get(i).getId_q());
-        }
-        return result;
+      //  for (i = 0; i < N; i++) {
+      //      result.add(questions.get(i).getId_q());
+      //  }
+      //  return result;
+        return questions.stream().sorted(comparator).limit(N).mapToLong(q -> q.getId_q()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
     // Query 8
@@ -634,17 +637,17 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        List<Tag> nTags = new ArrayList<>(hashTagCopy.values());
+        //List<Tag> nTags = new ArrayList<>(hashTagCopy.values());
         ComparatorTagCount comparatorTagCount = new ComparatorTagCount();
 
-        nTags.sort(comparatorTagCount);
-        nTags = nTags.subList(0, N);
+        //nTags.sort(comparatorTagCount);
+        //nTags = nTags.subList(0, N);
 
-        for (Tag t : nTags) {
-            result.add(t.getTag_id());
-        }
-
-        return result;
+        //for (Tag t : nTags) {
+        //    result.add(t.getTag_id());
+        //}
+        return hashTagCopy.values().stream().sorted(comparatorTagCount).limit(N).mapToLong(t -> t.getTag_id()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        //return result;
         //return Arrays.asList(6L,29L,72L,163L,587L);
     }
 
