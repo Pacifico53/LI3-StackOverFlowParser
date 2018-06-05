@@ -174,14 +174,8 @@ public class TCDCom implements TADCommunity {
         }
 
         ComparatorNumberPosts comparator = new ComparatorNumberPosts();
-       // ArrayList<User> allUsers = new ArrayList<>(hashUsersCopy.values());
-        //allUsers.sort(comparator);
 
-       // List<Long> result = new ArrayList<>(10);
-        //for (int i = 0; i < 10; i++) {
-        //    result.add(allUsers.get(i).getId());
-        //}
-        return hashUsersCopy.values().stream().sorted(comparator).limit(10).mapToLong(u->u.getId()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        return hashUsersCopy.values().stream().sorted(comparator).limit(10).map(User::getId).collect(Collectors.toList());
     }
 
     // Query 3
@@ -327,7 +321,6 @@ public class TCDCom implements TADCommunity {
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
         ArrayList<Answer> answers = new ArrayList<>();
-        List<Long> result = new ArrayList<>();
 
         int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
@@ -368,13 +361,7 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        //answers.sort(comparator);
-        //for (i = 0; i < N; i++) {
-        //    result.add(answers.get(i).getId_a());
-        //}
-        return answers.stream().sorted(comparator).limit(N).mapToLong(a->a.getId_a()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-        // return result;
-
+        return answers.stream().sorted(comparator).limit(N).map(Answer::getId_a).collect(Collectors.toList());
     }
 
     // Query 7
@@ -383,7 +370,6 @@ public class TCDCom implements TADCommunity {
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
 
         ArrayList<Question> questions = new ArrayList<>(N);
-        List<Long> result = new ArrayList<>(N);
 
         int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
@@ -424,13 +410,7 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-      //  questions.sort(comparator);
-
-      //  for (i = 0; i < N; i++) {
-      //      result.add(questions.get(i).getId_q());
-      //  }
-      //  return result;
-        return questions.stream().sorted(comparator).limit(N).mapToLong(q -> q.getId_q()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        return questions.stream().sorted(comparator).limit(N).map(Question::getId_q).collect(Collectors.toList());
     }
 
     // Query 8
@@ -538,7 +518,6 @@ public class TCDCom implements TADCommunity {
         }
 
         return (N < result.size()) ? result.subList(0, N) : result;
-        //return Arrays.asList(594L);
     }
 
     // Query 10
@@ -579,8 +558,6 @@ public class TCDCom implements TADCommunity {
         ComparatorRepUsers comparatorRepUsers = new ComparatorRepUsers();
 
         ArrayList<Question> questions = new ArrayList<>();
-
-        List<Long> result = new ArrayList<>();
 
         int i, j, k = 0, d, l, o, p = 0;
         int anoBegin = begin.getYear();
@@ -637,18 +614,9 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        //List<Tag> nTags = new ArrayList<>(hashTagCopy.values());
         ComparatorTagCount comparatorTagCount = new ComparatorTagCount();
 
-        //nTags.sort(comparatorTagCount);
-        //nTags = nTags.subList(0, N);
-
-        //for (Tag t : nTags) {
-        //    result.add(t.getTag_id());
-        //}
-        return hashTagCopy.values().stream().sorted(comparatorTagCount).limit(N).mapToLong(t -> t.getTag_id()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-        //return result;
-        //return Arrays.asList(6L,29L,72L,163L,587L);
+        return hashTagCopy.values().stream().sorted(comparatorTagCount).limit(N).map(Tag::getTag_id).collect(Collectors.toList());
     }
 
     public void clear() {
