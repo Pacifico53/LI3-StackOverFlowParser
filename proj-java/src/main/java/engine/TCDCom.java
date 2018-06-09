@@ -172,7 +172,7 @@ public class TCDCom implements TADCommunity {
 
         ComparatorNumberPosts comparator = new ComparatorNumberPosts();
 
-        return hashUsersCopy.values().stream().sorted(comparator).limit(10).map(User::getId).collect(Collectors.toList());
+        return hashUsersCopy.values().stream().sorted(comparator).limit(N).map(User::getId).collect(Collectors.toList());
     }
 
     // Query 3
