@@ -170,9 +170,8 @@ public class TCDCom implements TADCommunity {
 
         ComparatorNumberPosts comparator = new ComparatorNumberPosts();
 
-        /**stream dos Users onde, com o auxílio do ComparatorNumberPosts ordena-se pelo maior número de posts,
-        limita-se para os maiores N, extrai-se os Users_ID's e coloca-se os ID's numa List para retornar
-        */
+        //stream dos Users onde, com o auxílio do ComparatorNumberPosts ordena-se pelo maior número de posts,
+        //limita-se para os maiores N, extrai-se os Users_ID's e coloca-se os ID's numa List para retornar
         return hashUsersCopy.values().stream().sorted(comparator).limit(N).map(User::getId).collect(Collectors.toList());
     }
 
@@ -520,7 +519,6 @@ public class TCDCom implements TADCommunity {
 
     // Query 10
     public long betterAnswer(long id) {
-        DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
@@ -532,22 +530,6 @@ public class TCDCom implements TADCommunity {
                 answersDaQuestion.add(a.clone());
             }
         }
-
-        /**
-        for (Year year : calendarCopy.getYears()) {
-            for (MMonth month : year.getMonths()) {
-                for (Day day : month.getDays()) {
-                    for (long ids : day.getIds()) {
-                        if (hashAnswersCopy.containsKey(ids)) {
-                            if (hashAnswersCopy.get(ids).getParent_id() == id) {
-                                answersDaQuestion.add(hashAnswersCopy.get(ids).clone());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        */
 
         answersDaQuestion.sort(comparator);
         return answersDaQuestion.get(0).getId_a();
