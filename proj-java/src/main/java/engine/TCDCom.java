@@ -122,7 +122,7 @@ public class TCDCom implements TADCommunity {
     }
 
     /**
-     *
+     * Query 1
      * @param id do post recebido (pergunta ou resposta)
      * @return Par com o Título e Autor da pergunta (se o ID recebido for resposta, retorna-se a info da pergunta)
      */
@@ -527,6 +527,13 @@ public class TCDCom implements TADCommunity {
         ArrayList<Answer> answersDaQuestion = new ArrayList<>();
         ComparatorBestAnswer comparator = new ComparatorBestAnswer(hashUsersCopy);
 
+        for(Answer a : hashAnswersCopy.values()){
+            if(a.getParent_id() == id) {
+                answersDaQuestion.add(a.clone());
+            }
+        }
+
+        /**
         for (Year year : calendarCopy.getYears()) {
             for (MMonth month : year.getMonths()) {
                 for (Day day : month.getDays()) {
@@ -540,6 +547,7 @@ public class TCDCom implements TADCommunity {
                 }
             }
         }
+        */
 
         answersDaQuestion.sort(comparator);
         return answersDaQuestion.get(0).getId_a();
