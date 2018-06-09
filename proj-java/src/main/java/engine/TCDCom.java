@@ -98,7 +98,6 @@ public class TCDCom implements TADCommunity {
         this.hashAnswers = hashAnswers;
     }
 
-
     public DataCalendar getCalendar() {
         return calendar;
     }
@@ -122,7 +121,9 @@ public class TCDCom implements TADCommunity {
         parser.parsertags(dumpPath, this.hashTags);
     }
 
-    // Query 1
+    /** Query 1
+    //Objetivo: dado o ID de uma pergunta ou resposta, retornar o Titulo e nome do autor do autor da pergunta
+    */
     public Pair<String, String> infoFromPost(long id) {
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
@@ -131,12 +132,12 @@ public class TCDCom implements TADCommunity {
         Answer a;
         Question q;
         User u;
-        if (hashQuestionsCopy.containsKey(id)) {
-            q = hashQuestionsCopy.get(id);
-            u = hashUsersCopy.get(q.getUser_id());
+        if (hashQuestionsCopy.containsKey(id)) {                //verifica-se se o ID recebido é uma pergunta
+            q = hashQuestionsCopy.get(id);                      //caso seja, guarda-se o post e o User_ID e retorna-se
+            u = hashUsersCopy.get(q.getUser_id());              //o par do título com o nome do User.
             return new Pair<>(q.getTitulo(), u.getName());
-        } else if (hashAnswersCopy.containsKey(id)) {
-            a = hashAnswersCopy.get(id);
+        } else if (hashAnswersCopy.containsKey(id)) {           //caso o ID for de uma resposta vai se buscar a pergunta
+            a = hashAnswersCopy.get(id);                        //a que está a responder e repete-se a estratégia acima
             q = hashQuestionsCopy.get(a.getParent_id());
             u = hashUsersCopy.get(q.getUser_id());
 
@@ -146,12 +147,24 @@ public class TCDCom implements TADCommunity {
     }
 
     // Query 2
+    // Objetivo: retornar o top N dos User's com mais post's de sempre
     public List<Long> topMostActive(int N) {
-        DataCalendar calendarCopy = this.calendar.clone();
+        // DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
+        for(Question q : hashQuestionsCopy.values()) {              //neste for percorre-se a Hash das perguntas e
+            User u = hashUsersCopy.get(q.getUser_id());             //incrementa-se o número de posts do autor do post
+            u.incrementNumberOfPosts();
+        }
+
+        for(Answer a : hashAnswersCopy.values()) {                  //neste for repete-se o que foi feito em cima mas
+            User u = hashUsersCopy.get(a.getUser_id_a());           //na Hash das respostas
+            u.incrementNumberOfPosts();
+        }
+
+        /**
         for (Year year : calendarCopy.getYears()) {
             for (MMonth month : year.getMonths()) {
                 for (Day day : month.getDays()) {
@@ -169,9 +182,12 @@ public class TCDCom implements TADCommunity {
                 }
             }
         }
+        */
 
         ComparatorNumberPosts comparator = new ComparatorNumberPosts();
 
+        //stream dos Users onde, com o auxílio do ComparatorNumberPosts ordena-se pelo maior número de posts,
+        //limita-se para os maiores N, extrai-se os Users_ID's e coloca-se os ID's numa List para retornar
         return hashUsersCopy.values().stream().sorted(comparator).limit(N).map(User::getId).collect(Collectors.toList());
     }
 
@@ -441,7 +457,7 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        return result.subList(0, N);
+        return (N < result.size()) ? result.subList(0,N) : result;
     }
 
     // Query 9
