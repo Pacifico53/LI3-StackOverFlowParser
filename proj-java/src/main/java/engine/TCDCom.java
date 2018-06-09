@@ -121,9 +121,11 @@ public class TCDCom implements TADCommunity {
         parser.parsertags(dumpPath, this.hashTags);
     }
 
-    /** Query 1
-    //Objetivo: dado o ID de uma pergunta ou resposta, retornar o Titulo e nome do autor do autor da pergunta
-    */
+    /**
+     *
+     * @param id do post recebido (pergunta ou resposta)
+     * @return Par com o Título e Autor da pergunta (se o ID recebido for resposta, retorna-se a info da pergunta)
+     */
     public Pair<String, String> infoFromPost(long id) {
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
@@ -146,10 +148,12 @@ public class TCDCom implements TADCommunity {
         return new Pair<>(null, null);
     }
 
-    // Query 2
-    // Objetivo: retornar o top N dos User's com mais post's de sempre
+    /**
+     * Query 2
+     * @param N  tamanho da lista que é para retornar
+     * @return Lista com os Users com mais post's de sempre
+     */
     public List<Long> topMostActive(int N) {
-        // DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
@@ -164,30 +168,11 @@ public class TCDCom implements TADCommunity {
             u.incrementNumberOfPosts();
         }
 
-        /**
-        for (Year year : calendarCopy.getYears()) {
-            for (MMonth month : year.getMonths()) {
-                for (Day day : month.getDays()) {
-                    for (long id : day.getIds()) {
-                        if (hashAnswersCopy.containsKey(id)) {
-                            Answer a = hashAnswersCopy.get(id);
-                            User u = hashUsersCopy.get(a.getUser_id_a());
-                            u.incrementNumberOfPosts();
-                        } else if (hashQuestionsCopy.containsKey(id)) {
-                            Question q = hashQuestionsCopy.get(id);
-                            User u = hashUsersCopy.get(q.getUser_id());
-                            u.incrementNumberOfPosts();
-                        }
-                    }
-                }
-            }
-        }
-        */
-
         ComparatorNumberPosts comparator = new ComparatorNumberPosts();
 
-        //stream dos Users onde, com o auxílio do ComparatorNumberPosts ordena-se pelo maior número de posts,
-        //limita-se para os maiores N, extrai-se os Users_ID's e coloca-se os ID's numa List para retornar
+        /**stream dos Users onde, com o auxílio do ComparatorNumberPosts ordena-se pelo maior número de posts,
+        limita-se para os maiores N, extrai-se os Users_ID's e coloca-se os ID's numa List para retornar
+        */
         return hashUsersCopy.values().stream().sorted(comparator).limit(N).map(User::getId).collect(Collectors.toList());
     }
 
