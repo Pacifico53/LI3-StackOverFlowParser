@@ -17,7 +17,7 @@ public class User {
      * @param name  Nome do User
      * @param aboutme   AboutMe (informaçao do User)
      * @param reputation    Reputation do User
-     * @param numberOfPosts Numero de posts do User (isto é sempre inicializado a 0)
+     * @param numberOfPosts Número de posts do User (isto é sempre inicializado a 0)
      */
     public User(long id, String name, String aboutme, int reputation, int numberOfPosts){
         this.id = id;

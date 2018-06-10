@@ -3,7 +3,7 @@ package common;
 import java.util.ArrayList;
 
 /**
- * Classe Day representa o dia de um calendário, e onde se guarda os ID's de posts
+ * Classe Day representa um dia de um calendário, e onde se guarda os ID's de posts
  */
 
 public class Day {
@@ -11,7 +11,7 @@ public class Day {
 
     /**
      * Construtor parameterizado
-     * @param ids ArrayList de varios ids de posts
+     * @param ids ArrayList de vários ids de posts
      */
 
     public Day(ArrayList<Long> ids) {

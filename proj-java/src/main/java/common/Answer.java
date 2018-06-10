@@ -119,7 +119,7 @@ public class Answer {
 
     /**
      * Metodo para clonar uma Answer
-     * @return  Um Answer com os mesmos dados
+     * @return  Uma Answer com os mesmos dados
      */
 
     public Answer clone () {

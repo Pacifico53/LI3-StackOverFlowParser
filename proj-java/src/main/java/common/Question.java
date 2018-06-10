@@ -3,14 +3,29 @@ package common;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Classe Question que representa uma pergunta no Stack overflow
+ */
+
 public class Question {
-    private long id_q;
-    private int score_q;
-    private long user_id;
-    private String titulo;
-    private int comment_count;
-    private String tags;
-    private int numberAnswers;
+    private long id_q;              //ID da Question
+    private int score_q;            //Score da Question
+    private long user_id;           //ID do User que publicou dessa Question
+    private String titulo;          //Titulo da Question
+    private int comment_count;      //Número de comentários da Question
+    private String tags;            //Tags da Question
+    private int numberAnswers;      //Número de Answers da Question
+
+    /**
+     * Construtor parameterizado de um Question
+     * @param id_q  ID da Question
+     * @param score_q  Score da Question
+     * @param user_id  ID do User que publicou essa Question
+     * @param titulo Titulo da Question
+     * @param comment_count Número de comentários dessa Question
+     * @param tags  Tags da Question
+     * @param numberAnswers Número de Answers da Question
+     */
 
     public Question(long id_q, int score_q, long user_id, String titulo, int comment_count, String tags, int numberAnswers) {
         this.id_q = id_q;
@@ -22,6 +37,11 @@ public class Question {
         this.numberAnswers = numberAnswers;
     }
 
+    /**
+     * Construtor de copia de uma Question
+     * @param q A Question que se quer fazer uma copia
+     */
+
     public Question (Question q){
         this.id_q = q.getId_q();
         this.score_q = q.getScore_q();
@@ -32,10 +52,15 @@ public class Question {
         this.numberAnswers = q.getNumberAnswers();
     }
 
+    /**
+     * Construtor vazio de uma Question
+     */
+
     public Question(){
         this(0 , 0 , 0, "" , 0 , "" , 0);
     }
 
+    //GETTERS E SETTERS
     public long getId_q() {
         return id_q;
     }
@@ -92,6 +117,11 @@ public class Question {
         this.numberAnswers = numberAnswers;
     }
 
+    /**
+     * Esta funçao retorna uma lista com as tags de uma Question, primeiro separando as tags e depois inserindo
+     * num ArrayList<String>, retornando este mesmo.
+     */
+
     public ArrayList<String> getSeparateTags(){
         ArrayList<String> result = new ArrayList<>();
         String tagsCopy = this.tags;
@@ -104,6 +134,11 @@ public class Question {
         return result;
     }
 
+    /**
+     * Metodo para comparar duas Questions
+     * @param o Um objecto (preferivelmente uma Question)
+     * @return  Retorna true apenas se "o" for igual à Question
+     */
 
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,6 +153,11 @@ public class Question {
                 Objects.equals(tags, question.tags);
     }
 
+    /**
+     * Metodo para converter uma Question numa String
+     * @return As informaçoes da Question em formato String
+     */
+
     public String toString() {
         return "ID: " + this.id_q + "\n" +
                 "Title: " + this.titulo + "\n" +
@@ -127,6 +167,11 @@ public class Question {
                 "CommentCount: " + this.comment_count + "\n" +
                 "NumberAnswers: " + this.numberAnswers + "\n";
     }
+
+    /**
+     * Metodo para clonar uma Question
+     * @return  Uma Question com os mesmos dados
+     */
 
     public Question clone (){
         return new Question (this);
