@@ -3,6 +3,7 @@ package li3;
 import common.MyLog;
 import common.Pair;
 
+import engine.PostNaoEncontradoException;
 import engine.TCDCom;
 
 import java.time.LocalDate;
@@ -38,7 +39,12 @@ public class Main {
            Query 1
         */
         before = System.currentTimeMillis();
-        Pair<String,String> q1 = qe.infoFromPost(801049);
+        Pair<String,String> q1 = null;
+        try {
+            q1 = qe.infoFromPost(801049);
+        } catch (PostNaoEncontradoException e) {
+            e.printStackTrace();
+        }
         after = System.currentTimeMillis();
         logtime.writeLog("Query 1: -> "+(after-before)+" ms");
         log.writeLog("Query 1 -> " + q1);

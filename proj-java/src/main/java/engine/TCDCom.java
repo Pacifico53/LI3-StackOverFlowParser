@@ -126,7 +126,7 @@ public class TCDCom implements TADCommunity {
      * @param id do post recebido (pergunta ou resposta)
      * @return Par com o Título e Autor da pergunta (se o ID recebido for resposta, retorna-se a info da pergunta)
      */
-    public Pair<String, String> infoFromPost(long id) {
+    public Pair<String, String> infoFromPost(long id) throws PostNaoEncontradoException {
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
@@ -144,8 +144,7 @@ public class TCDCom implements TADCommunity {
             u = hashUsersCopy.get(q.getUser_id());
 
             return new Pair<>(q.getTitulo(), u.getName());
-        }
-        return new Pair<>(null, null);
+        } else throw new PostNaoEncontradoException("Esse Id nao foi encontrado");
     }
 
     /**
