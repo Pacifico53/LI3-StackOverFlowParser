@@ -175,7 +175,13 @@ public class TCDCom implements TADCommunity {
         return hashUsersCopy.values().stream().sorted(comparator).limit(N).map(User::getId).collect(Collectors.toList());
     }
 
-    // Query 3
+
+    /**
+     * Query 3
+     * @param begin Data do início do intervalo de tempo
+     * @param end Data do fim do intervalo de tempo
+     * @return Par com o número de perguntas e respostas nesse período
+     */
     public Pair<Long, Long> totalPosts(LocalDate begin, LocalDate end) {
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
@@ -193,7 +199,7 @@ public class TCDCom implements TADCommunity {
         int diaEnd = end.getDayOfMonth();
 
 
-        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {      //nestes for's percorre-se o calendário entre as datas
             Year y = calendarCopy.getYears().get(i);
             if (i == anoBegin - 2009) k = mesBegin;
             if (i == anoEnd - 2009) l = mesEnd;
@@ -213,18 +219,24 @@ public class TCDCom implements TADCommunity {
                     Day day = m.getDays().get(d);
                     for (long id : day.getIds()) {
                         if (hashQuestionsCopy.containsKey(id)) {
-                            questions++;
+                            questions++;                                    //itera-se o número de perguntas
                         } else if (hashAnswersCopy.containsKey(id)) {
-                            answers++;
+                            answers++;                                      //itera-se o número de respostas
                         }
                     }
                 }
             }
         }
-        return new Pair<>(questions, answers);
+        return new Pair<>(questions, answers);                              //devolve-e o par dos dois longs
     }
 
-    // Query 4
+    /**
+     * Query 4
+     * @param tag String com a tag que é para procurar
+     * @param begin Data do início do intervalo de tempo
+     * @param end Data do final do intervalo de tempo
+     * @return Lista com os ID's das perguntas que contêm a tag dentro do intervalo de tempo
+     */
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) {
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
@@ -240,7 +252,7 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
-        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {      //nestes for's percorre-se o calendário entre as datas
             Year y = calendarCopy.getYears().get(i);
             if (i == anoBegin - 2009) k = mesBegin;
             if (i == anoEnd - 2009) l = mesEnd;
@@ -261,58 +273,68 @@ public class TCDCom implements TADCommunity {
                     for (long id : day.getIds()) {
                         if (hashQuestionsCopy.containsKey(id)) {
                             Question q = hashQuestionsCopy.get(id);
-                            if (q.getTags().contains(tag)) questionsID.add(q.getId_q());
-                        }
+                            if (q.getTags().contains(tag)) questionsID.add(q.getId_q());  //caso a pergunta contenha a
+                        }                                                                 //tag, adiciona-se o ID à lista
                     }
                 }
             }
         }
 
-        Collections.reverse(questionsID);
+        Collections.reverse(questionsID);      //inverte-se a lista, pois pedem os ID's ordenados em cronologia inversa
         return questionsID;
     }
 
-    // Query 5
+    /**
+     * Query 5
+     * @param id de um User
+     * @return Par da informaçao do seu perfil e os IDs dos seus ultimos 10 post's
+     */
     public Pair<String, List<Long>> getUserInfo(long id) {
         DataCalendar copyCalendar = new DataCalendar(this.calendar);
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
-        String aboutMe = hashUsersCopy.get(id).getAboutme();
+        String aboutMe = hashUsersCopy.get(id).getAboutme();        //guarda-se a info do User para o retorno
         ArrayList<Year> copyYears = new ArrayList<>(copyCalendar.getYears());
-        Collections.reverse(copyYears);
-
+        Collections.reverse(copyYears);                 //para encontrar os últimos 10 posts, inverte-se o calendário
+                                                        //aqui inverteu-se o array dos anos
         ArrayList<Long> posts = new ArrayList<>();
 
         for (Year year : copyYears) {
             Year copyYear = year.clone();
             ArrayList<MMonth> copyMonths = new ArrayList<>(copyYear.getMonths());
-            Collections.reverse(copyMonths);
+            Collections.reverse(copyMonths);            //inverte-se o array dos meses
             for (MMonth month : copyMonths) {
                 MMonth copyMonth = month.clone();
                 ArrayList<Day> copyDays = new ArrayList<>(copyMonth.getDays());
-                Collections.reverse(copyDays);
+                Collections.reverse(copyDays);          //inverte-se o array dos dias
                 for (Day day : copyDays) {
                     Day copyDay = day.clone();
                     ArrayList<Long> copyIds = new ArrayList<>(copyDay.getIds());
-                    Collections.reverse(copyIds);
+                    Collections.reverse(copyIds);       //inverte-se o array dos IDs
                     for (long ids : copyIds) {
                         if (hashQuestionsCopy.containsKey(ids)) {
-                            if (hashQuestionsCopy.get(ids).getUser_id() == id) posts.add(ids);
-                        } else if (hashAnswersCopy.containsKey(ids)) {
-                            if (hashAnswersCopy.get(ids).getUser_id_a() == id) posts.add(ids);
+                            if (hashQuestionsCopy.get(ids).getUser_id() == id) posts.add(ids);  //adiciona-se numa lista
+                        } else if (hashAnswersCopy.containsKey(ids)) {                          //os IDs dos posts feitos
+                            if (hashAnswersCopy.get(ids).getUser_id_a() == id) posts.add(ids);  //pelo User fornecido
                         }
                     }
                 }
             }
         }
 
-        posts = new ArrayList<>(posts.subList(0, 10));
+        posts = new ArrayList<>(posts.subList(0, 10));              //limita-se a lista apenas a 10 posts
         return new Pair<>(aboutMe, posts);
     }
 
-    // Query 6
+    /**
+     * Query 6
+     * @param N Numero de respostas para retorno
+     * @param begin Data do início do intervalo de tempo
+     * @param end Data do fim do intervalo de tempo
+     * @return Lista dos IDs das respostas com mais votos
+     */
     public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end) {
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
@@ -330,7 +352,7 @@ public class TCDCom implements TADCommunity {
 
         ComparatorVotosAnswer comparator = new ComparatorVotosAnswer();
 
-        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {        //percorre-se o calendario entre as datas
             Year y = calendarCopy.getYears().get(i);
             if (i == anoBegin - 2009) k = mesBegin;
             if (i == anoEnd - 2009) l = mesEnd;
@@ -351,17 +373,25 @@ public class TCDCom implements TADCommunity {
                     for (long id : day.getIds()) {
                         if (hashAnswersCopy.containsKey(id)) {
                             Answer a = hashAnswersCopy.get(id);
-                            answers.add(a);
+                            answers.add(a);         //adiciona-se num ArrayList todas as respostas feitas entre as datas
                         }
                     }
                 }
             }
         }
+        //stream das respostas que, com o auxilio do ComparatorVotosAnswer, ordena o array em ordem decrescente do
+        //numero de votos, depois limita as primeiras N, extrai os IDs e coloca numa List
 
         return answers.stream().sorted(comparator).limit(N).map(Answer::getId_a).collect(Collectors.toList());
     }
 
-    // Query 7
+    /**
+     * Query 7
+     * @param N Numero das questoes para retornar
+     * @param begin Data do início do intervalo de tempo
+     * @param end Data do fim do intervalo de tempo
+     * @return Lista com os IDs das respostas mais respondidas entre as datas
+     */
     public List<Long> mostAnsweredQuestions(int N, LocalDate begin, LocalDate end) {
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
@@ -379,7 +409,7 @@ public class TCDCom implements TADCommunity {
 
         ComparatorNumberAnswers comparator = new ComparatorNumberAnswers();
 
-        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {        //nestes for's percorre-se o calendario
             Year y = calendarCopy.getYears().get(i);
             if (i == anoBegin - 2009) k = mesBegin;
             if (i == anoEnd - 2009) l = mesEnd;
@@ -400,13 +430,14 @@ public class TCDCom implements TADCommunity {
                     for (long id : day.getIds()) {
                         if (hashQuestionsCopy.containsKey(id)) {
                             Question q = hashQuestionsCopy.get(id);
-                            questions.add(q);
+                            questions.add(q);       //adiciona-se todas as perguntas a um ArrayList
                         }
                     }
                 }
             }
         }
-
+        //stream das perguntas que, atraves do ComparatorNumberAnswers, ordena as perguntas em ordem decrescente do
+        //numero de respostas obtidas, limita-se a lista as N primeiras, extrai-se os IDS e coloca-se numa List
         return questions.stream().sorted(comparator).limit(N).map(Question::getId_q).collect(Collectors.toList());
     }
 
