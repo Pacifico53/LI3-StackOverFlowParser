@@ -5,9 +5,11 @@ package common;
  */
 public class User {
 
-    private long id;                        //ID do User
-    private String name, aboutme;           //Nome e "AboutMe" do User
-    private int reputation, numberOfPosts;  //Reputation e numero de posts do user
+    private long id;                  //ID do User
+    private String name;              //Nome do User
+    private String aboutme;           //"AboutMe" do User
+    private int reputation;           //Reputação do User
+    private int numberOfPosts;        //Número de posts do User
 
     /**
      * Construtor parameterizado de um User

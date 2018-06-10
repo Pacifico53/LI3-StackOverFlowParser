@@ -3,7 +3,7 @@ package common;
 import java.util.ArrayList;
 
 /**
- * Classe que representa o calendario, e onde se guarda os ID's de posts, no seu devido dia
+ * Classe DataCalendar representa o calendário, e onde se guarda os ID's de posts, no seu devido dia
  */
 public class DataCalendar {
 
