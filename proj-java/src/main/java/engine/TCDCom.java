@@ -441,54 +441,66 @@ public class TCDCom implements TADCommunity {
         return questions.stream().sorted(comparator).limit(N).map(Question::getId_q).collect(Collectors.toList());
     }
 
-    // Query 8
+    /**
+     * Query 8
+     * @param N Numero de perguntas para retornar
+     * @param word Palavra que está contida no título das perguntas
+     * @return Lista dos IDS das perguntas cujo título contenha a word
+     */
     public List<Long> containsWord(int N, String word) {
         DataCalendar copyCalendar = new DataCalendar(this.calendar);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
 
         ArrayList<Year> copyYears = new ArrayList<>(copyCalendar.getYears());
-        Collections.reverse(copyYears);
-
+        Collections.reverse(copyYears);  //inverte-se o calendário para ter as perguntas ordenadas por cronologia inversa
+                                         //ArrayList dos anos invertido
         List<Long> result = new ArrayList<>();
 
         for (Year year : copyYears) {
             Year copyYear = year.clone();
             ArrayList<MMonth> copyMonths = new ArrayList<>(copyYear.getMonths());
-            Collections.reverse(copyMonths);
+            Collections.reverse(copyMonths);    //ArrayList dos meses invertido
             for (MMonth month : copyMonths) {
                 MMonth copyMonth = month.clone();
                 ArrayList<Day> copyDays = new ArrayList<>(copyMonth.getDays());
-                Collections.reverse(copyDays);
+                Collections.reverse(copyDays);  //ArrayList dos dias invertido
                 for (Day day : copyDays) {
                     Day copyDay = day.clone();
                     ArrayList<Long> copyIds = new ArrayList<>(copyDay.getIds());
-                    Collections.reverse(copyIds);
+                    Collections.reverse(copyIds);   //ArrayList dos IDs invertido
                     for (long ids : copyIds) {
                         if (hashQuestionsCopy.containsKey(ids)) {
                             if (hashQuestionsCopy.get(ids).getTitulo().contains(word)) result.add(ids);
-                        }
+                        }       //caso contenha a word fornecida, adiciona-se o ID da pergunta à lista
                     }
                 }
             }
         }
 
         return (N < result.size()) ? result.subList(0,N) : result;
+        // caso a lista result seja maior que o limite recebido, limita-se a lista aos N primeiros elementos
     }
 
-    // Query 9
+    /**
+     * Query 9
+     * @param N Numero de perguntas que sao para retornar
+     * @param id1 ID de um User
+     * @param id2 ID de um User
+     * @return Lista com os IDs das perguntas que ambos User's participaram
+     */
     public List<Long> bothParticipated(int N, long id1, long id2) {
         DataCalendar copyCalendar = new DataCalendar(this.calendar);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
         ArrayList<Year> copyYears = new ArrayList<>(copyCalendar.getYears());
-        Collections.reverse(copyYears);
+        Collections.reverse(copyYears);  //inverte-se o calendário para ter as perguntas ordenadas por cronologia inversa
+                                         //ArrayList dos anos invertido
+        ArrayList<Long> questionsUser1 = new ArrayList<>();     //aqui vai se guardar os IDs das perguntas feitas pelo User1
+        ArrayList<Long> questionsUser2 = new ArrayList<>();     //aqui vai se guardar os IDs das perguntas feitas pelo User2
 
-        ArrayList<Long> questionsUser1 = new ArrayList<>();
-        ArrayList<Long> questionsUser2 = new ArrayList<>();
-
-        ArrayList<Long> answersUser1 = new ArrayList<>();
-        ArrayList<Long> answersUser2 = new ArrayList<>();
+        ArrayList<Long> answersUser1 = new ArrayList<>();       //aqui vai se guardar os IDs das respostas feitas pelo User1
+        ArrayList<Long> answersUser2 = new ArrayList<>();       //aqui vai se guardar os IDs das respostas feitas pelo User2
 
 
         List<Long> result = new ArrayList<>();
@@ -496,30 +508,30 @@ public class TCDCom implements TADCommunity {
         for (Year year : copyYears) {
             Year copyYear = year.clone();
             ArrayList<MMonth> copyMonths = new ArrayList<>(copyYear.getMonths());
-            Collections.reverse(copyMonths);
+            Collections.reverse(copyMonths);    //ArrayLIst dos meses invertido
             for (MMonth month : copyMonths) {
                 MMonth copyMonth = month.clone();
                 ArrayList<Day> copyDays = new ArrayList<>(copyMonth.getDays());
-                Collections.reverse(copyDays);
+                Collections.reverse(copyDays);  //ArrayList dos dias invertido
                 for (Day day : copyDays) {
                     Day copyDay = day.clone();
                     ArrayList<Long> copyIds = new ArrayList<>(copyDay.getIds());
-                    Collections.reverse(copyIds);
+                    Collections.reverse(copyIds);   //ArrayList dos IDs
                     for (long ids : copyIds) {
                         if (hashQuestionsCopy.containsKey(ids)) {
-                            if (hashQuestionsCopy.get(ids).getUser_id() == id1) {
-                                questionsUser1.add(hashQuestionsCopy.get(ids).getId_q());
+                            if (hashQuestionsCopy.get(ids).getUser_id() == id1) {           //verifica se existem perguntas feitas pelo User1
+                                questionsUser1.add(hashQuestionsCopy.get(ids).getId_q());   //adiciona o ID da pergunta no array
                             }
-                            if (hashQuestionsCopy.get(ids).getUser_id() == id2) {
-                                questionsUser2.add(hashQuestionsCopy.get(ids).getId_q());
+                            if (hashQuestionsCopy.get(ids).getUser_id() == id2) {           //verifica se existem perguntas feitas pelo User2
+                                questionsUser2.add(hashQuestionsCopy.get(ids).getId_q());   //adiciona o ID da pergunta no array
                             }
                         }
                         if (hashAnswersCopy.containsKey(ids)) {
-                            if (hashAnswersCopy.get(ids).getUser_id_a() == id1) {
-                                answersUser1.add(hashAnswersCopy.get(ids).getParent_id());
+                            if (hashAnswersCopy.get(ids).getUser_id_a() == id1) {           //verifica se existem respostas feitas pelo User1
+                                answersUser1.add(hashAnswersCopy.get(ids).getParent_id());  //adiciona o ID da pergunta a que esta respondendo no array
                             }
-                            if (hashAnswersCopy.get(ids).getUser_id_a() == id2) {
-                                answersUser2.add(hashAnswersCopy.get(ids).getParent_id());
+                            if (hashAnswersCopy.get(ids).getUser_id_a() == id2) {           //verifica se existem respostas feitas pelo User2
+                                answersUser2.add(hashAnswersCopy.get(ids).getParent_id());  //adiciona o ID da pergunta a que esta respondendo no array
                             }
                         }
                     }
@@ -527,28 +539,32 @@ public class TCDCom implements TADCommunity {
             }
         }
 
-        for (Long q1 : questionsUser1) {
+        for (Long q1 : questionsUser1) {    //verifica se o User2 respondeu a alguma pergunta feita pelo User1
             if (answersUser2.contains(q1) && !result.contains(q1)) {
-                result.add(q1);
+                result.add(q1);             //adiciona o ID ao result
             }
         }
 
-        for (Long q2 : questionsUser2) {
+        for (Long q2 : questionsUser2) {    //verifica se o User1 respondeu a alguma pergunta feita pelo User2
             if (answersUser1.contains(q2) && !result.contains(q2)) {
-                result.add(q2);
+                result.add(q2);             //adicina o ID ao result
             }
         }
 
-        for (Long q2 : answersUser1) {
+        for (Long q2 : answersUser1) {      //verifica se os Users responderam à mesma pergunta
             if (answersUser2.contains(q2) && !result.contains(q2)) {
-                result.add(q2);
+                result.add(q2);             //adiciona o ID ao result
             }
         }
-
+        //caso a lista result seja maior que o limite N recebido, limita-se o resultado aos primeiros N elementos
         return (N < result.size()) ? result.subList(0, N) : result;
     }
 
-    // Query 10
+    /**
+     * Query 10
+     * @param id de uma pergunta
+     * @return  ID da melhor resposta à pergunta dada
+     */
     public long betterAnswer(long id) {
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
@@ -558,15 +574,21 @@ public class TCDCom implements TADCommunity {
 
         for(Answer a : hashAnswersCopy.values()){
             if(a.getParent_id() == id) {
-                answersDaQuestion.add(a.clone());
+                answersDaQuestion.add(a.clone()); //adiciona-se num Array todas as respostas à pergunta recebida
             }
         }
 
-        answersDaQuestion.sort(comparator);
-        return answersDaQuestion.get(0).getId_a();
+        answersDaQuestion.sort(comparator);         //ordena o Array em ordem decrescente da melhor resposta
+        return answersDaQuestion.get(0).getId_a();  //retorna o ID do primeiro elemento
     }
 
-    // Query 11
+    /**
+     *
+     * @param N número de Tags que é para retornar
+     * @param begin Data do início do intervalo de tempo
+     * @param end Data do fim do intervalo de tempo
+     * @return Lista com os IDs das N Tags mais usadas pelos N Users com melhor reputação
+     */
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end) {
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
@@ -587,7 +609,7 @@ public class TCDCom implements TADCommunity {
         int mesEnd = end.getMonthValue();
         int diaEnd = end.getDayOfMonth();
 
-        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {
+        for (i = anoBegin - 2009; i <= anoEnd - 2009; i++) {   //for's usados para percorrer o calendário entre as datas
             Year y = calendarCopy.getYears().get(i);
             if (i == anoBegin - 2009) k = mesBegin;
             if (i == anoEnd - 2009) l = mesEnd;
@@ -607,37 +629,42 @@ public class TCDCom implements TADCommunity {
                     Day day = m.getDays().get(d);
                     for (long id : day.getIds()) {
                         if (hashQuestionsCopy.containsKey(id)) {
-                            questions.add(hashQuestionsCopy.get(id));
+                            questions.add(hashQuestionsCopy.get(id));       //adiciona as perguntas num ArrayList
 
                             long userid = hashQuestionsCopy.get(id).getUser_id();
                             User u = hashUsersCopy.get(userid).clone();
-                            nBestUsers.add(u);
+                            nBestUsers.add(u);      //adiciona-se o User a uma List
                         }
                     }
                 }
             }
         }
 
-        nBestUsers.sort(comparatorRepUsers);
-        nBestUsers = nBestUsers.subList(0, N);
+        nBestUsers.sort(comparatorRepUsers);               //ordena-se em ordem decrescente da sua reputação
+        nBestUsers = nBestUsers.subList(0, N);             //limita-se a lista dos Users aos N primeiros
 
-        for (Question q : questions) {
-            if (nBestUsers.contains(hashUsersCopy.get(q.getUser_id()))) {
-                for (String ts : q.getSeparateTags()) {
-                    for (Tag t : hashTagCopy.values()) {
-                        if (t.getTagname().equals(ts)) {
-                            t.incrementCount();
+        for (Question q : questions) {                     //percorre-se o ArrayList das perguntas feitas entre as datas
+            if (nBestUsers.contains(hashUsersCopy.get(q.getUser_id()))) {   //verifica-se o autor da pergunta é um dos N Users com maior reputação
+                for (String ts : q.getSeparateTags()) {    //percorre-se as Tags da questão
+                    for (Tag t : hashTagCopy.values()) {   //percorre-se a HashTable das Tags
+                        if (t.getTagname().equals(ts)) {   //verifica-se se as tags coincidem
+                            t.incrementCount();            //incrementa na Tag o número de vezes que é usada
                         }
                     }
                 }
             }
         }
 
-        ComparatorTagCount comparatorTagCount = new ComparatorTagCount();
+        ComparatorTagCount comparatorTagCount = new ComparatorTagCount();   //ordena as Tags por ordem decrescente do número de vezes que são usadas
 
+        //stream das tags em que são ordenadas pelo número de vezes que foram usadas, limita-se às primeiras N,
+        //extrai-se os IDs e mete-se numa List
         return hashTagCopy.values().stream().sorted(comparatorTagCount).limit(N).map(Tag::getTag_id).collect(Collectors.toList());
     }
 
+    /**
+     * Função responsável por limpar o calendário que foi usado para a resolução de algumas querys
+     */
     public void clear() {
         for (Year year : this.calendar.getYears()) {
             for (MMonth month : year.getMonths()) {
