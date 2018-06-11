@@ -577,7 +577,7 @@ public class TCDCom implements TADCommunity {
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
 
-        if(!this.hashAnswers.containsKey(id)) throw new QuestionNaoEncontradaException("Questão com o ID " +id+ " não encontrada");
+        if(!this.hashQuestions.containsKey(id)) throw new QuestionNaoEncontradaException("Questão com o ID " +id+ " não encontrada");
 
         ArrayList<Answer> answersDaQuestion = new ArrayList<>();
         ComparatorBestAnswer comparator = new ComparatorBestAnswer(hashUsersCopy);
