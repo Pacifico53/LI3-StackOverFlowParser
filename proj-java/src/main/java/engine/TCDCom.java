@@ -3,7 +3,6 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 
-import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;

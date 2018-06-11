@@ -6,7 +6,6 @@ import java.util.Objects;
 /**
  * Classe Question que representa uma pergunta no Stack overflow
  */
-
 public class Question {
     private long id_q;              //ID da Question
     private int score_q;            //Score da Question
@@ -26,7 +25,6 @@ public class Question {
      * @param tags  Tags da Question
      * @param numberAnswers Número de Answers da Question
      */
-
     public Question(long id_q, int score_q, long user_id, String titulo, int comment_count, String tags, int numberAnswers) {
         this.id_q = id_q;
         this.score_q = score_q;
@@ -41,7 +39,6 @@ public class Question {
      * Construtor de copia de uma Question
      * @param q A Question que se quer fazer uma copia
      */
-
     public Question (Question q){
         this.id_q = q.getId_q();
         this.score_q = q.getScore_q();
@@ -55,7 +52,6 @@ public class Question {
     /**
      * Construtor vazio de uma Question
      */
-
     public Question(){
         this(0 , 0 , 0, "" , 0 , "" , 0);
     }
@@ -120,8 +116,8 @@ public class Question {
     /**
      * Esta funçao retorna uma lista com as tags de uma Question, primeiro separando as tags e depois inserindo
      * num ArrayList<String>, retornando este mesmo.
+     * @return ArrayList<String> de tags da Question
      */
-
     public ArrayList<String> getSeparateTags(){
         ArrayList<String> result = new ArrayList<>();
         String tagsCopy = this.tags;
@@ -139,7 +135,6 @@ public class Question {
      * @param o Um objecto (preferivelmente uma Question)
      * @return  Retorna true apenas se "o" for igual à Question
      */
-
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -157,7 +152,6 @@ public class Question {
      * Metodo para converter uma Question numa String
      * @return As informaçoes da Question em formato String
      */
-
     public String toString() {
         return "ID: " + this.id_q + "\n" +
                 "Title: " + this.titulo + "\n" +
@@ -172,7 +166,6 @@ public class Question {
      * Metodo para clonar uma Question
      * @return  Uma Question com os mesmos dados
      */
-
     public Question clone (){
         return new Question (this);
     }
