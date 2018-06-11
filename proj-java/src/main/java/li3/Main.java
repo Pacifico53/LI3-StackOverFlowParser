@@ -5,6 +5,8 @@ import common.Pair;
 
 import engine.PostNaoEncontradoException;
 import engine.TCDCom;
+import engine.TagNaoEncontradaException;
+import engine.UserNaoEncontradoException;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -72,8 +74,13 @@ public class Main {
            Query 4
         */
         before = System.currentTimeMillis();
-        List<Long> query4 = qe.questionsWithTag("package-management", LocalDate.of(2013, Month.MARCH, 1),
-                LocalDate.of(2013, Month.MARCH,31));
+        List<Long> query4 = null;
+        try {
+            query4 = qe.questionsWithTag("package-management", LocalDate.of(2013, Month.MARCH, 1),
+                    LocalDate.of(2013, Month.MARCH,31));
+        } catch (TagNaoEncontradaException e) {
+            e.printStackTrace();
+        }
         after = System.currentTimeMillis();
         logtime.writeLog("Query 4 -> " + (after - before) + " ms");
         log.writeLog("Query 4 -> " + query4);
@@ -82,7 +89,12 @@ public class Main {
            Query 5
         */
         before = System.currentTimeMillis();
-        Pair<String, List<Long>> q5 = qe.getUserInfo(15811);
+        Pair<String, List<Long>> q5 = null;
+        try {
+            q5 = qe.getUserInfo(15811);
+        } catch (UserNaoEncontradoException e) {
+            e.printStackTrace();
+        }
         after = System.currentTimeMillis();
         logtime.writeLog("Query 5 -> "+(after-before)+" ms");
         log.writeLog("Query 5 -> "+q5);
@@ -120,7 +132,12 @@ public class Main {
            Query 9
         */
         before = System.currentTimeMillis();
-        List<Long> q9 = qe.bothParticipated(10, 87, 5691);
+        List<Long> q9 = null;
+        try {
+            q9 = qe.bothParticipated(10, 87, 5691);
+        } catch (UserNaoEncontradoException e) {
+            e.printStackTrace();
+        }
         after = System.currentTimeMillis();
         logtime.writeLog("Query 9 -> " + (after - before) + " ms");
         log.writeLog("Query 9 -> " + q9);

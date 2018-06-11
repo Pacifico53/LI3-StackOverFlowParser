@@ -1,7 +1,10 @@
 li3/TADCommunity.class
 common/Day.class
 engine/ComparatorNumberPosts.class
+engine/QuestionNaoEncontradaException.class
+engine/TagNaoEncontradaException.class
 engine/ComparatorRepUsers.class
+engine/UserNaoEncontradoException.class
 engine/TCDCom.class
 common/Answer.class
 engine/ComparatorBestAnswer.class

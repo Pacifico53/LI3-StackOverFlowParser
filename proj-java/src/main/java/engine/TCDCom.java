@@ -3,6 +3,7 @@ package engine;
 import common.*;
 import li3.TADCommunity;
 
+import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,7 +237,7 @@ public class TCDCom implements TADCommunity {
      * @param end Data do final do intervalo de tempo
      * @return Lista com os ID's das perguntas que contêm a tag dentro do intervalo de tempo
      */
-    public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end){
+    public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) throws TagNaoEncontradaException{
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
 
@@ -280,7 +281,11 @@ public class TCDCom implements TADCommunity {
         }
 
         Collections.reverse(questionsID);      //inverte-se a lista, pois pedem os ID's ordenados em cronologia inversa
-        return questionsID;
+        if(questionsID.isEmpty()){
+            throw new TagNaoEncontradaException("Tag nao encontrada no intervalo de tempo dado.");
+        }else {
+            return questionsID;
+        }
     }
 
     /**
@@ -288,11 +293,13 @@ public class TCDCom implements TADCommunity {
      * @param id de um User
      * @return Par da informaçao do seu perfil e os IDs dos seus ultimos 10 post's
      */
-    public Pair<String, List<Long>> getUserInfo(long id) {
+    public Pair<String, List<Long>> getUserInfo(long id) throws UserNaoEncontradoException{
         DataCalendar copyCalendar = new DataCalendar(this.calendar);
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
+
+        if (!hashUsersCopy.containsKey(id)) throw new UserNaoEncontradoException("User com Id = " + id + " nao foi encontrado.");
 
         String aboutMe = hashUsersCopy.get(id).getAboutme();        //guarda-se a info do User para o retorno
         ArrayList<Year> copyYears = new ArrayList<>(copyCalendar.getYears());
@@ -487,10 +494,13 @@ public class TCDCom implements TADCommunity {
      * @param id2 ID de um User
      * @return Lista com os IDs das perguntas que ambos User's participaram
      */
-    public List<Long> bothParticipated(int N, long id1, long id2) {
+    public List<Long> bothParticipated(int N, long id1, long id2) throws UserNaoEncontradoException{
         DataCalendar copyCalendar = new DataCalendar(this.calendar);
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
+
+        if (!this.hashUsers.containsKey(id1)) throw new UserNaoEncontradoException("User com Id = " + id1 + " nao encontrado");
+        if (!this.hashUsers.containsKey(id2)) throw new UserNaoEncontradoException("User com Id = " + id2 + " nao encontrado");
 
         ArrayList<Year> copyYears = new ArrayList<>(copyCalendar.getYears());
         Collections.reverse(copyYears);  //inverte-se o calendário para ter as perguntas ordenadas por cronologia inversa
