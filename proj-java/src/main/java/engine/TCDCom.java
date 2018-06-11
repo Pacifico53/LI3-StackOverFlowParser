@@ -236,7 +236,7 @@ public class TCDCom implements TADCommunity {
      * @param end Data do final do intervalo de tempo
      * @return Lista com os ID's das perguntas que contêm a tag dentro do intervalo de tempo
      */
-    public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) {
+    public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end){
         DataCalendar calendarCopy = this.calendar.clone();
         HashMap<Long, Question> hashQuestionsCopy = new HashMap<>(this.hashQuestions);
 
@@ -582,7 +582,7 @@ public class TCDCom implements TADCommunity {
     }
 
     /**
-     *
+     * Query 11
      * @param N número de Tags que é para retornar
      * @param begin Data do início do intervalo de tempo
      * @param end Data do fim do intervalo de tempo
