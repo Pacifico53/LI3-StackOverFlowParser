@@ -26,12 +26,12 @@ public class Parser {
         int year;
         int month;
         int day;
-        date = date.substring(0, 10);
-        year = Integer.parseInt(date.substring(0, 4));
-        month = Integer.parseInt(date.substring(5, 7));
-        day = Integer.parseInt(date.substring(8, 10));
+        date = date.substring(0, 10);                       //na variavel date vamos guardar a informação de uma data
+        year = Integer.parseInt(date.substring(0, 4));      //na variavel year vamos guardar a informação do ano dessa data
+        month = Integer.parseInt(date.substring(5, 7));     //na variavel month vamos guardar a informação do mês dessa data
+        day = Integer.parseInt(date.substring(8, 10));      //na variavel day vamos guardar a informação do dia dessa data
 
-        date1 = LocalDate.of(year, month, day);
+        date1 = LocalDate.of(year, month, day);             //criar uma data do tipo LocalDate com as informações que retiramos anteriormente
         return date1;
     }
 
@@ -42,7 +42,7 @@ public class Parser {
      */
     public void parseruser(String path, HashMap<Long,User> hashUsers) {
         try {
-            String pathFile = path.concat("/Users.xml");
+            String pathFile = path.concat("/Users.xml");            //ficheiro onde vai ser corrida a função (Users.xml)
             File inputFile = new File(pathFile);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -54,14 +54,14 @@ public class Parser {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    long id = Long.parseLong(eElement.getAttribute("Id"));
-                    int rep = Integer.parseInt(eElement.getAttribute("Reputation"));
-                    String aboutme = eElement.getAttribute("AboutMe");
-                    String name = eElement.getAttribute("DisplayName");
+                    long id = Long.parseLong(eElement.getAttribute("Id"));              //Retirar a informação do "Id"
+                    int rep = Integer.parseInt(eElement.getAttribute("Reputation"));    //Retirar a informação do "Reputation"
+                    String aboutme = eElement.getAttribute("AboutMe");                  //Retirar a informação do "AboutMe"
+                    String name = eElement.getAttribute("DisplayName");                 //Retirar a informação do "DisplayName"
 
                     //cria-se novo User e adiciona-se na HashTable dos Users
-                    User u = new User(id, name, aboutme, rep , 0);
-                    hashUsers.put(id,u);
+                    User u = new User(id, name, aboutme, rep , 0);              //Criar um User com as informações retiradas anteriormente
+                    hashUsers.put(id,u);                                                       //Inserir o User numa HashMap<Long,User>
                 }
             }
         } catch (Exception e) {
@@ -79,7 +79,7 @@ public class Parser {
      */
     public void parserQuestionsAnswers(DataCalendar calendar, String path, HashMap<Long,Question> hashQuestions , HashMap<Long,Answer> hashAnswers) {
         try {
-            String pathFile = path.concat("/Posts.xml");
+            String pathFile = path.concat("/Posts.xml");                //ficheiro onde vai ser corrida a função (Posts.xml)
             File inputFile = new File(pathFile);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -92,20 +92,19 @@ public class Parser {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    if(eElement.getAttribute("PostTypeId").equals("1")) {         //verifica se o post é uma pergunta
-                        long id_q = Long.parseLong(eElement.getAttribute("Id"));  //caso seja guarda-se os atributos desejados
-                        int score_q = Integer.parseInt(eElement.getAttribute("Score"));
-                        long user_id_q = Long.parseLong(eElement.getAttribute("OwnerUserId"));
-                        String title_q = eElement.getAttribute("Title");
-                        int comment_count_q = Integer.parseInt(eElement.getAttribute("CommentCount"));
-                        String tags = eElement.getAttribute("Tags");
-                        int number_answers = Integer.parseInt(eElement.getAttribute("AnswerCount"));
+                    if(eElement.getAttribute("PostTypeId").equals("1")) {         //verifica se o post é uma Question (PostypeId = 1)
+                        long id_q = Long.parseLong(eElement.getAttribute("Id"));                        //Retira a informação do "Id"
+                        int score_q = Integer.parseInt(eElement.getAttribute("Score"));                 //Retira a informação do "Score"
+                        long user_id_q = Long.parseLong(eElement.getAttribute("OwnerUserId"));          //Retira a informação do "OwnerUserId"
+                        String title_q = eElement.getAttribute("Title");                                //Retira a informação do "Title"
+                        int comment_count_q = Integer.parseInt(eElement.getAttribute("CommentCount"));  //Retira a informação do "CommentCount"
+                        String tags = eElement.getAttribute("Tags");                                    //Retira a informação do "Tags"
+                        int number_answers = Integer.parseInt(eElement.getAttribute("AnswerCount"));    //Retira a informação do "AnswerCount"
 
-                        //cria-se uma nova pergunta e adiciona-se na HashTable das perguntas
-                        Question q = new Question(id_q, score_q, user_id_q, title_q, comment_count_q, tags, number_answers);
-                        hashQuestions.put(id_q,q);
+                        Question q = new Question(id_q, score_q, user_id_q, title_q, comment_count_q, tags, number_answers); //Cria uma Question com as informações retiradas anteriormente
+                        hashQuestions.put(id_q,q);                                       //Insere a Question numa HashMap<Long,Question>
 
-                        //converte-se a data para LocalDate através da função auxiliar xmlToDate e adiciona-se o ID no calendário
+                        //converte-se a data para LocalDate através da função auxiliar xmlToDate e adiciona-se o ID no calendário (no ArrayList<Long> correspondente à data retirada)
                         LocalDate date1 = xmlToDate(eElement.getAttribute("CreationDate"));
                         calendar.addID(date1.getYear() - 2009, date1.getMonthValue() - 1, date1.getDayOfMonth() - 1, Long.parseLong(eElement.getAttribute("Id")));
                     }
@@ -117,18 +116,18 @@ public class Parser {
                 Node nNode = nList2.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    if(eElement.getAttribute("PostTypeId").equals("2")) {         //verifica-se se o post é uma resposta
-                        long id_a = Long.parseLong(eElement.getAttribute("Id"));  //caso seja, guarda-se os atributos desejados
-                        int score_a = Integer.parseInt(eElement.getAttribute("Score"));
-                        long user_id_a = Long.parseLong(eElement.getAttribute("OwnerUserId"));
-                        int comment_count_a = Integer.parseInt(eElement.getAttribute("CommentCount"));
-                        long parent_id = Long.parseLong(eElement.getAttribute("ParentId"));
+                    if(eElement.getAttribute("PostTypeId").equals("2")) {         //verifica-se se o post é uma Answer (PostypeId = 2)
+                        long id_a = Long.parseLong(eElement.getAttribute("Id"));                        //Retira a informação do "Id"
+                        int score_a = Integer.parseInt(eElement.getAttribute("Score"));                 //Retira a informação do "Score"
+                        long user_id_a = Long.parseLong(eElement.getAttribute("OwnerUserId"));          //Retira a informação do "OwnerUserId"
+                        int comment_count_a = Integer.parseInt(eElement.getAttribute("CommentCount"));  //Retira a informação do "CommentCount"
+                        long parent_id = Long.parseLong(eElement.getAttribute("ParentId"));             //Retira a informação do "ParentId"
 
                         //cria-se uma nova resposta e adiciona-se na HashTable das respostas
-                        Answer a = new Answer(id_a,score_a,user_id_a,comment_count_a,parent_id);
-                        hashAnswers.put(id_a,a);
+                        Answer a = new Answer(id_a,score_a,user_id_a,comment_count_a,parent_id);  //Cria uma Answer com as informações retiradas anteriormente
+                        hashAnswers.put(id_a,a);                //Insere a Answer numa HashMap<Long,Answer>
 
-                        //converte-se a data para LocalDate através da função auxiliar xmlToDate e adiciona-se o ID no calendário
+                        //converte-se a data para LocalDate através da função auxiliar xmlToDate e adiciona-se o ID no calendário (no ArrayList<Long> corresponde á data retirada)
                         LocalDate date2 = xmlToDate(eElement.getAttribute("CreationDate"));
                         calendar.addID(date2.getYear() - 2009, date2.getMonthValue() - 1, date2.getDayOfMonth() - 1, Long.parseLong(eElement.getAttribute("Id")));
                     }
@@ -146,7 +145,7 @@ public class Parser {
      */
     public void parsertags(String path, HashMap<Long,Tag> hashTags) {
         try {
-            String pathFile = path.concat("/Tags.xml");
+            String pathFile = path.concat("/Tags.xml");             //ficheiro onde vai ser corrida a função (Tags.xml)
             File inputFile = new File(pathFile);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -158,12 +157,12 @@ public class Parser {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    long id = Long.parseLong(eElement.getAttribute("Id"));
-                    String tagname = eElement.getAttribute("TagName");
+                    long id = Long.parseLong(eElement.getAttribute("Id"));          //Retira a informação do "Id"
+                    String tagname = eElement.getAttribute("TagName");              //Retira a informação do "TagName"
 
                     //cria-se uma nova Tag e adiciona-se na HashTable das tags
-                    Tag t = new Tag(tagname, 0, id);
-                    hashTags.put(id,t);
+                    Tag t = new Tag(tagname, 0, id);        //Cria uma Tag com as informações retiradas anteriormente
+                    hashTags.put(id,t);                            //Insere a Tag numa HashMap<Long,Tag>
                 }
             }
         } catch (Exception e) {
