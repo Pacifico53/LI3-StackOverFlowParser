@@ -5,6 +5,7 @@ engine/ComparatorRepUsers.class
 engine/TCDCom.class
 common/Answer.class
 engine/ComparatorBestAnswer.class
+engine/PostNaoEncontradoException.class
 common/Question.class
 common/MyLog.class
 engine/ComparatorVotosAnswer.class

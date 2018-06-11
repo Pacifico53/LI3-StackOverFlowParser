@@ -86,8 +86,7 @@ public class Parser {
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("row");
-            NodeList nList2 = doc.getElementsByTagName("row");
-            System.out.println("--------------PARSE QUESTIONS--------------");
+            System.out.println("--------------PARSE POSTS--------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {                      //este for percorre todos post's do ficheiro
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -108,29 +107,22 @@ public class Parser {
                         //converte-se a data para LocalDate através da função auxiliar xmlToDate e adiciona-se o ID no calendário
                         LocalDate date1 = xmlToDate(eElement.getAttribute("CreationDate"));
                         calendar.addID(date1.getYear() - 2009, date1.getMonthValue() - 1, date1.getDayOfMonth() - 1, Long.parseLong(eElement.getAttribute("Id")));
-                    }
-                }
-            }
+                    } else {
+                        if (eElement.getAttribute("PostTypeId").equals("2")) {         //verifica-se se o post é uma resposta
+                            long id_a = Long.parseLong(eElement.getAttribute("Id"));  //caso seja, guarda-se os atributos desejados
+                            int score_a = Integer.parseInt(eElement.getAttribute("Score"));
+                            long user_id_a = Long.parseLong(eElement.getAttribute("OwnerUserId"));
+                            int comment_count_a = Integer.parseInt(eElement.getAttribute("CommentCount"));
+                            long parent_id = Long.parseLong(eElement.getAttribute("ParentId"));
 
-            System.out.println("-------------PARSE ANSWERS----------------");
-            for (int temp = 0; temp < nList2.getLength(); temp++) {
-                Node nNode = nList2.item(temp);
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
-                    if(eElement.getAttribute("PostTypeId").equals("2")) {         //verifica-se se o post é uma resposta
-                        long id_a = Long.parseLong(eElement.getAttribute("Id"));  //caso seja, guarda-se os atributos desejados
-                        int score_a = Integer.parseInt(eElement.getAttribute("Score"));
-                        long user_id_a = Long.parseLong(eElement.getAttribute("OwnerUserId"));
-                        int comment_count_a = Integer.parseInt(eElement.getAttribute("CommentCount"));
-                        long parent_id = Long.parseLong(eElement.getAttribute("ParentId"));
+                            //cria-se uma nova resposta e adiciona-se na HashTable das respostas
+                            Answer a = new Answer(id_a, score_a, user_id_a, comment_count_a, parent_id);
+                            hashAnswers.put(id_a, a);
 
-                        //cria-se uma nova resposta e adiciona-se na HashTable das respostas
-                        Answer a = new Answer(id_a,score_a,user_id_a,comment_count_a,parent_id);
-                        hashAnswers.put(id_a,a);
-
-                        //converte-se a data para LocalDate através da função auxiliar xmlToDate e adiciona-se o ID no calendário
-                        LocalDate date2 = xmlToDate(eElement.getAttribute("CreationDate"));
-                        calendar.addID(date2.getYear() - 2009, date2.getMonthValue() - 1, date2.getDayOfMonth() - 1, Long.parseLong(eElement.getAttribute("Id")));
+                            //converte-se a data para LocalDate através da função auxiliar xmlToDate e adiciona-se o ID no calendário
+                            LocalDate date2 = xmlToDate(eElement.getAttribute("CreationDate"));
+                            calendar.addID(date2.getYear() - 2009, date2.getMonthValue() - 1, date2.getDayOfMonth() - 1, Long.parseLong(eElement.getAttribute("Id")));
+                        }
                     }
                 }
             }
