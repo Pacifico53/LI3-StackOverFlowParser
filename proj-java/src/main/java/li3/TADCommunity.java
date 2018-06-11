@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import common.Pair;
 import engine.PostNaoEncontradoException;
+import engine.QuestionNaoEncontradaException;
 import engine.TagNaoEncontradaException;
 import engine.UserNaoEncontradoException;
 
@@ -38,7 +39,7 @@ public interface TADCommunity {
     public List<Long> bothParticipated(int N, long id1, long id2) throws UserNaoEncontradoException;
 
     // Query 10
-    public long betterAnswer(long id);
+    public long betterAnswer(long id) throws QuestionNaoEncontradaException;
 
     // Query 11
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end);

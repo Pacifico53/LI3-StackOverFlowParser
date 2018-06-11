@@ -3,10 +3,7 @@ package li3;
 import common.MyLog;
 import common.Pair;
 
-import engine.PostNaoEncontradoException;
-import engine.TCDCom;
-import engine.TagNaoEncontradaException;
-import engine.UserNaoEncontradoException;
+import engine.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -146,7 +143,12 @@ public class Main {
            Query 10
         */
         before = System.currentTimeMillis();
-        long q10 = qe.betterAnswer(30334);
+        long q10 = 0;
+        try {
+            q10 = qe.betterAnswer(30334);
+        } catch (QuestionNaoEncontradaException e) {
+            e.printStackTrace();
+        }
         after = System.currentTimeMillis();
         logtime.writeLog("Query 10 -> "+(after-before)+" ms");
         log.writeLog("Query 10 -> "+q10);

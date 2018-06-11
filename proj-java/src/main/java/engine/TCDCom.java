@@ -573,9 +573,11 @@ public class TCDCom implements TADCommunity {
      * @param id de uma pergunta
      * @return  ID da melhor resposta à pergunta dada
      */
-    public long betterAnswer(long id) {
+    public long betterAnswer(long id) throws QuestionNaoEncontradaException {
         HashMap<Long, User> hashUsersCopy = new HashMap<>(this.hashUsers);
         HashMap<Long, Answer> hashAnswersCopy = new HashMap<>(this.hashAnswers);
+
+        if(!this.hashAnswers.containsKey(id)) throw new QuestionNaoEncontradaException("Questão com o ID " +id+ " não encontrada");
 
         ArrayList<Answer> answersDaQuestion = new ArrayList<>();
         ComparatorBestAnswer comparator = new ComparatorBestAnswer(hashUsersCopy);
