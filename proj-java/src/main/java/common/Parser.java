@@ -58,34 +58,31 @@ public class Parser {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader evReader = factory.createXMLEventReader(new FileInputStream(pathFile));
 
-            while (evReader.hasNext()) {
-                XMLEvent xmlEvent = evReader.nextEvent();
-                if (xmlEvent.isStartElement()) {
+            //este while vai percorrer todos os Users
+            while (evReader.hasNext()) {                    //enquanto houverem row's (ou seja Users)
+                XMLEvent xmlEvent = evReader.nextEvent();   //avança para próximo User
+                if (xmlEvent.isStartElement()) {            //caso seja o ínicio de um User inicia-se o processo de armazenamento do User
                     StartElement startElement = xmlEvent.asStartElement();
 
                     if (startElement.getName().getLocalPart().equals("row")) {
                         Attribute attrID = startElement.getAttributeByName(new QName("Id"));
-                        if(attrID != null) id = Long.parseLong(attrID.getValue());
-                        //System.out.print("ID = " + id);
+                        if(attrID != null) id = Long.parseLong(attrID.getValue());          //guardar o ID
 
                         Attribute attrRep = startElement.getAttributeByName(new QName("Reputation"));
-                        if(attrRep != null) rep = Integer.parseInt(attrRep.getValue());
-                        //System.out.print("REP = " + rep);
+                        if(attrRep != null) rep = Integer.parseInt(attrRep.getValue());     //guardar a reputação
 
                         Attribute attrAbMe = startElement.getAttributeByName(new QName("AboutMe"));
-                        if(attrAbMe != null) aboutme = attrAbMe.getValue();
-                        //System.out.print("ABOUTME = " + aboutme);
+                        if(attrAbMe != null) aboutme = attrAbMe.getValue();                 //guardar o aboutme
 
                         Attribute attrName = startElement.getAttributeByName(new QName("DisplayName"));
-                        if(attrName != null) name = attrName.getValue();
-                        //System.out.print("name = " + name);
-                        u = new User(id, name, aboutme, rep, 0);
+                        if(attrName != null) name = attrName.getValue();                    //guardar o nome
+                        u = new User(id, name, aboutme, rep, 0);               //cria-se o User
                     }
                 }
                 if (xmlEvent.isEndElement()) {
                     EndElement endElement = xmlEvent.asEndElement();
                     if (endElement.getName().getLocalPart().equals("row")) {
-                        hashUsers.put(id, u);
+                        hashUsers.put(id, u);       //insere-se o User na HashMap dos Users
                     }
                 }
             }
@@ -122,57 +119,58 @@ public class Parser {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader evReader = factory.createXMLEventReader(new FileInputStream(pathFile));
 
+            //neste while vão ser percorridos todos os Posts
             while (evReader.hasNext()) {
                 Question q;
                 Answer a = null;
 
-                XMLEvent xmlEvent = evReader.nextEvent();
-                if (xmlEvent.isStartElement()) {
+                XMLEvent xmlEvent = evReader.nextEvent();   //avança para o próximo post
+                if (xmlEvent.isStartElement()) {            //caso seja início de um post, inicia-se o processo de armazenamento dos posts
                     StartElement startElement = xmlEvent.asStartElement();
 
                     if (startElement.getName().getLocalPart().equals("row")) {
                         Attribute attrDate = startElement.getAttributeByName(new QName("CreationDate"));
-                        if(attrDate != null) dateXML = attrDate.getValue();
+                        if(attrDate != null) dateXML = attrDate.getValue();     //guarda a data
 
                         Attribute attrID = startElement.getAttributeByName(new QName("Id"));
-                        if(attrID != null) id = Long.parseLong(attrID.getValue());
+                        if(attrID != null) id = Long.parseLong(attrID.getValue());      //guarda o ID
 
                         Attribute attrScore = startElement.getAttributeByName(new QName("Score"));
-                        if(attrScore != null) score = Integer.parseInt(attrScore.getValue());
+                        if(attrScore != null) score = Integer.parseInt(attrScore.getValue());       //guarda o score
 
                         Attribute attrCommCount = startElement.getAttributeByName(new QName("CommentCount"));
-                        if(attrCommCount != null) commentCount = Integer.parseInt(attrCommCount.getValue());
+                        if(attrCommCount != null) commentCount = Integer.parseInt(attrCommCount.getValue());    //guarda o numero de comentarios
 
                         Attribute attrUserId = startElement.getAttributeByName(new QName("OwnerUserId"));
-                        if(attrUserId != null) user_id = Integer.parseInt(attrUserId.getValue());
+                        if(attrUserId != null) user_id = Integer.parseInt(attrUserId.getValue());       //guarda o User_id
 
-                        if (startElement.getAttributeByName(new QName("PostTypeId")).getValue().equals("2")){
+                        if (startElement.getAttributeByName(new QName("PostTypeId")).getValue().equals("2")){   //caso seja uma resposta
                             Attribute attrParentId = startElement.getAttributeByName(new QName("ParentId"));
-                            if(attrParentId != null) parent_id = Long.parseLong(attrParentId.getValue());
+                            if(attrParentId != null) parent_id = Long.parseLong(attrParentId.getValue());               //guarda o parent_id
 
-                            a = new Answer(id, score, user_id, commentCount, parent_id);
-                            hashAnswers.put(id,a);
+                            a = new Answer(id, score, user_id, commentCount, parent_id);        //cria nova resposta
+                            hashAnswers.put(id,a);                                              //coloca-a na HashMap das respostas
                         }
 
-                        if (startElement.getAttributeByName(new QName("PostTypeId")).getValue().equals("1")){
+                        if (startElement.getAttributeByName(new QName("PostTypeId")).getValue().equals("1")){   //caso seja uma pergunta
                             Attribute attrTitle = startElement.getAttributeByName(new QName("Title"));
-                            if(attrTitle != null) title = attrTitle.getValue();
+                            if(attrTitle != null) title = attrTitle.getValue();         //guarda o titulo
 
                             Attribute attrTags = startElement.getAttributeByName(new QName("Tags"));
-                            if(attrTags != null) tags = attrTags.getValue();
+                            if(attrTags != null) tags = attrTags.getValue();            //guarda a tag
 
                             Attribute attrNumAns = startElement.getAttributeByName(new QName("AnswerCount"));
-                            if(attrNumAns != null) numberAns = Integer.parseInt(attrNumAns.getValue());
+                            if(attrNumAns != null) numberAns = Integer.parseInt(attrNumAns.getValue());     //guarda o numero de respostas
 
-                            q = new Question(id, score, user_id, title, commentCount, tags, numberAns);
-                            hashQuestions.put(id,q);
+                            q = new Question(id, score, user_id, title, commentCount, tags, numberAns);     //cria nova pergunta
+                            hashQuestions.put(id,q);                                                        //insere a pergunta na HashMap das perguntas
                         }
                     }
                 }
                 if (xmlEvent.isEndElement()) {
                     EndElement endElement = xmlEvent.asEndElement();
                     if (endElement.getName().getLocalPart().equals("row")) {
-                        date = xmlToDate(dateXML);
+                        date = xmlToDate(dateXML);      //conver-te a data de XML para LocalDate  e insere o ID do post no calendario
                         calendar.addID(date.getYear() - 2009, date.getMonthValue() - 1, date.getDayOfMonth() - 1, id);
                     }
                 }
@@ -199,24 +197,25 @@ public class Parser {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader evReader = factory.createXMLEventReader(new FileInputStream(pathFile));
 
+            //neste while vai se percorrer todas as Tags
             while (evReader.hasNext()) {
-                XMLEvent xmlEvent = evReader.nextEvent();
-                if (xmlEvent.isStartElement()) {
+                XMLEvent xmlEvent = evReader.nextEvent();       //avança-se para a próxima Tag
+                if (xmlEvent.isStartElement()) {                //caso seja o início de uma Tag, inicia-se o processo de armazenamento da Tag
                     StartElement startElement = xmlEvent.asStartElement();
 
                     if (startElement.getName().getLocalPart().equals("row")) {
                         Attribute attrID = startElement.getAttributeByName(new QName("Id"));
-                        if(attrID != null) id = Long.parseLong(attrID.getValue());
+                        if(attrID != null) id = Long.parseLong(attrID.getValue());      //guarda se o id
 
                         Attribute attrName = startElement.getAttributeByName(new QName("TagName"));
-                        if(attrName != null) tagname = attrName.getValue();
-                        t = new Tag(tagname, 0, id);
+                        if(attrName != null) tagname = attrName.getValue();             //guarda se a tagname
+                        t = new Tag(tagname, 0, id);                              //cria-se nova tag
                     }
                 }
                 if (xmlEvent.isEndElement()) {
                     EndElement endElement = xmlEvent.asEndElement();
                     if (endElement.getName().getLocalPart().equals("row")) {
-                        hashTags.put(id, t);
+                        hashTags.put(id, t);                                //insere-se a tag na HashMap das Tags
                     }
                 }
             }
