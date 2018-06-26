@@ -1,9 +1,13 @@
-# reference_repo
-Repositório com ficheiros comuns a todos os projetos. 
+# Projecto de LI3 2017/2018
+Trabalho que faz parse de um dump de ficheiros .xml com informaçao de posts, users, etc do Stack OverFlow. 
 
 Estrutura do repositório:
 
-- pasta `include`: contém todos os ficheiros `.h`
-- pasta `src`: contém o código realizado pelo grupo (ficheiros `.c`)
-- pasta `src/lib`: contém as definições dos tipos que constam na definição da interface do programa
-- pastas `src/obj` e `src/obj/lib`: conterão os ficheiros `.o` quando o programa for compilado
+- pasta `proj-c`: contém a versao C do projecto
+- pasta `proj-java`: contém a versao Java do projecto
+
+Realizado por:
+
+- Antonio Lopes (https://github.com/antonioseis)
+- Bernardo Viseu (https://github.com/Pacifico53)
+- Fernando Pereira (https://github.com/videira59)
